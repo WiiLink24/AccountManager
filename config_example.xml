@@ -3,8 +3,8 @@
     <address>127.0.0.1:9011</address>
 
     <!-- Credentials -->
-    <username>noahpistilli</username>
-    <password>2006</password>
+    <username>username</username>
+    <password>password</password>
 
     <!-- Database information-->
     <databaseAddress>127.0.0.1</databaseAddress>
@@ -12,10 +12,10 @@
 
     <!-- OIDC credentials/data -->
     <oidc>
-        <clientID>fBBy1hJf5Ay9JFYkQpHmeExgE1Kr7KUb4f6Ngzar</clientID>
-        <clientSecret>Lj8bLTm1hxcjMs0a8VsTurXlBD2zlffyTDsgndjaaPpALrfAPZZEUpyHjRkP3JjOE0ATP7k4a4xMf7HI45Cukg5ebSL5oRMMiEFlERjmLoNmnbHIZkEUM48fpHRAe3gh</clientSecret>
+        <clientID></clientID>
+        <clientSecret></clientSecret>
         <redirectURL>http://localhost:9011/authorize</redirectURL>
         <scopes>openid profile</scopes>
-        <provider>https://sso.riiconnect24.net/application/o/localhost-server-testing/</provider>
+        <provider></provider>
     </oidc>
 </Config>
