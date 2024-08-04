@@ -1,0 +1,21 @@
+<Config>
+    <!-- The address which HTTP will bind to -->
+    <address>127.0.0.1:9011</address>
+
+    <!-- Credentials -->
+    <username>username</username>
+    <password>password</password>
+
+    <!-- Database information-->
+    <databaseAddress>127.0.0.1</databaseAddress>
+    <databaseName>wiilink_accounts</databaseName>
+
+    <!-- OIDC credentials/data -->
+    <oidc>
+        <clientID></clientID>
+        <clientSecret></clientSecret>
+        <redirectURL>http://localhost:9011/authorize</redirectURL>
+        <scopes>openid profile</scopes>
+        <provider></provider>
+    </oidc>
+</Config>
