@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Error - CMOC Control Panel</title>
+    <link href="/assets/output.css" rel="stylesheet" />
+    <link
+      rel="apple-touch-icon"
+      sizes="180x180"
+      href="https://www.wiilink24.com/img/apple-touch-icon.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="32x32"
+      href="https://www.wiilink24.com/img/favicon-32x32.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="16x16"
+      href="https://www.wiilink24.com/img/favicon-16x16.png"
+    />
+    <link rel="manifest" href="https://www.wiilink24.com/img/site.webmanifest" />
+    <link rel="mask-icon" href="https://www.wiilink24.com/img/safari-pinned-tab.svg" color="#5bbad5" />
+    <link rel="shortcut icon" href="https://www.wiilink24.com/img/favicon.ico" />
+    <meta name="msapplication-TileColor" content="#ffffff" />
+    <meta name="msapplication-config" content="https://www.wiilink24.com/img/browserconfig.xml" />
+    <meta name="theme-color" content="#ffffff" />
+  </head>
+  <body
+    class="bg-white dark:bg-slate-800 dark:text-white flex items-center justify-center absolute w-full h-full"
+  >
+    <main
+      class="flex flex-col items-center justify-center gap-3 relative w-[95%] max-w-lg"
+    >
+      <h1 class="font-bold">Error</h1>
+      {{if .Error}}
+      <p class="text-2xl text-center">An error has occured: {{.Error}}</p>
+      <a href="/panel/contests"
+        ><button
+          class="p-2 pl-4 pr-4 bg-gray-200 dark:bg-slate-600 hover:bg-gray-300 dark:hover:bg-slate-700 rounded-md transition-all"
+        >
+          <i class="fa-solid fa-chevron-left"></i> Return to contest list
+        </button></a
+      >
+      {{end}}
+    </main>
+  </body>
+</html>

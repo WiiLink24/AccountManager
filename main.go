@@ -47,10 +47,21 @@ func main() {
 	checkError(err)
 
 	r := gin.Default()
+
+	// Serve static files in debug mode
+	if gin.Mode() == gin.DebugMode {
+		r.Static("/assets", "./assets")
+	}
+
+	// Load HTML templates from the templates directory
+	r.LoadHTMLGlob("templates/*")
+
+	// Define routes and their handlers
 	r.GET("/login", LoginPage)
 	r.GET("/start", StartPanelHandler)
 	r.GET("/authorize", FinishPanelHandler)
 
+	// Start the server
 	fmt.Printf("Starting HTTP connection (%s)...\nNot using the usual port for HTTP?\nBe sure to use a proxy, otherwise the Wii can't connect!\n", config.Address)
 	log.Fatalln(r.Run(config.Address))
 }
