@@ -3,11 +3,13 @@ package main
 import (
 	"context"
 	"fmt"
+	"log"
+
+	"github.com/WiiLink24/AccountManager/middleware"
 	"github.com/coreos/go-oidc/v3/oidc"
 	"github.com/gin-gonic/gin"
 	"github.com/jackc/pgx/v5/pgxpool"
 	"golang.org/x/oauth2"
-	"log"
 )
 
 var (
@@ -60,6 +62,15 @@ func main() {
 	r.GET("/login", LoginPage)
 	r.GET("/start", StartPanelHandler)
 	r.GET("/authorize", FinishPanelHandler)
+
+	auth := r.Group("/")
+	auth.Use(middleware.AuthenticationMiddleware())
+	{
+		auth.GET("/manage", HomePage)
+		auth.GET("/notlinked", NotLinkedPage)
+		auth.GET("/link", LinkHandler)
+	}
+
 
 	// Start the server
 	fmt.Printf("Starting HTTP connection (%s)...\nNot using the usual port for HTTP?\nBe sure to use a proxy, otherwise the Wii can't connect!\n", config.Address)
