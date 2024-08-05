@@ -1,3 +1,8 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.sso-bg {
+    background-image: url('https://sso.riiconnect24.net/media/public/flow-backgrounds/SSO-bg.png');
+    background-size: cover;
+}

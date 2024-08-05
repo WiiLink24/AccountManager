@@ -1,6 +1,8 @@
 package main
 
 import (
+	"log"
+	
 	"github.com/gin-gonic/gin"
 	"net/http"
 )
@@ -11,22 +13,27 @@ const (
 
 func HomePage(c *gin.Context) {
 	if email, ok := c.Get("email"); ok {
-		var exists bool
-		err := pool.QueryRow(ctx, IsUserLinked, email.(string)).Scan(&exists)
-		if err != nil {
-			c.HTML(http.StatusBadRequest, "error.html", gin.H{
-				"Error": err.Error(),
-			})
-			return
-		}
+        log.Printf("Checking if user with email %s is linked", email)
+        var exists bool
+        err := pool.QueryRow(ctx, IsUserLinked, email.(string)).Scan(&exists)
+        
+        if err != nil {
+            log.Printf("Error querying database: %v", err)
+            c.HTML(http.StatusBadRequest, "error.html", gin.H{
+                "Error": err.Error(),
+            })
+            return
+        }
 
-		if exists {
-			c.HTML(http.StatusOK, "home.html", nil)
-		} else {
-			c.Redirect(http.StatusPermanentRedirect, "/link")
-		}
+        if exists {
+            log.Printf("User with email %s is linked", email)
+            c.HTML(http.StatusOK, "home.html", nil)
+        } else {
+            log.Printf("User with email %s is not linked", email)
+            c.HTML(http.StatusOK, "/notlinked", nil)
+        }
 
-		return
+        return
 	}
 
 	c.HTML(http.StatusBadRequest, "error.html", gin.H{
@@ -41,6 +48,5 @@ func NotLinkedPage(c *gin.Context) {
 
 func LinkHandler(c *gin.Context) {
 	/* sha := c.Param("sha") */
-
 	c.HTML(http.StatusOK, "linked.html", nil)
 }

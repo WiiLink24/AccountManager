@@ -38,7 +38,7 @@
     ></script>
   </head>
   <body
-    class="bg-white dark:bg-slate-800 dark:text-white flex items-center justify-center absolute w-full h-full"
+    class="bg-slate-900 sso-bg text-white flex items-center justify-center absolute w-full h-full"
   >
     <main
       class="flex flex-col items-center justify-center gap-3 relative w-[95%] max-w-lg"
@@ -49,23 +49,23 @@
           class="!h-[60px] dark:invert"
         />
         <h2 class="text-right text-lg">
-          <b>CMOC</b><br />
-          Control Panel
+          <b>WiiLink</b><br />
+          Account Management
         </h2>
       </div>
+      <div class="p-6 rounded-xl border-2 border-white/5 bg-black/5 backdrop-blur-lg">
       <p class="opacity-90 text-left mt-3">
-        <i class="fa-solid fa-chevron-right"></i> With this tool you can create,
-        modify and delete contests in the Check Mii Out Channel, as well as
-        moderate submitted Miis.
+        <i class="fa-solid fa-chevron-right"></i> Welcome to your WiiLink Account! This service allows you to view and manage your Wii data and settings, as well as access other WiiLink services and Domino's/JustEat delivery.
       </p>
       <!-- {{if .Error}}
         <p style="color:red;">{{.Error}}</p>
         {{end}} -->
-      <a href="/start">
-        <button class="submit_button">
-          Login with WiiLink Internal
+      <a href="/start" class="w-full">
+        <button class="mt-5 p-3 w-full bg-blue-600 hover:bg-blue-700 active:scale-95 rounded-full transition-all">
+          <i class="fa-solid fa-right-to-bracket"></i> Log in with your WiiLink Account
         </button>
       </a>
+    </div>
     </main>
   </body>
 </html>
