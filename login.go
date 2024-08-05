@@ -80,7 +80,7 @@ func FinishPanelHandler(c *gin.Context) {
 
 	//Now that we verified the token, create a JWT token to use with the middleware
 	claims := &JWTClaims{
-		Username: userInfo.Profile,
+		Email: userInfo.Email,
 		RegisteredClaims: jwt.RegisteredClaims{
 			ExpiresAt: jwt.NewNumericDate(time.Now().Add(time.Hour)),
 		},
