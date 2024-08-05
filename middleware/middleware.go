@@ -22,8 +22,8 @@ func AuthenticationMiddleware() gin.HandlerFunc {
 			return
 		}
 
-		if username, ok := claims["Email"].(string); ok {
-			c.Set("username", username)
+		if email, ok := claims["Email"].(string); ok {
+			c.Set("email", email)
 		} else {
 			c.Redirect(http.StatusPermanentRedirect, "/login")
 			c.Abort()
