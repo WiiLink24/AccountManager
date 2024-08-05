@@ -13,9 +13,10 @@ import (
 )
 
 var (
-	ctx        = context.Background()
-	pool       *pgxpool.Pool
-	authConfig *AppAuthConfig
+	ctx         = context.Background()
+	pool        *pgxpool.Pool
+	wiiMailPool *pgxpool.Pool
+	authConfig  *AppAuthConfig
 )
 
 func checkError(err error) {
@@ -43,10 +44,18 @@ func main() {
 		Provider: provider,
 	}
 
-	// Start SQL
+	// Connect account manager database
 	dbString := fmt.Sprintf("postgres://%s:%s@%s/%s", config.Username, config.Password, config.DatabaseAddress, config.DatabaseName)
 	pool, err = pgxpool.New(ctx, dbString)
 	checkError(err)
+
+	// Connect Wii Mail database
+	dbString = fmt.Sprintf("postgres://%s:%s@%s/%s", config.WiiMailUsername, config.WiiMailPassword, config.WiiMailDatabaseAddress, config.WiiMailDatabaseName)
+	wiiMailPool, err = pgxpool.New(ctx, dbString)
+	checkError(err)
+
+	defer pool.Close()
+	defer wiiMailPool.Close()
 
 	r := gin.Default()
 
@@ -70,7 +79,6 @@ func main() {
 		auth.GET("/notlinked", NotLinkedPage)
 		auth.GET("/link", LinkHandler)
 	}
-
 
 	// Start the server
 	fmt.Printf("Starting HTTP connection (%s)...\nNot using the usual port for HTTP?\nBe sure to use a proxy, otherwise the Wii can't connect!\n", config.Address)

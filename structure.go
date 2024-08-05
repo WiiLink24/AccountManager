@@ -22,12 +22,16 @@ type OIDCConfig struct {
 }
 
 type Config struct {
-	Username        string     `xml:"username"`
-	Password        string     `xml:"password"`
-	DatabaseAddress string     `xml:"databaseAddress"`
-	DatabaseName    string     `xml:"databaseName"`
-	Address         string     `xml:"address"`
-	OIDCConfig      OIDCConfig `xml:"oidc"`
+	Username               string     `xml:"username"`
+	Password               string     `xml:"password"`
+	WiiMailUsername        string     `xml:"wiiMailUsername"`
+	WiiMailPassword        string     `xml:"wiiMailPassword"`
+	DatabaseAddress        string     `xml:"databaseAddress"`
+	DatabaseName           string     `xml:"databaseName"`
+	WiiMailDatabaseAddress string     `xml:"wiiMailDatabaseAddress"`
+	WiiMailDatabaseName    string     `xml:"wiiMailDatabaseName"`
+	Address                string     `xml:"address"`
+	OIDCConfig             OIDCConfig `xml:"oidc"`
 }
 
 type AppAuthConfig struct {
