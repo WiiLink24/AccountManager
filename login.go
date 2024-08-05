@@ -97,5 +97,5 @@ func FinishPanelHandler(c *gin.Context) {
 	c.SetCookie("token", token, 3600, "", "", false, true)
 
 	//redirect to admin page
-	c.Redirect(http.StatusMovedPermanently, "/manage")
+	c.Redirect(http.StatusFound, "/manage")
 }

@@ -30,7 +30,7 @@ func HomePage(c *gin.Context) {
             c.HTML(http.StatusOK, "home.html", nil)
         } else {
             log.Printf("User with email %s is not linked", email)
-            c.HTML(http.StatusOK, "/notlinked", nil)
+            c.HTML(http.StatusOK, "not_linked.html", nil)
         }
 
         return
