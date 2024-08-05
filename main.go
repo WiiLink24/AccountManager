@@ -77,7 +77,7 @@ func main() {
 	{
 		auth.GET("/manage", HomePage)
 		auth.GET("/notlinked", NotLinkedPage)
-		auth.GET("/link", LinkHandler)
+		auth.GET("/link", link)
 	}
 
 	// Start the server

@@ -48,12 +48,3 @@ func NotLinkedPage(c *gin.Context) {
 		"email": email,
 	})
 }
-
-func LinkHandler(c *gin.Context) {
-	/* sha := c.Param("sha") */
-	email, _ := c.Get("email")
-	log.Printf("User with email %s has a linked account", email)
-	c.HTML(http.StatusOK, "linked.html", gin.H{
-		"email": email,
-	})
-}
