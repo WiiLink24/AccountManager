@@ -3,12 +3,14 @@ package main
 import (
 	"crypto/rand"
 	"encoding/base64"
+	"io"
+	"log"
+	"net/http"
+	"time"
+
 	"github.com/gin-gonic/gin"
 	"github.com/golang-jwt/jwt/v5"
 	"golang.org/x/oauth2"
-	"io"
-	"net/http"
-	"time"
 )
 
 func LoginPage(c *gin.Context) {

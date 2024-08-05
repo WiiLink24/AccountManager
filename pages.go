@@ -2,9 +2,10 @@ package main
 
 import (
 	"log"
-	
-	"github.com/gin-gonic/gin"
+
 	"net/http"
+
+	"github.com/gin-gonic/gin"
 )
 
 const (
@@ -13,27 +14,25 @@ const (
 
 func HomePage(c *gin.Context) {
 	if email, ok := c.Get("email"); ok {
-        log.Printf("Checking if user with email %s is linked", email)
-        var exists bool
-        err := pool.QueryRow(ctx, IsUserLinked, email.(string)).Scan(&exists)
-        
-        if err != nil {
-            log.Printf("Error querying database: %v", err)
-            c.HTML(http.StatusBadRequest, "error.html", gin.H{
-                "Error": err.Error(),
-            })
-            return
-        }
+		var exists bool
+		err := pool.QueryRow(ctx, IsUserLinked, email.(string)).Scan(&exists)
 
-        if exists {
-            log.Printf("User with email %s is linked", email)
-            c.HTML(http.StatusOK, "home.html", nil)
-        } else {
-            log.Printf("User with email %s is not linked", email)
-            c.HTML(http.StatusOK, "not_linked.html", nil)
-        }
+		if err != nil {
+			c.HTML(http.StatusBadRequest, "error.html", gin.H{
+				"Error": err.Error(),
+			})
+			return
+		}
 
-        return
+		if exists {
+			c.HTML(http.StatusOK, "home.html", nil)
+		} else {
+			c.HTML(http.StatusOK, "not_linked.html", gin.H{
+				"email": email,
+			})
+		}
+
+		return
 	}
 
 	c.HTML(http.StatusBadRequest, "error.html", gin.H{
@@ -43,10 +42,18 @@ func HomePage(c *gin.Context) {
 }
 
 func NotLinkedPage(c *gin.Context) {
-	c.HTML(http.StatusOK, "not_linked.html", nil)
+	email, _ := c.Get("email")
+	log.Printf("User with email %s is not linked", email)
+	c.HTML(http.StatusOK, "not_linked.html", gin.H{
+		"email": email,
+	})
 }
 
 func LinkHandler(c *gin.Context) {
 	/* sha := c.Param("sha") */
-	c.HTML(http.StatusOK, "linked.html", nil)
+	email, _ := c.Get("email")
+	log.Printf("User with email %s has a linked account", email)
+	c.HTML(http.StatusOK, "linked.html", gin.H{
+		"email": email,
+	})
 }
