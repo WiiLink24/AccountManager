@@ -27,18 +27,26 @@ func HomePage(c *gin.Context) {
 		if exists {
 			c.HTML(http.StatusOK, "home.html", nil)
 		} else {
-			c.HTML(http.StatusOK, "not_linked.html", gin.H{
-				"username": username,
-			})
+			log.Printf("User with username %s is not linked", username)
+			if pfp, ok := c.Get("picture"); ok {
+				c.HTML(http.StatusOK, "not_linked.html", gin.H{
+					"username": username,
+					"pfp":      pfp,
+				})
+			} else {
+				c.HTML(http.StatusOK, "not_linked.html", gin.H{
+					"username": username,
+					"pfp":      "", // or handle the missing picture case
+				})
+			}
 		}
 
 		return
 	}
 
 	c.HTML(http.StatusBadRequest, "error.html", gin.H{
-		"Error": "some how got here unauthorized",
+		"Error": "Username not found in context",
 	})
-
 }
 
 func NotLinkedPage(c *gin.Context) {

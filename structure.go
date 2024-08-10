@@ -9,6 +9,7 @@ import (
 
 type JWTClaims struct {
 	Username string `json:"nickname"`
+	PFP	  string `json:"picture"`
 	Email    string
 	jwt.RegisteredClaims
 }

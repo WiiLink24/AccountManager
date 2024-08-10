@@ -2,6 +2,7 @@ package middleware
 
 import (
 	"github.com/gin-gonic/gin"
+	"log"
 	"net/http"
 )
 
@@ -16,6 +17,7 @@ func AuthenticationMiddleware() gin.HandlerFunc {
 		}
 
 		claims, err := VerifyToken(tokenString)
+		log.Printf("Claims: %v", claims)
 		if err != nil {
 			c.Redirect(http.StatusFound, "/login")
 			c.Abort()
@@ -32,6 +34,11 @@ func AuthenticationMiddleware() gin.HandlerFunc {
 
 		if username, ok := claims["nickname"].(string); ok {
 			c.Set("username", username)
+			if pfp, ok := claims["picture"].(string); ok {
+				c.Set("picture", pfp)
+			} else {
+				c.Set("picture", "")
+			}
 		} else {
 			c.Redirect(http.StatusFound, "/login")
 			c.Abort()

@@ -1,3 +1,99 @@
 {{template "base.tmpl"}}
-Hi, {{.username}}! <br>
+<div
+  id="particles-js"
+  class="top-0 left-0 w-full h-full absolute -translate-x-[0rem] opacity-30"
+></div>
+
+<div class="h-screen w-full flex items-center justify-center relative">
+  <div class="pl-3 pr-3">
+    <h1 id="greeting">What's up,</h1>
+    <h2 class="flex flex-row items-center gap-3">
+      <img
+        src="{{.pfp}}"
+        height="40px"
+        width="40px"
+        class="bg-gray-300 dark:bg-slate-900/60 rounded-md"
+      />
+      {{.username}}
+    </h2>
+    <br />
+    <p>
+      To finish creating your WiiLink Account, you will need to link your Wii
+      Console ID to it.<br />
+      To do so, please download the Console ID linking application.
+    </p>
+
+    <div class="flex items-center justify-center">
+      <div
+        class="sm:w-96 m-8 p-6 rounded-2xl bg-white/20 shadow-lg shadow-white/5 backdrop-blur-md relative"
+      >
+        <div id="qrcode" class="p-4 bg-white rounded-lg overflow-hidden"></div>
+      </div>
+    </div>
+
+    <p class="opacity-30 text-center">
+      Already on PC?
+      <a id="download" class="underline">Download the tool here</a>.
+    </p>
+  </div>
+</div>
+
+<script src="/assets/particles/particles.min.js"></script>
+<script>
+  particlesJS.load("particles-js", "/assets/particles/particlesjs-config.json");
+
+  var link = "http://jindo.dev.naver.com/collie";
+
+  // Generate QR code of the download link
+  new QRCode(document.getElementById("qrcode"), {
+    text: link,
+    width: 512, // Set the desired width
+    height: 512, // Set the desired height
+  });
+
+  document.getElementById("download").href = link;
+
+  // Custom greeting depending on time of day
+  var greeting = document.getElementById("greeting");
+  const now = new Date();
+  const hour = now.getHours();
+
+switch (hour) {
+  case 7:
+  case 8:
+  case 9:
+  case 10:
+  case 11:
+    greeting.innerText = "Good morning,";
+    break;
+  case 12:
+  case 13:
+  case 14:
+    greeting.innerText = "What's up,";
+    break;
+  case 15:
+  case 16:
+  case 17:
+  case 18:
+  case 19:
+  case 20:
+    greeting.innerText = "Good afternoon,";
+    break;
+  case 21:
+  case 22:
+  case 23:
+  case 0:
+  case 1:
+  case 2:
+  case 3:
+  case 4:
+  case 5:
+  case 6:
+    greeting.innerText = "Good night,";
+    break;
+  default:
+    greeting.innerText = "What's up,";
+    break;
+}
+</script>
 {{template "footer.tmpl"}}

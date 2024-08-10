@@ -3,12 +3,92 @@
 @tailwind utilities;
 
 @layer utilities {
-    .container {
-            @apply max-w-screen-xl mx-auto lg:px-32 md:px-20 sm:px-10;
-        }
+  .container {
+    @apply max-w-screen-xl mx-auto lg:px-32 md:px-20 sm:px-10;
+  }
 }
 
 .sso-bg {
-    background-image: url('https://sso.riiconnect24.net/media/public/flow-backgrounds/SSO-bg.png');
-    background-size: cover;
+  background-image: url("https://sso.riiconnect24.net/media/public/flow-backgrounds/SSO-bg.png");
+  background-size: cover;
+}
+
+h1 {
+  font-size: 38px;
+  font-weight: 800;
+}
+
+h2 {
+  font-size: 34px;
+  font-weight: 500;
+}
+
+.header-link {
+  @apply dark:text-white;
+  transition: 0.3s;
+  padding: 10px;
+  border-radius: 8px;
+  position: relative;
+  overflow: hidden;
+}
+
+@media (prefers-color-scheme: dark) {
+  .header-link:hover {
+    background-color: #ffffff10 !important;
+  }
+}
+
+.header-link:hover {
+  transform: scale(1.02) !important;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  background-color: #00000010;
+  text-decoration: none;
+  padding-left: 15px;
+  padding-right: 15px;
+  border-radius: 8px;
+  transition: 0.3s;
+  overflow: hidden;
+}
+
+.header-link-index {
+  padding: 20px;
+  padding-left: 30px;
+  padding-right: 30px;
+  border-radius: 0px 0px 4px 4px;
+  position: relative;
+  @apply bg-gradient-to-b from-gray-400/60 to-gray-400 border-gray-400 dark:from-slate-700/60 dark:to-slate-700 dark:border-slate-700;
+  transition: 0.2s;
+}
+
+.header-link-index:hover {
+  padding-bottom: 30px;
+  text-decoration: none !important;
+  transition: 0.2s;
+}
+
+li:nth-child(1) .header-link-index {
+  border-radius: 0px 0px 4px 16px;
+}
+
+li:nth-child(6) .header-link-index {
+  border-radius: 0px 0px 16px 4px;
+}
+
+.mobile-show {
+  display: none;
+}
+
+@media (max-width: 1250px) {
+  .mobile-hide {
+    display: none;
+  }
+
+  .mobile-hide-flex {
+    display: none;
+  }
+
+  .mobile-show {
+    display: block;
+  }
 }
