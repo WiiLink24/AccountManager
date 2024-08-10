@@ -30,7 +30,7 @@ func AuthenticationMiddleware() gin.HandlerFunc {
 			return
 		}
 
-		if username, ok := claims["preferred_username"].(string); ok {
+		if username, ok := claims["nickname"].(string); ok {
 			c.Set("username", username)
 		} else {
 			c.Redirect(http.StatusFound, "/login")
