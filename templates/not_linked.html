@@ -58,42 +58,12 @@
   const now = new Date();
   const hour = now.getHours();
 
-switch (hour) {
-  case 7:
-  case 8:
-  case 9:
-  case 10:
-  case 11:
+  if (hour > 5 && hour < 12) {
     greeting.innerText = "Good morning,";
-    break;
-  case 12:
-  case 13:
-  case 14:
-    greeting.innerText = "What's up,";
-    break;
-  case 15:
-  case 16:
-  case 17:
-  case 18:
-  case 19:
-  case 20:
+  } else if (hour >= 12 && hour < 18) {
     greeting.innerText = "Good afternoon,";
-    break;
-  case 21:
-  case 22:
-  case 23:
-  case 0:
-  case 1:
-  case 2:
-  case 3:
-  case 4:
-  case 5:
-  case 6:
-    greeting.innerText = "Good night,";
-    break;
-  default:
-    greeting.innerText = "What's up,";
-    break;
-}
+  } else {
+    greeting.innerText = "Good evening,";
+  }
 </script>
 {{template "footer.tmpl"}}
