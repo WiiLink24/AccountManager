@@ -23,6 +23,27 @@ h2 {
   font-weight: 500;
 }
 
+.radial-gradient-1 {
+  background: radial-gradient(circle, #4b518a60 20%, #12121200 50%);
+}
+
+.radial-gradient-2 {
+  background: radial-gradient(circle, #4b8a5260 20%, #12121200 50%);
+}
+
+.spin {
+  animation: spin 200s linear infinite;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
 .header-link {
   @apply dark:text-white;
   transition: 0.3s;

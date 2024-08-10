@@ -600,6 +600,10 @@ video {
   position: relative;
 }
 
+.bottom-0 {
+  bottom: 0px;
+}
+
 .left-0 {
   left: 0px;
 }
@@ -608,8 +612,16 @@ video {
   left: 50%;
 }
 
+.right-0 {
+  right: 0px;
+}
+
 .top-0 {
   top: 0px;
+}
+
+.z-0 {
+  z-index: 0;
 }
 
 .z-10 {
@@ -656,12 +668,20 @@ video {
   height: 60px !important;
 }
 
+.h-2\/3 {
+  height: 66.666667%;
+}
+
 .h-full {
   height: 100%;
 }
 
 .h-screen {
   height: 100vh;
+}
+
+.w-2\/3 {
+  width: 66.666667%;
 }
 
 .w-\[95\%\] {
@@ -674,6 +694,10 @@ video {
 
 .w-full {
   width: 100%;
+}
+
+.w-screen {
+  width: 100vw;
 }
 
 .max-w-lg {
@@ -734,6 +758,10 @@ video {
 
 .overflow-hidden {
   overflow: hidden;
+}
+
+.overflow-x-hidden {
+  overflow-x: hidden;
 }
 
 .rounded-2xl {
@@ -981,6 +1009,28 @@ h1 {
 h2 {
   font-size: 34px;
   font-weight: 500;
+}
+
+.radial-gradient-1 {
+  background: radial-gradient(circle, #4b518a60 20%, #12121200 50%);
+}
+
+.radial-gradient-2 {
+  background: radial-gradient(circle, #4b8a5260 20%, #12121200 50%);
+}
+
+.spin {
+  animation: spin 200s linear infinite;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
 }
 
 @media (prefers-color-scheme: dark) {
