@@ -13,9 +13,9 @@ const (
 )
 
 func HomePage(c *gin.Context) {
-	if email, ok := c.Get("email"); ok {
+	if username, ok := c.Get("username"); ok {
 		var exists bool
-		err := pool.QueryRow(ctx, IsUserLinked, email.(string)).Scan(&exists)
+		err := pool.QueryRow(ctx, IsUserLinked, username.(string)).Scan(&exists)
 
 		if err != nil {
 			c.HTML(http.StatusBadRequest, "error.html", gin.H{
@@ -28,7 +28,7 @@ func HomePage(c *gin.Context) {
 			c.HTML(http.StatusOK, "home.html", nil)
 		} else {
 			c.HTML(http.StatusOK, "not_linked.html", gin.H{
-				"email": email,
+				"username": username,
 			})
 		}
 

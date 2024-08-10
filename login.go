@@ -87,6 +87,14 @@ func FinishPanelHandler(c *gin.Context) {
 		},
 	}
 
+	err = userInfo.Claims(&claims)
+	if err != nil {
+		c.HTML(http.StatusInternalServerError, "login.html", gin.H{
+			"Error": "Failed to get claims",
+		})
+		return
+	}
+
 	token, err := jwt.NewWithClaims(jwt.SigningMethodHS256, claims).SignedString([]byte("help me"))
 	if err != nil {
 		c.HTML(http.StatusInternalServerError, "login.html", gin.H{

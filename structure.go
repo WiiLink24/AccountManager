@@ -8,7 +8,8 @@ import (
 )
 
 type JWTClaims struct {
-	Email string
+	Username string `json:"preferred_username"`
+	Email    string
 	jwt.RegisteredClaims
 }
 
