@@ -24,16 +24,41 @@ h2 {
 }
 
 .radial-gradient-1 {
-  background: radial-gradient(circle, #4b518a60 20%, #12121200 50%);
-}
-
-.radial-gradient-2 {
-  background: radial-gradient(circle, #4b8a5260 20%, #12121200 50%);
+  background: radial-gradient(circle, #404789 20%, #12121200 90%);
 }
 
 .spin {
   animation: spin 200s linear infinite;
 }
+
+.dissolve {
+  -webkit-mask-image: -webkit-radial-gradient(
+    ellipse at center,
+    rgba(0, 0, 0, 0.7),
+    rgba(0, 0, 0, 0)
+  );
+  mask-image: radial-gradient(
+    ellipse at center,
+    rgba(0, 0, 0, 0.7),
+    rgba(0, 0, 0, 0)
+  );
+}
+
+@media (prefers-color-scheme: dark) {
+  .dissolve {
+    -webkit-mask-image: -webkit-radial-gradient(
+      ellipse at center,
+      rgba(0, 0, 0, 0.8),
+      rgba(0, 0, 0, 0)
+    );
+    mask-image: radial-gradient(
+      ellipse at center,
+      rgba(0, 0, 0, 0.8),
+      rgba(0, 0, 0, 0)
+    );
+  }
+}
+
 
 @keyframes spin {
   0% {
@@ -41,6 +66,19 @@ h2 {
   }
   100% {
     transform: rotate(360deg);
+  }
+}
+
+.pulse {
+  animation: pulse 100s infinite;
+}
+
+@keyframes pulse {
+  0% {
+    filter:hue-rotate(0deg);
+  }
+  100% {
+    filter: hue-rotate(360deg);
   }
 }
 
