@@ -14,34 +14,36 @@ const (
 
 func HomePage(c *gin.Context) {
 	if username, ok := c.Get("username"); ok {
-		var exists bool
-		err := pool.QueryRow(ctx, IsUserLinked, username.(string)).Scan(&exists)
+		if email, ok := c.Get("email"); ok {
+			var exists bool
+			err := pool.QueryRow(ctx, IsUserLinked, email.(string)).Scan(&exists)
 
-		if err != nil {
-			c.HTML(http.StatusBadRequest, "error.html", gin.H{
-				"Error": err.Error(),
-			})
+			if err != nil {
+				c.HTML(http.StatusBadRequest, "error.html", gin.H{
+					"Error": err.Error(),
+				})
+				return
+			}
+
+			if exists {
+				c.HTML(http.StatusOK, "home.html", nil)
+			} else {
+				log.Printf("User with username %s is not linked", username)
+				if pfp, ok := c.Get("picture"); ok {
+					c.HTML(http.StatusOK, "not_linked.html", gin.H{
+						"username": username,
+						"pfp":      pfp,
+					})
+				} else {
+					c.HTML(http.StatusOK, "not_linked.html", gin.H{
+						"username": username,
+						"pfp":      "", // or handle the missing picture case
+					})
+				}
+			}
+
 			return
 		}
-
-		if exists {
-			c.HTML(http.StatusOK, "home.html", nil)
-		} else {
-			log.Printf("User with username %s is not linked", username)
-			if pfp, ok := c.Get("picture"); ok {
-				c.HTML(http.StatusOK, "not_linked.html", gin.H{
-					"username": username,
-					"pfp":      pfp,
-				})
-			} else {
-				c.HTML(http.StatusOK, "not_linked.html", gin.H{
-					"username": username,
-					"pfp":      "", // or handle the missing picture case
-				})
-			}
-		}
-
-		return
 	}
 
 	c.HTML(http.StatusBadRequest, "error.html", gin.H{

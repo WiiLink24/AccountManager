@@ -26,8 +26,8 @@ func link(c *gin.Context) {
 	}
 
 	if !valid {
-		c.HTML(http.StatusOK, "link.html", gin.H{
-			"message": "Invalid Wii console. Please ensure you are registered with WiiLink Wii Mail.",
+		c.HTML(http.StatusOK, "error.html", gin.H{
+			"Error": "Invalid Wii console. Please ensure you are registered with WiiLink Wii Mail.",
 		})
 		return
 	}
@@ -58,7 +58,7 @@ func link(c *gin.Context) {
 		return
 	}
 
-	c.HTML(http.StatusOK, "link.html", gin.H{
+	c.HTML(http.StatusOK, "linked.html", gin.H{
 		"message": "Successfully linked your Wii to your account!",
 	})
 }

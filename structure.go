@@ -9,7 +9,7 @@ import (
 
 type JWTClaims struct {
 	Username string `json:"nickname"`
-	PFP	  string `json:"picture"`
+	PFP      string `json:"picture"`
 	Email    string
 	jwt.RegisteredClaims
 }
@@ -23,17 +23,24 @@ type OIDCConfig struct {
 	Provider     string   `xml:"provider"`
 }
 
+type DiscordOAuthConfig struct {
+	ClientID     string `xml:"clientID"`
+	ClientSecret string `xml:"clientSecret"`
+	RedirectURL  string `xml:"redirectURL"`
+}
+
 type Config struct {
-	Username               string     `xml:"username"`
-	Password               string     `xml:"password"`
-	WiiMailUsername        string     `xml:"wiiMailUsername"`
-	WiiMailPassword        string     `xml:"wiiMailPassword"`
-	DatabaseAddress        string     `xml:"databaseAddress"`
-	DatabaseName           string     `xml:"databaseName"`
-	WiiMailDatabaseAddress string     `xml:"wiiMailDatabaseAddress"`
-	WiiMailDatabaseName    string     `xml:"wiiMailDatabaseName"`
-	Address                string     `xml:"address"`
-	OIDCConfig             OIDCConfig `xml:"oidc"`
+	Username               string             `xml:"username"`
+	Password               string             `xml:"password"`
+	WiiMailUsername        string             `xml:"wiiMailUsername"`
+	WiiMailPassword        string             `xml:"wiiMailPassword"`
+	DatabaseAddress        string             `xml:"databaseAddress"`
+	DatabaseName           string             `xml:"databaseName"`
+	WiiMailDatabaseAddress string             `xml:"wiiMailDatabaseAddress"`
+	WiiMailDatabaseName    string             `xml:"wiiMailDatabaseName"`
+	Address                string             `xml:"address"`
+	OIDCConfig             OIDCConfig         `xml:"oidc"`
+	DiscordOAuthConfig     DiscordOAuthConfig `xml:"discord"`
 }
 
 type AppAuthConfig struct {

@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"log"
+	"net/http"
 
 	"github.com/WiiLink24/AccountManager/middleware"
 	"github.com/coreos/go-oidc/v3/oidc"
@@ -17,6 +18,7 @@ var (
 	pool        *pgxpool.Pool
 	wiiMailPool *pgxpool.Pool
 	authConfig  *AppAuthConfig
+	config      Config
 )
 
 func checkError(err error) {
@@ -26,7 +28,7 @@ func checkError(err error) {
 }
 
 func main() {
-	config := GetConfig()
+	config = GetConfig()
 
 	provider, err := oidc.NewProvider(ctx, config.OIDCConfig.Provider)
 	if err != nil {
@@ -68,6 +70,9 @@ func main() {
 	r.LoadHTMLGlob("templates/*")
 
 	// Define routes and their handlers
+	r.GET("/", func(c *gin.Context) {
+		c.Redirect(http.StatusPermanentRedirect, "/login")
+	})
 	r.GET("/login", LoginPage)
 	r.GET("/start", StartPanelHandler)
 	r.GET("/authorize", FinishPanelHandler)
