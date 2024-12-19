@@ -1,6 +1,8 @@
 package middleware
 
 import (
+	"crypto/sha256"
+	"fmt"
 	"github.com/gin-gonic/gin"
 	"net/http"
 )
@@ -24,19 +26,14 @@ func AuthenticationMiddleware() gin.HandlerFunc {
 
 		if email, ok := claims["Email"].(string); ok {
 			c.Set("email", email)
+			c.Set("picture", fmt.Sprintf("%x", sha256.Sum256([]byte(email))))
 		} else {
 			c.Redirect(http.StatusFound, "/login")
 			c.Abort()
 			return
 		}
-
 		if username, ok := claims["nickname"].(string); ok {
 			c.Set("username", username)
-			if pfp, ok := claims["picture"].(string); ok {
-				c.Set("picture", pfp)
-			} else {
-				c.Set("picture", "")
-			}
 		} else {
 			c.Redirect(http.StatusFound, "/login")
 			c.Abort()
