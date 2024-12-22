@@ -1,5 +1,6 @@
 {{template "base.tmpl"}}
-<div id="particles-js" class="spin top-0 left-0 w-full h-full -translate-x-[0rem] opacity-30 invert dark:invert-0 z-0 absolute"></div>
+<div id="particles-js"
+  class="spin top-0 left-0 w-full h-full -translate-x-[0rem] opacity-30 invert dark:invert-0 z-0 absolute"></div>
 <div class="left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-screen h-screen z-1 absolute">
   <div class="w-full h-full radial-gradient-1 opacity-20 pulse"></div>
 </div>
@@ -11,10 +12,13 @@
   <div class="pl-3 pr-3 sm:flex md:flex-row flex-col items-center gap-5">
     <div>
       <h1 id="greeting">What's up,</h1>
-      <h2 class="flex flex-row items-center gap-3 text-2xl sm_text-4xl">
-        <img src="https://gravatar.com/avatar/{{.pfp}}" height="40px" width="40px"
+      <h2 class="flex flex-row items-center gap-3 text-2xl sm:text-4xl">
+        <img src="https://gravatar.com/avatar/{{.pfp}}" height="50px" width="50px"
           class="bg-gray-300 dark:bg-slate-900/60 rounded-md" />
-        {{.username}}
+        <div class="flex flex-col items-start">
+          {{.username}}
+          <div class="text-lg opacity-30">{{.email}}</div>
+        </div>
       </h2>
       <br />
       <p>
@@ -32,8 +36,9 @@
       <span class="flex flex-col sm:flex-row items-start gap-3">
         <a href=""
           class="w-full sm:w-[280px] px-6 py-3 rounded-md bg-black/10 dark:bg-white/10 hover:scale-105 active:scale-95 backdrop-blur-md flex flex-row items-center gap-3 transition-all"
-          style="text-decoration: none !important;"><span class="material-icons text-black dark:text-white">sync</span> <span class="text-black dark:text-white">Reload the
-          page</span></a>
+          style="text-decoration: none !important;"><span class="material-icons text-black dark:text-white">sync</span>
+          <span class="text-black dark:text-white">Reload the
+            page</span></a>
         <span class="opacity-30">Refresh the site after linking your console ID to access all features.</span>
       </span>
       <br>
@@ -42,14 +47,16 @@
 
     <div>
       <div class="w-full sm:w-auto items-center justify-center hidden md:flex">
-        <div class="sm:w-80 sm:m-8 p-6 rounded-2xl bg-black/20 dark:bg-white/20 shadow-lg shadow-white/5 backdrop-blur-md relative">
+        <div
+          class="sm:w-80 sm:m-8 p-6 rounded-2xl bg-black/20 dark:bg-white/20 shadow-lg shadow-white/5 backdrop-blur-md relative">
           <div id="qrcode" class="p-4 bg-white rounded-lg overflow-hidden"></div>
         </div>
       </div>
 
       <p class="opacity-30 text-center mt-6 sm:mt-0">
         <span class="text-black dark:text-white">Already on PC?</span>
-        <a id="download" class="underline"><span class="text-black dark:text-white">Download the tool here</span></a><span class="text-black dark:text-white">.</span>
+        <a id="download" class="underline"><span class="text-black dark:text-white">Download the tool
+            here</span></a><span class="text-black dark:text-white">.</span>
       </p>
     </div>
   </div>
@@ -85,7 +92,7 @@
     greeting.innerText = "Good evening,";
   }
 
-  document.addEventListener('DOMContentLoaded', function() {
+  document.addEventListener('DOMContentLoaded', function () {
     console.log('Loaded');
     const pfp = document.getElementById('pfp').innerHTML;
     document.getElementById('headerpfp').innerHTML = `<img src="https://gravatar.com/avatar/${pfp}" height="40px" width="40px" class="bg-gray-300 dark:bg-slate-900/60 rounded-md" />`

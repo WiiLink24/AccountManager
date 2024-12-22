@@ -8,6 +8,16 @@
   }
 }
 
+@font-face {
+  font-family: "Gilroy";
+  src: url('/assets/fonts/gilroy.otf');
+}
+
+@font-face {
+  font-family: "Rodin";
+  src: url('/assets/fonts/rodin.ttf');
+}
+
 .sso-bg {
   background-image: url("https://sso.riiconnect24.net/media/public/flow-backgrounds/SSO-bg.png");
   background-size: cover;

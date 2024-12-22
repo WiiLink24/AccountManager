@@ -24,9 +24,12 @@
 <body class="w-screen dark:text-white dark:bg-slate-950 overflow-x-hidden">
 <header :class="{'backdrop-blur-md shadow-md bg-gray-400/50 dark:bg-slate-600/50 transition-all': isScrolled}" class="w-full flex items-center justify-between dark:text-white md:px-8 lg:px-8 px-3 py-7 z-[4000] fixed">
         <img src="/assets/img/account-logo.png" alt="WiiLink Account Logo" class="dark:invert-0 invert !h-[50px]">
-        <span id="editbtn" class="flex flex-row items-center gap-3">
-        <span id="edit" class="text-md px-3 py-1 rounded-full bg-white/10 backdrop-blur-sm hidden sm:block">Edit your profile with Gravatar</span>
-        <span id="headerpfp" class="cursor-pointer hover:scale-105 active:scale-95 transition-all" onclick="window.location.href='https://gravatar.com/profile'"></span>
+        <span id="editbtn" class="flex flex-row items-start gap-3">
+        <span id="edit" class="w-[350px] right-20 text-md p-3 rounded-xl bg-white/10 backdrop-blur-sm hidden sm:flex flex-col gap-1 absolute">
+        <a href="https://gravatar.com/profile" class="w-full px-4 py-2 bg-slate-800/60 hover:bg-slate-900/60 rounded-t-lg rounded-b-md flex flex-row items-center gap-3 transition-all" style="text-decoration:none !important;"><span class="material-icons">account_circle</span> Edit your profile with Gravatar</a>
+        <a href="https://sso.riiconnect24.net/flows/-/default/invalidation/" class="w-full px-4 py-2 rounded-full bg-red-500 hover:bg-red-600 w-full px-4 py-2 rounded-t-md rounded-b-lg flex flex-row items-center gap-3 transition-all" style="text-decoration:none !important;"><span class="material-icons">logout</span> Logout</a>
+        </span>
+        <span id="headerpfp" class="cursor-pointer hover:scale-105 active:scale-95 transition-all"></span>
         </span>
         <!--
         <nav class="flex gap-10 items-center">
