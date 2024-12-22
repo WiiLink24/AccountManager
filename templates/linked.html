@@ -1,5 +1,8 @@
 {{template "base.tmpl"}}
-<div class="pt-20 flex flex-row items-center justify-between gap-18">
+<img src="/assets/img/pattern.png"
+  class="left-0 top-0 w-screen dissolve -translate-y-80 brightness-[1000%] opacity-40 z-0 absolute"
+  alt="WiiLink Pattern Background" />
+<div class="pt-28 flex flex-row items-center justify-between gap-18 z-10 relative">
   <div>
     <h1 id="greeting">What's up,</h1>
     <h2 class="flex flex-row items-center gap-3">
@@ -9,12 +12,16 @@
     </h2>
   </div>
 </div>
-<div class="mt-4 mb-8 bg-gradient-to-tr from-green-600 to-slate-500 px-8 py-6 rounded-lg">
+<div class="mt-4 mb-8 bg-gradient-to-tr from-green-600 to-slate-500 px-8 py-6 rounded-lg z-10 relative">
   <h2 class="text-3xl flex flex-row items-center gap-3"><span class="material-icons scale-125">verified</span>Account linked successfully!</h2>
   <p>The linking process was successful! You can now use all WiiLink Services to their fullest extent!</p>
+  <br>
+  <span class="flex flex-row items-center gap-3">
+  <span class="px-3 py-1 rounded-xl text-green-800 hover:text-white bg-green-800 transition-all">{{.wiinumber}}</span> <span class="opacity-60 flex flex-row items-center gap-1"><span class="material-icons">info</span> Hover to reveal your Wii Number</span>
+</span>
 </div>
-
-<div class="w-full p-5 rounded-lg border-2 border-white/30">
+<div class="flex flex-col gap-3 sm:flex-row">
+<div class="w-full p-5 rounded-lg border-2 border-white/30 z-10 flex flex-col justify-between relative">
   <img src="/assets/img/Domino's_logo.png" width="200px" class="rounded-t-lg" />
   <br>
   <h3 class="text-2xl font-bold">Enable Domino's Ordering</h3>
@@ -30,10 +37,61 @@
     <b class="flex flex-row items-center justify-center gap-3"><span class="material-icons">local_pizza</span>Enable Domino's Ordering</b>
   </div>
 </div>
-
-<div class="mt-6 w-full p-5 rounded-lg border-2 border-dashed border-white/10 text-white/60 flex flex-row items-center justify-center">
-  <p class="flex flex-row items-center gap-3 text-white/60"><span class="material-icons">star</span>More coming soon...</p>
+<div class="w-full p-5 rounded-lg border-2 border-white/30 z-10 flex flex-col justify-between relative">
+  <img src="https://sso.riiconnect24.net/media/public/application-icons/image_znJeDXh.png" width="100px" class="rounded-t-lg" />
+  <br>
+  <h3 class="text-2xl font-bold">WiiLink Forum</h3>
+  <p>With your WiiLink Account you can access the WiiLink Forum! A place where you can chat with, and receive help from, WiiLink Team Members and other users!</p>
+  <br>
+  <br>
+  <hr>
+  <br>
+  <div class="bg-blue-500 text-center px-6 py-3 rounded-lg hover:scale-[101%] active:scale-[99%] cursor-pointer transition-all">
+    <b class="flex flex-row items-center justify-center gap-3"><span class="material-icons">chat</span>Visit the WiiLink Forum</b>
+  </div>
 </div>
+</div>
+
+<div class="mt-6 w-full p-5 rounded-lg border-2 border-dashed border-white/10 flex flex-row items-center justify-center z-10 relative">
+  <p class="flex flex-row items-center gap-3 opacity-10"><span class="material-icons">star</span>More coming soon...</p>
+</div>
+
+<!-- Radial gradient background with parallax effect -->
+<div id="parallax-bg" class="fixed inset-0 bg-gradient-to-b from-blue-900 to-transparent h-1/2 opacity-60 bottom-0 z-0 hue-rotate"></div>
+<p id="pfp" class="hidden">{{.pfp}}</p>
+
+<script>
+  window.addEventListener('scroll', function() {
+    const parallaxBg = document.getElementById('parallax-bg');
+    const scrollPosition = window.scrollY;
+    parallaxBg.style.transform = 'translateY(-' + scrollPosition * 0.5 + 'px)';
+    if (scrollPosition > 100) {
+      parallaxBg.style.animationPlayState = 'paused';
+    } else {
+      parallaxBg.style.animationPlayState = 'running';
+    }
+  });
+
+  document.addEventListener('DOMContentLoaded', function() {
+    console.log('Loaded');
+    const pfp = document.getElementById('pfp').innerHTML;
+    document.getElementById('headerpfp').innerHTML = `<img src="https://gravatar.com/avatar/${pfp}" height="40px" width="40px" class="bg-gray-300 dark:bg-slate-900/60 rounded-md" />`
+  });
+</script>
+
 <p class="mt-3 mb-20 opacity-10">WiiLink Accounts is still in development, more features will be added soon!</p>
 
+<style>
+  .hue-rotate {
+    animation: hue-rotate 30s infinite;
+  }
+  @keyframes hue-rotate {
+    0% {
+      filter: hue-rotate(0deg);
+    }
+    100% {
+      filter: hue-rotate(360deg);
+    }
+  }
+</style>
 {{template "footer.tmpl"}}

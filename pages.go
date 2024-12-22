@@ -2,7 +2,6 @@ package main
 
 import (
 	"log"
-
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -10,6 +9,7 @@ import (
 
 const (
 	IsUserLinked = `SELECT EXISTS(SELECT 1 FROM users WHERE email = $1)`
+	GetWiiNumberUser = `SELECT wii_number FROM users WHERE email = $1`
 )
 
 func HomePage(c *gin.Context) {
@@ -27,17 +27,28 @@ func HomePage(c *gin.Context) {
 
 			if exists {
 				log.Printf("User with username %s is linked!!!", username)
+				var wiiNumber string
+				err := pool.QueryRow(ctx, GetWiiNumberUser, email.(string)).Scan(&wiiNumber)
+				if err != nil {
+					c.HTML(http.StatusBadRequest, "error.html", gin.H{
+						"Error": err.Error(),
+					})
+					return
+				}
+
 				if pfp, ok := c.Get("picture"); ok {
 					c.HTML(http.StatusOK, "linked.html", gin.H{
-						"username": username,
-						"email":    email,
-						"pfp":      pfp,
+						"username":  username,
+						"email":     email,
+						"pfp":       pfp,
+						"wiinumber": wiiNumber,
 					})
 				} else {
 					c.HTML(http.StatusOK, "linked.html", gin.H{
-						"username": username,
-						"email":    email,
-						"pfp":      "", // or handle the missing picture case
+						"username":  username,
+						"email":     email,
+						"pfp":       "", // or handle the missing picture case
+						"wiinumber": wiiNumber,
 					})
 				}
 			} else {
