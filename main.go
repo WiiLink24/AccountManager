@@ -90,6 +90,8 @@ func main() {
 		auth.GET("/manage", HomePage)
 		auth.GET("/notlinked", NotLinkedPage)
 		auth.GET("/link", link)
+		// Weird artifact from the QR code generator on the Wii.
+		auth.GET("/LINK", link)
 		auth.GET("/dominos/link", linkDominos)
 		auth.GET("/dominos/unlink", unlinkDominos)
 	}
