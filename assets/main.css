@@ -23,6 +23,11 @@
   src: url('/assets/fonts/rubik.ttf');
 }
 
+@font-face {
+  font-family: "FontAwesome";
+  src: url('/assets/fonts/fontawesome.ttf');
+}
+
 .sso-bg {
   background-image: url("https://sso.riiconnect24.net/media/public/flow-backgrounds/SSO-bg.png");
   background-size: cover;
