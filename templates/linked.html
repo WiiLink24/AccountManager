@@ -5,63 +5,99 @@
 <div class="pt-28 flex flex-row items-center justify-between gap-18 z-10 relative">
   <div>
     <h1 id="greeting">What's up,</h1>
-    <h2 class="flex flex-row items-center gap-3">
+    <h2 class="flex flex-row items-center gap-3 text-2xl sm:text-4xl">
       <img src="https://gravatar.com/avatar/{{.pfp}}" height="40px" width="40px"
         class="bg-gray-300 dark:bg-slate-900/60 rounded-md" />
       {{.username}}
     </h2>
   </div>
 </div>
-<div class="mt-4 mb-8 bg-gradient-to-tr from-green-600 to-slate-500 px-8 py-6 rounded-lg z-10 relative">
-  <h2 class="text-3xl flex flex-row items-center gap-3"><span class="material-icons scale-125">verified</span>Account linked successfully!</h2>
+<div class="mt-8 mb-8 bg-gradient-to-tr from-green-600 to-slate-500 px-8 py-6 rounded-lg z-10 relative">
+  <h2 class="text-3xl flex flex-row items-center gap-3"><span class="material-icons scale-125">verified</span>Account
+    linked successfully!</h2>
   <p>The linking process was successful! You can now use all WiiLink Services to their fullest extent!</p>
   <br>
-  <span class="flex flex-row items-center gap-3">
-  <span class="px-3 py-1 rounded-xl text-green-800 hover:text-white bg-green-800 transition-all">{{.wiinumber}}</span> <span class="opacity-60 flex flex-row items-center gap-1"><span class="material-icons">info</span> Hover to reveal your Wii Number</span>
-</span>
+  <span class="flex flex-col sm:flex-row items-start sm:items-center gap-3">
+    <span class="px-3 py-1 rounded-xl text-green-800 hover:text-white bg-green-800 transition-all">{{.wiinumber}}</span>
+    <span class="opacity-60 flex flex-row items-center gap-1"><span class="material-icons">info</span> Hover to reveal
+      your Wii Number</span>
+  </span>
 </div>
 <div class="flex flex-col gap-3 sm:flex-row">
-<div class="w-full p-5 rounded-lg border-2 border-white/30 z-10 flex flex-col justify-between relative">
-  <img src="/assets/img/Domino's_logo.png" width="200px" class="rounded-t-lg" />
-  <br>
-  <h3 class="text-2xl font-bold">Enable Domino's Ordering</h3>
-  <p>Do you want to enable food ordering with Domino's on the Food Channel?</p>
-  <br>
-  <div class="border-2 border-red-500 px-6 py-3 rounded-lg">
-    <b>Please note:</b> This feature is only available in the United States and Canada, and costs REAL money to use.
+  <div
+    class="flex-grow w-full p-5 rounded-lg border-2 border-white/30 bg-white/10 hover:-translate-y-1 z-10 flex flex-col justify-between relative transition-all">
+    <span class="flex flex-row items-center justify-between gap-6">
+      <img src="/assets/img/Domino's_logo.png" width="200px" class="rounded-t-lg" />
+      {{if .linked_dominos}}
+      <p class="px-3 py-1 rounded-full bg-green-500 text-white flex flex-row items-center gap-3"><span
+          class="material-icons">
+          toggle_on
+        </span> Enabled</p>
+      {{else}}
+      <p class="px-3 py-1 rounded-full bg-red-500/60 text-white flex flex-row items-center gap-3"><span
+          class="material-icons">
+          toggle_off
+        </span> Not Enabled</p>
+      {{end}}
+    </span>
+    <br>
+    <h3 class="text-2xl font-bold">Domino's Pizza Real Ordering</h3>
+    <p>Order real food on your Wii, and get it delivered right to your door! Get live tracking updates and the status of
+      your delivery right in-console!</p>
+    <br>
+    <div class="border-2 border-red-500/60 px-6 py-3 rounded-lg">
+      <b>Please note:</b> This feature is only available in the United States and Canada, and costs REAL money to use.
+    </div>
+    <br>
+    <hr>
+    <br>
+    {{if .linked_dominos}}
+    <a href="/dominos/unlink"
+      class="bg-red-500 text-center px-6 py-3 rounded-lg hover:scale-[101%] active:scale-[99%] cursor-pointer transition-all"
+      style="text-decoration: none !important;">
+      <b class="flex flex-row items-center justify-center gap-3"><span class="material-icons">local_pizza</span>Disable
+        Domino's Ordering</b>
+    </a>
+    {{else}}
+    <a href="/dominos/link"
+      class="bg-green-500 text-center px-6 py-3 rounded-lg hover:scale-[101%] active:scale-[99%] cursor-pointer transition-all"
+      style="text-decoration: none !important;">
+      <b class="flex flex-row items-center justify-center gap-3"><span class="material-icons">local_pizza</span>Enable
+        Domino's Ordering</b>
+    </a>
+    {{end}}
   </div>
-  <br>
-  <hr>
-  <br>
-  <div class="bg-green-500 text-center px-6 py-3 rounded-lg hover:scale-[101%] active:scale-[99%] cursor-pointer transition-all">
-    <b class="flex flex-row items-center justify-center gap-3"><span class="material-icons">local_pizza</span>Enable Domino's Ordering</b>
+  <div
+    class="w-full p-5 rounded-lg border-2 border-green-300/30 bg-green-500/30 hover:-translate-y-1 z-10 flex flex-col justify-between relativ transition-all">
+    <img src="https://sso.riiconnect24.net/media/public/application-icons/image_znJeDXh.png" width="100px"
+      class="rounded-t-lg" />
+    <br>
+    <h3 class="text-2xl font-bold">WiiLink Forum</h3>
+    <p>With your WiiLink Account you can access the WiiLink Forum! A place where you can chat with, and receive help
+      from, WiiLink Team Members and other users!</p>
+    <br>
+    <br>
+    <hr>
+    <br>
+    <div
+      class="bg-green-500 text-center px-6 py-3 rounded-lg hover:scale-[101%] active:scale-[99%] cursor-pointer transition-all">
+      <b class="flex flex-row items-center justify-center gap-3"><span class="material-icons">chat</span>Visit the
+        WiiLink Forum</b>
+    </div>
   </div>
-</div>
-<div class="w-full p-5 rounded-lg border-2 border-white/30 z-10 flex flex-col justify-between relative">
-  <img src="https://sso.riiconnect24.net/media/public/application-icons/image_znJeDXh.png" width="100px" class="rounded-t-lg" />
-  <br>
-  <h3 class="text-2xl font-bold">WiiLink Forum</h3>
-  <p>With your WiiLink Account you can access the WiiLink Forum! A place where you can chat with, and receive help from, WiiLink Team Members and other users!</p>
-  <br>
-  <br>
-  <hr>
-  <br>
-  <div class="bg-blue-500 text-center px-6 py-3 rounded-lg hover:scale-[101%] active:scale-[99%] cursor-pointer transition-all">
-    <b class="flex flex-row items-center justify-center gap-3"><span class="material-icons">chat</span>Visit the WiiLink Forum</b>
-  </div>
-</div>
 </div>
 
-<div class="mt-6 w-full p-5 rounded-lg border-2 border-dashed border-white/10 flex flex-row items-center justify-center z-10 relative">
-  <p class="flex flex-row items-center gap-3 opacity-10"><span class="material-icons">star</span>More coming soon...</p>
+<div
+  class="mt-16 w-full p-5 rounded-lg border-2 border-dashed border-white/30 flex flex-row items-center justify-center z-10 relative">
+  <p class="flex flex-row items-center gap-3 opacity-30"><span class="material-icons">star</span>More coming soon...</p>
 </div>
 
-<!-- Radial gradient background with parallax effect -->
-<div id="parallax-bg" class="fixed inset-0 bg-gradient-to-b from-blue-900 to-transparent h-1/2 opacity-60 bottom-0 z-0 hue-rotate"></div>
+<div id="parallax-bg"
+  class="fixed inset-0 bg-gradient-to-b from-blue-900 to-transparent h-1/2 opacity-60 bottom-0 z-0 hue-rotate"></div>
 <p id="pfp" class="hidden">{{.pfp}}</p>
 
 <script>
-  window.addEventListener('scroll', function() {
+  window.addEventListener('scroll', function () {
     const parallaxBg = document.getElementById('parallax-bg');
     const scrollPosition = window.scrollY;
     parallaxBg.style.transform = 'translateY(-' + scrollPosition * 0.5 + 'px)';
@@ -72,23 +108,25 @@
     }
   });
 
-  document.addEventListener('DOMContentLoaded', function() {
+  document.addEventListener('DOMContentLoaded', function () {
     console.log('Loaded');
     const pfp = document.getElementById('pfp').innerHTML;
     document.getElementById('headerpfp').innerHTML = `<img src="https://gravatar.com/avatar/${pfp}" height="40px" width="40px" class="bg-gray-300 dark:bg-slate-900/60 rounded-md" />`
   });
 </script>
 
-<p class="mt-3 mb-20 opacity-10">WiiLink Accounts is still in development, more features will be added soon!</p>
+<p class="mt-3 mb-20 opacity-30">WiiLink Accounts is still in development, more features will be added soon!<br><br><span class="material-icons mr-2 translate-y-1">info</span>Once WiiLink Accounts is finished, you will be able to view all data associated to your Account (CMOC contests, EVC Polls, Subscription Status, Wii Room Votes, and more) from here!</p>
 
 <style>
   .hue-rotate {
     animation: hue-rotate 30s infinite;
   }
+
   @keyframes hue-rotate {
     0% {
       filter: hue-rotate(0deg);
     }
+
     100% {
       filter: hue-rotate(360deg);
     }

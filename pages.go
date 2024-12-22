@@ -10,6 +10,7 @@ import (
 const (
 	IsUserLinked = `SELECT EXISTS(SELECT 1 FROM users WHERE email = $1)`
 	GetWiiNumberUser = `SELECT wii_number FROM users WHERE email = $1`
+	GetLinkedDominos = `SELECT linked_dominos FROM users WHERE email = $1`
 )
 
 func HomePage(c *gin.Context) {
@@ -28,7 +29,15 @@ func HomePage(c *gin.Context) {
 			if exists {
 				log.Printf("User with username %s is linked!!!", username)
 				var wiiNumber string
+				var linked_dominos bool
 				err := pool.QueryRow(ctx, GetWiiNumberUser, email.(string)).Scan(&wiiNumber)
+				if err != nil {
+					c.HTML(http.StatusBadRequest, "error.html", gin.H{
+						"Error": err.Error(),
+					})
+					return
+				}
+				err = pool.QueryRow(ctx, GetLinkedDominos, email.(string)).Scan(&linked_dominos)
 				if err != nil {
 					c.HTML(http.StatusBadRequest, "error.html", gin.H{
 						"Error": err.Error(),
@@ -42,6 +51,7 @@ func HomePage(c *gin.Context) {
 						"email":     email,
 						"pfp":       pfp,
 						"wiinumber": wiiNumber,
+						"linked_dominos": linked_dominos,
 					})
 				} else {
 					c.HTML(http.StatusOK, "linked.html", gin.H{
@@ -49,6 +59,7 @@ func HomePage(c *gin.Context) {
 						"email":     email,
 						"pfp":       "", // or handle the missing picture case
 						"wiinumber": wiiNumber,
+						"linked_dominos": linked_dominos,
 					})
 				}
 			} else {

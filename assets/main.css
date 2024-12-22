@@ -4,13 +4,13 @@
 
 @layer utilities {
   .container {
-    @apply max-w-screen-xl mx-auto lg:px-32 md:px-20 sm:px-10;
+    @apply max-w-screen-xl mx-auto px-2 lg:px-32 md:px-20 sm:px-10;
   }
 }
 
 .sso-bg {
   background-image: url("https://sso.riiconnect24.net/media/public/flow-backgrounds/SSO-bg.png");
-  background-size: cover;
+  background-size: contain;
 }
 
 h1 {
