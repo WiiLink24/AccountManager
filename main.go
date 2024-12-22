@@ -17,6 +17,7 @@ var (
 	ctx         = context.Background()
 	pool        *pgxpool.Pool
 	wiiMailPool *pgxpool.Pool
+	dominosPool *pgxpool.Pool
 	authConfig  *AppAuthConfig
 	config      Config
 )
@@ -56,8 +57,14 @@ func main() {
 	wiiMailPool, err = pgxpool.New(ctx, dbString)
 	checkError(err)
 
+	// Connect Dominos database
+	dbString = fmt.Sprintf("postgres://%s:%s@%s/%s", config.DominosDatabaseUsername, config.DominosDatabasePassword, config.DominosDatabaseAddress, config.DominosDatabaseName)
+	dominosPool, err = pgxpool.New(ctx, dbString)
+	checkError(err)
+
 	defer pool.Close()
 	defer wiiMailPool.Close()
+	defer dominosPool.Close()
 
 	r := gin.Default()
 
@@ -83,6 +90,8 @@ func main() {
 		auth.GET("/manage", HomePage)
 		auth.GET("/notlinked", NotLinkedPage)
 		auth.GET("/link", link)
+		auth.GET("/dominos/link", linkDominos)
+		auth.GET("/dominos/unlink", unlinkDominos)
 	}
 
 	// Start the server

@@ -16,6 +16,12 @@
     <wiiMailDatabaseAddress>127.0.0.1</wiiMailDatabaseAddress>
     <wiiMailDatabaseName>wiilink_accounts</wiiMailDatabaseName>
 
+    <dominosDatabaseAddress>127.0.0.1:5432</dominosDatabaseAddress>
+    <dominosDatabaseName>demae</dominosDatabaseName>
+
+    <dominosDatabaseUsername>dominos</dominosDatabaseUsername>
+    <dominosDatabasePassword>thedom</dominosDatabasePassword>
+
     <!-- OIDC credentials/data -->
     <oidc>
         <clientID></clientID>

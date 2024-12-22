@@ -11,6 +11,7 @@ require (
 )
 
 require (
+	github.com/WiiLink24/nwc24 v0.0.0-20240814085438-31848a3afc3e // indirect
 	github.com/bytedance/sonic v1.12.0 // indirect
 	github.com/bytedance/sonic/loader v0.2.0 // indirect
 	github.com/cloudwego/base64x v0.1.4 // indirect

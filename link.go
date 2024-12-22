@@ -9,7 +9,7 @@ import (
 const (
 	IsValidHash  = `SELECT EXISTS(SELECT 1 FROM accounts WHERE password = $1)`
 	GetWiiNumber = `SELECT mlid FROM accounts WHERE password = $1`
-	LinkAccount  = `INSERT INTO users (email, wii_number) VALUES ($1, $2)`
+	LinkAccount  = `INSERT INTO users (email, wii_number, dominos_linked) VALUES ($1, $2, false)`
 )
 
 func link(c *gin.Context) {
