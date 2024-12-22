@@ -1,45 +1,29 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Login - CMOC Control Panel</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&family=Rubik:ital,wght@0,300..900;1,300..900&display=swap"
-      rel="stylesheet"
-    />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login | WiiLink Account</title>
+    <meta name="description" content="Manage your WiiLink account and access all WiiLink services.">
+    <meta name="keywords" content="WiiLink, Wii, account, services, manage">
+    <meta property="og:title" content="WiiLink Account">
+    <meta property="og:description" content="Manage your WiiLink account and access all WiiLink services.">
+    <meta property="og:image" content="/assets/img/og-image.png">
+    <meta property="og:url" content="https://account.wiilink24.com">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="WiiLink Account">
+    <meta name="twitter:description" content="Manage your WiiLink account and access all WiiLink services.">
+    <meta name="twitter:image" content="/assets/img/og-image.png">
+    <link rel="icon" href="/assets/img/favicon.png" type="image/x-icon">
     <link href="/assets/output.css" rel="stylesheet" />
-    <link
-      rel="apple-touch-icon"
-      sizes="180x180"
-      href="https://www.wiilink24.com/img/apple-touch-icon.png"
-    />
-    <link
-      rel="icon"
-      type="image/png"
-      sizes="32x32"
-      href="https://www.wiilink24.com/img/favicon-32x32.png"
-    />
-    <link
-      rel="icon"
-      type="image/png"
-      sizes="16x16"
-      href="https://www.wiilink24.com/img/favicon-16x16.png"
-    />
-    <link rel="manifest" href="https://www.wiilink24.com/img/site.webmanifest" />
-    <link rel="mask-icon" href="https://www.wiilink24.com/img/safari-pinned-tab.svg" color="#5bbad5" />
-    <link rel="shortcut icon" href="https://www.wiilink24.com/img/favicon.ico" />
-    <meta name="msapplication-TileColor" content="#ffffff" />
-    <meta name="msapplication-config" content="https://www.wiilink24.com/img/browserconfig.xml" />
-    <meta name="theme-color" content="#ffffff" />
-    <script
-      src="https://kit.fontawesome.com/e47ece3e74.js"
-      crossorigin="anonymous"
-    ></script>
-  </head>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Icons" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/b0ac94d361.js" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js" integrity="sha512-CNgIRecGo7nphbeZ04Sc13ka07paqdeTu0WR1IM4kNcpmBAUSHSQX0FslNhTDadL4O5SAGapGt4FodqL8My0mA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+</head>
   <body
-    class="bg-slate-900 sso-bg text-white flex items-center justify-center absolute w-full h-full"
+    class="bg-slate-900 text-white flex items-center justify-center absolute w-full h-full"
   >
+  <div class="sso-bg w-screen h-screen fixed top-0 left-0 z-0"></div>
     <main
       class="flex flex-col items-center justify-center gap-3 relative w-[95%] max-w-lg"
     >
@@ -55,14 +39,14 @@
       </div>
       <div class="p-6 rounded-xl border-2 border-white/5 bg-black/5 backdrop-blur-lg">
       <p class="opacity-90 text-left mt-3">
-        <i class="fa-solid fa-chevron-right"></i> Welcome to your WiiLink Account! This service allows you to view and manage your Wii data and settings, as well as access other WiiLink services and Domino's/JustEat delivery.
+        <i class="fa-solid fa-chevron-right mr-1"></i> Welcome to your WiiLink Account! This service allows you to view and manage your Wii data and settings, as well as access other WiiLink services and Domino's/JustEat delivery.
       </p>
       <!-- {{if .Error}}
         <p style="color:red;">{{.Error}}</p>
         {{end}} -->
       <a href="/start" class="w-full">
         <button class="mt-5 p-3 w-full bg-blue-600 hover:bg-blue-700 active:scale-95 rounded-full transition-all">
-          <i class="fa-solid fa-right-to-bracket"></i> Log in with your WiiLink Account
+          <i class="fa-solid fa-right-to-bracket mr-3"></i> Log in with your WiiLink Account
         </button>
       </a>
     </div>

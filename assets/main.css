@@ -10,7 +10,7 @@
 
 .sso-bg {
   background-image: url("https://sso.riiconnect24.net/media/public/flow-backgrounds/SSO-bg.png");
-  background-size: contain;
+  background-size: cover;
 }
 
 h1 {
@@ -59,6 +59,35 @@ h2 {
   }
 }
 
+.animation-fade-in-up {
+  animation: fadeInUp 0.3s ease-in-out forwards;
+}
+
+@keyframes fadeInUp {
+  0% {
+    opacity: 0;
+    top: 20px;
+    position: relative;
+  }
+  100% {
+    opacity: 1;
+    top: 0px;
+    position: relative;
+  }
+}
+
+.animation-fade-in {
+  animation: fadeIn 5s ease-in-out forwards;
+}
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 0.7;
+  }
+}
 
 @keyframes spin {
   0% {
