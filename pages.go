@@ -26,7 +26,20 @@ func HomePage(c *gin.Context) {
 			}
 
 			if exists {
-				c.HTML(http.StatusOK, "home.html", nil)
+				log.Printf("User with username %s is linked!!!", username)
+				if pfp, ok := c.Get("picture"); ok {
+					c.HTML(http.StatusOK, "linked.html", gin.H{
+						"username": username,
+						"email":    email,
+						"pfp":      pfp,
+					})
+				} else {
+					c.HTML(http.StatusOK, "linked.html", gin.H{
+						"username": username,
+						"email":    email,
+						"pfp":      "", // or handle the missing picture case
+					})
+				}
 			} else {
 				log.Printf("User with username %s is not linked", username)
 				if pfp, ok := c.Get("picture"); ok {

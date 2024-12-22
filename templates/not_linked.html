@@ -1,57 +1,49 @@
 {{template "base.tmpl"}}
-<div
-  id="particles-js"
-  class="spin top-0 left-0 w-full h-full absolute -translate-x-[0rem] opacity-30"
-></div>
+<div id="particles-js" class="spin top-0 left-0 w-full h-full absolute -translate-x-[0rem] opacity-30"></div>
 <div class="left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-screen h-screen z-1 absolute">
-<div
-  class="w-full h-full radial-gradient-1 opacity-20 pulse"
-></div>
+  <div class="w-full h-full radial-gradient-1 opacity-20 pulse"></div>
 </div>
-<img
-src="/assets/img/pattern.png"
-class="left-0 top-0 w-[calc(100%+16rem)] dissolve -translate-y-80 brightness-[1000%] opacity-20 z-0 absolute"
-alt="WiiLink Pattern Background"
-/>
+<img src="/assets/img/pattern.png"
+  class="left-0 top-0 w-[calc(100%+16rem)] dissolve -translate-y-80 brightness-[1000%] opacity-20 z-0 absolute"
+  alt="WiiLink Pattern Background" />
 
 <div class="sm:top-0 top-20 h-screen w-full sm:flex items-center justify-center z-10 relative">
   <div class="pl-3 pr-3 sm:flex md:flex-row flex-col items-center gap-5">
     <div>
       <h1 id="greeting">What's up,</h1>
       <h2 class="flex flex-row items-center gap-3">
-        <img
-          src="https://github.com/humanoidear.png"
-          height="40px"
-          width="40px"
-          class="bg-gray-300 dark:bg-slate-900/60 rounded-md"
-        />
+        <img src="https://gravatar.com/avatar/{{.pfp}}" height="40px" width="40px"
+          class="bg-gray-300 dark:bg-slate-900/60 rounded-md" />
         {{.username}}
       </h2>
       <br />
       <p>
-        <div class="p-3 bg-white/10 backdrop-blur-md rounded-lg">
-          <b>
-            To finish creating your WiiLink Account, you will need to link your
-            Wii Console ID to it. To do so, please download the Console ID
-            linking application.</b
-          ></div
-        ><br />
-        Once you're done, you will be able to use Domino's or JustEat ordering
-        on the Food Channel, as well as view all data associated to your account
-        from the following services: Check Mii Out Channel, Everybody Votes
-        Channel, RiiTag and DigiCard.
+      <div class="p-3 bg-white/10 backdrop-blur-md rounded-lg">
+        <b>
+          To finish creating your WiiLink Account, you will need to link your
+          Wii Console ID to it. To do so, please download the Console ID
+          linking application.</b>
+      </div><br />
+      Once you're done, you will be able to use Domino's or JustEat ordering
+      on the Food Channel, as well as view all data associated to your account
+      from the following services: Check Mii Out Channel, Everybody Votes
+      Channel, RiiTag and DigiCard.
+      <br><br>
+      <span class="flex flex-row items-center gap-3">
+        <a href=""
+          class="w-[280px] px-6 py-3 rounded-md bg-white/10 hover:scale-105 active:scale-95 backdrop-blur-md flex flex-row items-center gap-3 transition-all"
+          style="text-decoration: none !important;"><span class="material-symbols-outlined">sync</span> Reload the
+          page</a>
+        <span class="opacity-30">Refresh the site after linking your console ID to access all features.</span>
+      </span>
+      <br>
       </p>
     </div>
 
     <div>
       <div class="flex items-center justify-center">
-        <div
-          class="sm:w-80 m-8 p-6 rounded-2xl bg-white/20 shadow-lg shadow-white/5 backdrop-blur-md relative"
-        >
-          <div
-            id="qrcode"
-            class="p-4 bg-white rounded-lg overflow-hidden"
-          ></div>
+        <div class="sm:w-80 m-8 p-6 rounded-2xl bg-white/20 shadow-lg shadow-white/5 backdrop-blur-md relative">
+          <div id="qrcode" class="p-4 bg-white rounded-lg overflow-hidden"></div>
         </div>
       </div>
 
