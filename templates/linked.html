@@ -52,10 +52,37 @@
   </p>
   <br />
   <span class="flex flex-col sm:flex-row items-start sm:items-center gap-3">
+    <div class="flex flex-row items-center gap-3">
     <span
+      id="wiinumber"
       class="px-3 py-1 rounded-xl text-green-800 hover:text-white bg-green-800 transition-all"
-      >{{.wiinumber}}</span
+    ></span>
+    <button
+      id="copyButton"
+      class="mt-2 text-white hover:scale-105 active:scale-95 transition-all"
     >
+    <span class="material-icons"> content_paste </span>
+    </button>
+  </div>
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+        const wiiNumber = "{{.wiinumber}}";
+        const formattedWiiNumber = wiiNumber.replace(/(\d{4})(?=\d)/g, '$1 ');
+        document.getElementById('wiinumber').textContent = formattedWiiNumber;
+    
+        const copyButton = document.getElementById('copyButton');
+        copyButton.addEventListener('click', function() {
+          navigator.clipboard.writeText(formattedWiiNumber).then(function() {
+            copyButton.innerHTML = '<span class="material-icons"> check </span>';
+            setTimeout(function() {
+              copyButton.innerHTML = '<span class="material-icons"> content_paste </span>';
+            }, 3000);
+          }, function(err) {
+            console.error('Could not copy text: ', err);
+          });
+        });
+      });
+    </script>
     <span class="opacity-60 text-white flex flex-row items-center gap-1"
       ><span class="material-icons">info</span> Hover to reveal your Wii
       Number</span
