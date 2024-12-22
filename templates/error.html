@@ -1,51 +1,40 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <title>Error - WiiLink Account</title>
-    <link href="/assets/output.css" rel="stylesheet" />
-    <link
-      rel="apple-touch-icon"
-      sizes="180x180"
-      href="https://www.wiilink24.com/img/apple-touch-icon.png"
-    />
-    <link
-      rel="icon"
-      type="image/png"
-      sizes="32x32"
-      href="https://www.wiilink24.com/img/favicon-32x32.png"
-    />
-    <link
-      rel="icon"
-      type="image/png"
-      sizes="16x16"
-      href="https://www.wiilink24.com/img/favicon-16x16.png"
-    />
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=error" />
-    <link rel="manifest" href="https://www.wiilink24.com/img/site.webmanifest" />
-    <link rel="mask-icon" href="https://www.wiilink24.com/img/safari-pinned-tab.svg" color="#5bbad5" />
-    <link rel="shortcut icon" href="https://www.wiilink24.com/img/favicon.ico" />
-    <meta name="msapplication-TileColor" content="#ffffff" />
-    <meta name="msapplication-config" content="https://www.wiilink24.com/img/browserconfig.xml" />
-    <meta name="theme-color" content="#ffffff" />
-  </head>
-  <body
-    class="bg-white dark:bg-slate-900 dark:text-white flex items-center justify-center absolute w-full h-full"
-  >
-    <main
-      class="flex flex-col items-center justify-center gap-3 relative w-[95%] max-w-lg"
-    >
+
+<head>
+  <title>Error - WiiLink Account</title>
+  <link href="/assets/output.css" rel="stylesheet" />
+  <link rel="apple-touch-icon" sizes="180x180" href="https://www.wiilink24.com/img/apple-touch-icon.png" />
+  <link rel="icon" type="image/png" sizes="32x32" href="https://www.wiilink24.com/img/favicon-32x32.png" />
+  <link rel="icon" type="image/png" sizes="16x16" href="https://www.wiilink24.com/img/favicon-16x16.png" />
+  <link rel="stylesheet"
+    href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=error" />
+  <link rel="manifest" href="https://www.wiilink24.com/img/site.webmanifest" />
+  <link rel="mask-icon" href="https://www.wiilink24.com/img/safari-pinned-tab.svg" color="#5bbad5" />
+  <link rel="shortcut icon" href="https://www.wiilink24.com/img/favicon.ico" />
+  <meta name="msapplication-TileColor" content="#ffffff" />
+  <meta name="msapplication-config" content="https://www.wiilink24.com/img/browserconfig.xml" />
+  <meta name="theme-color" content="#ffffff" />
+</head>
+
+<body class="bg-white dark:bg-slate-900 dark:text-white flex items-center justify-center absolute w-full h-full">
+  <div id="particles-js"
+    class="spin top-0 left-0 w-full h-full -translate-x-[0rem] opacity-30 invert dark:invert-0 z-0 absolute"></div>
+  <main class="flex flex-col items-center justify-center gap-3 relative w-[95%] max-w-lg">
     <span class="flex flex-row items-center gap-8">
-    <span class="material-symbols-outlined" style="font-size: 40px !important;">error</span>
+      <span class="material-symbols-outlined" style="font-size: 40px !important;">error</span>
       <h1 class="font-bold">Error</h1>
     </span>
-      {{if .Error}}
-      <p class="text-2xl text-center">An error has occured: {{.Error}}</p>
-      <br>
-      <p class="text-xl text-center text-white/40">Please try again later. If the error persists, contact support and show them the error</p>
-      
-      {{end}}
-    </main>
-  </body>
+    {{if .Error}}
+    <p class="text-2xl text-center px-4 py-2 rounded-xl bg-black/5 dark:bg-white/10 backdrop-blur-md">An error has occured: {{.Error}}
+    </p>
+    <p class="mt-3 text-xl text-center dark:text-white/40">Please try again later. If the error persists, contact
+      support and show them the error</p>
+
+    {{end}}
+  </main>
+</body>
+
 </html>
 
 <style>
@@ -56,17 +45,23 @@
   @keyframes popin {
     0% {
       font-variation-settings:
-    'FILL' 0,
-    'wght' 0,
-    'GRAD' 0,
-    'opsz' 24
+        'FILL' 0,
+        'wght' 0,
+        'GRAD' 0,
+        'opsz' 24
     }
+
     100% {
       font-variation-settings:
-    'FILL' 0,
-    'wght' 800,
-    'GRAD' 0,
-    'opsz' 24
+        'FILL' 0,
+        'wght' 800,
+        'GRAD' 0,
+        'opsz' 24
     }
   }
-  </style>
+</style>
+
+<script src="/assets/particles/particles.min.js"></script>
+<script>
+  particlesJS.load("particles-js", "/assets/particles/particlesjs-config.json");
+</script>

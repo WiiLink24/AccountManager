@@ -15,24 +15,26 @@
 <div
   class="mt-8 mb-8 bg-gradient-to-tr from-green-600 to-slate-500 px-8 py-6 rounded-lg z-10 relative animation-fade-in-up opacity-0"
   style="animation-delay: 0.1s;">
-  <h2 class="text-3xl flex flex-row items-center gap-3"><span class="material-icons scale-125">verified</span>Account
+  <h2 class="text-3xl text-white flex flex-row items-center gap-3"><span
+      class="material-icons scale-125">verified</span>Account
     linked successfully!</h2>
   <p>The linking process was successful! You can now use all WiiLink Services to their fullest extent!</p>
   <br>
   <span class="flex flex-col sm:flex-row items-start sm:items-center gap-3">
     <span class="px-3 py-1 rounded-xl text-green-800 hover:text-white bg-green-800 transition-all">{{.wiinumber}}</span>
-    <span class="opacity-60 flex flex-row items-center gap-1"><span class="material-icons">info</span> Hover to reveal
+    <span class="opacity-60 text-white flex flex-row items-center gap-1"><span class="material-icons">info</span> Hover
+      to reveal
       your Wii Number</span>
   </span>
 </div>
 <div class="flex flex-col gap-3 sm:flex-row">
   <div
-    class="flex-grow w-full p-5 rounded-lg border-2 border-white/30 bg-white/10 hover:-translate-y-1 z-10 flex flex-col justify-between relative transition-all animation-fade-in-up opacity-0"
+    class="flex-grow w-full p-5 rounded-lg border-2 dark:border-white/30 dark:bg-white/10 border-slate-800/30 bg-slate-800/10 hover:-translate-y-1 z-10 flex flex-col justify-between relative transition-all animation-fade-in-up opacity-0"
     style="animation-delay: 0.2s;">
-    <span class="flex flex-row items-center justify-between gap-6">
-      <img src="/assets/img/Domino's_logo.png" width="200px" class="rounded-t-lg" />
+    <span class="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
+      <img src="/assets/img/Domino's_logo.png" width="200px" class="rounded-t-lg dark:invert-0 invert" />
       {{if .linked_dominos}}
-      <p class="px-3 py-1 rounded-full bg-green-500 text-white flex flex-row items-center gap-3"><span
+      <p class="px-3 py-1 rounded-full bg-green-500 text-white flex flex-row items-center justify-center gap-3"><span
           class="material-icons">
           toggle_on
         </span> Enabled</p>
@@ -45,14 +47,15 @@
     </span>
     <br>
     <h3 class="text-2xl font-bold">Domino's Pizza Real Ordering</h3>
-    <p>Order real food on your Wii, and get it delivered right to your door! Get live tracking updates and the status of
-      your delivery right in-console!</p>
+    <span class="text-lg dark:text-white text-black">Order real food on your Wii, and get it delivered right to your
+      door! Get live tracking updates and the status of
+      your delivery right in-console!</span>
     <br>
     <div class="border-2 border-red-500/60 px-6 py-3 rounded-lg">
       <b>Please note:</b> This feature is only available in the United States and Canada, and costs REAL money to use.
     </div>
     <br>
-    <hr>
+    <hr class="dark:border-white/30 border-slate-800/30">
     <br>
     {{if .linked_dominos}}
     <a href="/dominos/unlink"
@@ -77,29 +80,34 @@
       class="rounded-t-lg" />
     <br>
     <h3 class="text-2xl font-bold">WiiLink Forum</h3>
-    <p>With your WiiLink Account you can access the WiiLink Forum! A place where you can chat with, and receive help
-      from, WiiLink Team Members and other users!</p>
+    <span class="text-lg dark:text-white text-black">With your WiiLink Account you can access the WiiLink Forum! A place
+      where you can chat with, and receive help
+      from, WiiLink Team Members and other users!</span>
     <br>
     <br>
-    <hr>
-    <br>
-    <div
-      class="bg-green-500 text-center px-6 py-3 rounded-lg hover:scale-[101%] active:scale-[99%] cursor-pointer transition-all">
-      <b class="flex flex-row items-center justify-center gap-3"><span class="material-icons">chat</span>Visit the
-        WiiLink Forum</b>
-    </div>
+    <span>
+      <hr class="dark:border-white/30 border-slate-800/30">
+      <br>
+      <div
+        class="bg-green-500 text-center px-6 py-3 rounded-lg hover:scale-[101%] active:scale-[99%] cursor-pointer transition-all">
+        <b class="text-white flex flex-row items-center justify-center gap-3"><span
+            class="material-icons">chat</span>Visit the
+          WiiLink Forum</b>
+      </div>
+    </span>
   </div>
 </div>
 
 <div
-  class="mt-16 w-full p-5 rounded-lg border-2 border-dashed border-white/30 flex flex-row items-center justify-center z-10 relative animation-fade-in-up opacity-0"
+  class="mt-16 w-full p-5 rounded-lg border-2 border-dashed dark:border-white/30 border-black/30 flex flex-row items-center justify-center z-10 relative animation-fade-in-up opacity-0"
   style="animation-delay: 0.4s;">
-  <p class="flex flex-row items-center gap-3 opacity-30"><span class="material-icons">star</span>More coming soon...</p>
+  <p class="flex flex-row items-center gap-3 opacity-30"><span class="material-icons dark:text-white text-black">star</span><span class="dark:text-white text-black">More coming soon...</span></p>
 </div>
 
 <span class="animation-fade-in">
   <div id="parallax-bg"
-    class="fixed inset-0 bg-gradient-to-b from-blue-900 to-transparent h-1/2 opacity-60 bottom-0 z-0 animation-hue-rotate"></div>
+    class="fixed inset-0 bg-gradient-to-b from-blue-900 to-transparent h-1/2 opacity-60 bottom-0 z-0 animation-hue-rotate">
+  </div>
 </span>
 <p id="pfp" class="hidden">{{.pfp}}</p>
 
@@ -122,10 +130,10 @@
   });
 </script>
 
-<p class="mt-3 mb-20 opacity-30">WiiLink Accounts is still in development, more features will be added
-  soon!<br><br><span class="material-icons mr-2 translate-y-1">info</span>Once WiiLink Accounts is finished, you will be
+<p class="mt-3 mb-20 opacity-30"><span class="text-black dark:text-white">WiiLink Accounts is still in development, more features will be added
+  soon!</span><br><br><span class="material-icons mr-2 translate-y-1 text-black dark:text-white">info</span><span class="text-black dark:text-white">Once WiiLink Accounts is finished, you will be
   able to view all data associated to your Account (CMOC contests, EVC Polls, Subscription Status, Wii Room Votes, and
-  more) from here!</p>
+  more) from here!</span></p>
 
 <style>
   .animation-hue-rotate {
