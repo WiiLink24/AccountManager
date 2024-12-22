@@ -57,7 +57,6 @@ func HomePage(c *gin.Context) {
 					c.HTML(http.StatusOK, "linked.html", gin.H{
 						"username":       username,
 						"email":          email,
-						"pfp":            "", // or handle the missing picture case
 						"wiinumber":      wiiNumber,
 						"linked_dominos": linked_dominos,
 					})
@@ -72,7 +71,6 @@ func HomePage(c *gin.Context) {
 				} else {
 					c.HTML(http.StatusOK, "not_linked.html", gin.H{
 						"username": username,
-						"pfp":      "", // or handle the missing picture case
 					})
 				}
 			}

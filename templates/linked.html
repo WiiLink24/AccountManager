@@ -12,13 +12,15 @@
         class="w-full flex flex-row items-center justify-between gap-6"
       >
         <h2 class="mt-1 flex flex-row items-center gap-3 text-2xl sm:text-4xl">
+          <span id="pfp" class="w-[50px] h-[50px]">
           <img
             src="https://gravatar.com/avatar/{{.pfp}}"
             height="50px"
             width="50px"
             class="bg-gray-300 dark:bg-slate-900/60 rounded-md"
           />
-          <div class="flex flex-col items-start">
+          </span>
+          <div id="username" class="flex flex-col items-start">
             {{.username}}
             <div class="text-lg opacity-30">{{.email}}</div>
           </div>
@@ -203,7 +205,10 @@
     class="fixed inset-0 bg-gradient-to-b from-blue-900 to-transparent h-1/2 opacity-60 bottom-0 z-0 animation-hue-rotate"
   ></div>
 </span>
-<p id="pfp" class="hidden">{{.pfp}}</p>
+
+<span id="pfp" class="hidden">
+  <img src="https://gravatar.com/avatar/{{.pfp}}" height="40px" width="40px" class="bg-gray-300 dark:bg-slate-900/60 rounded-md" />
+</span>
 
 <script>
   window.addEventListener("scroll", function () {
@@ -230,12 +235,42 @@
     greeting.innerText = "Good evening,";
   }
 
-  document.addEventListener("DOMContentLoaded", function () {
-    console.log("Loaded");
-    const pfp = document.getElementById("pfp").innerHTML;
-    document.getElementById(
-      "headerpfp"
-    ).innerHTML = `<img src="https://gravatar.com/avatar/${pfp}" height="40px" width="40px" class="bg-gray-300 dark:bg-slate-900/60 rounded-md" />`;
+  document.addEventListener('DOMContentLoaded', function() {
+    const gravatarUrl = "https://gravatar.com/avatar/{{.pfp}}?d=404";
+    let pfpdata = `
+      <img
+        src="${gravatarUrl}"
+        height="100%"
+        width="100%"
+        class="bg-gray-300 dark:bg-slate-900/60 rounded-md"
+      />
+    `;
+
+    // Function to set username initial
+    function setUsernameInitial() {
+      const username = "{{.username}}";
+      const initial = username.charAt(0).toUpperCase();
+
+      pfpdata = `
+        <div class="bg-gradient-to-tr from-blue-400 to-green-500 rounded-md h-full w-full flex items-center justify-center">
+          <span class="username-initial text-2xl font-bold text-white capitalize">${initial}</span>
+        </div>
+      `;
+
+      document.getElementById("pfp").innerHTML = pfpdata;
+    }
+
+    fetch(gravatarUrl)
+      .then(response => {
+        if (response.status === 404) {
+          setUsernameInitial();
+        }
+        document.getElementById("headerpfp").innerHTML = pfpdata;
+      })
+      .catch(error => {
+        console.error('Error fetching Gravatar:', error);
+        setUsernameInitial();
+      });
   });
 </script>
 
