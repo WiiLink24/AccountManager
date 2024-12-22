@@ -69,8 +69,10 @@ func handleDominos(c *gin.Context, query string, toggle bool) {
 
 func linkDominos(c *gin.Context) {
 	handleDominos(c, LinkDominos, true)
+	c.Redirect(http.StatusFound, "/manage")
 }
 
 func unlinkDominos(c *gin.Context) {
 	handleDominos(c, UnlinkDominos, false)
+	c.Redirect(http.StatusFound, "/manage")
 }

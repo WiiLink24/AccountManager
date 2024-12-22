@@ -8,9 +8,9 @@ import (
 )
 
 const (
-	IsUserLinked = `SELECT EXISTS(SELECT 1 FROM users WHERE email = $1)`
+	IsUserLinked     = `SELECT EXISTS(SELECT 1 FROM users WHERE email = $1)`
 	GetWiiNumberUser = `SELECT wii_number FROM users WHERE email = $1`
-	GetLinkedDominos = `SELECT linked_dominos FROM users WHERE email = $1`
+	GetLinkedDominos = `SELECT dominos_linked FROM users WHERE email = $1`
 )
 
 func HomePage(c *gin.Context) {
@@ -47,18 +47,18 @@ func HomePage(c *gin.Context) {
 
 				if pfp, ok := c.Get("picture"); ok {
 					c.HTML(http.StatusOK, "linked.html", gin.H{
-						"username":  username,
-						"email":     email,
-						"pfp":       pfp,
-						"wiinumber": wiiNumber,
+						"username":       username,
+						"email":          email,
+						"pfp":            pfp,
+						"wiinumber":      wiiNumber,
 						"linked_dominos": linked_dominos,
 					})
 				} else {
 					c.HTML(http.StatusOK, "linked.html", gin.H{
-						"username":  username,
-						"email":     email,
-						"pfp":       "", // or handle the missing picture case
-						"wiinumber": wiiNumber,
+						"username":       username,
+						"email":          email,
+						"pfp":            "", // or handle the missing picture case
+						"wiinumber":      wiiNumber,
 						"linked_dominos": linked_dominos,
 					})
 				}
