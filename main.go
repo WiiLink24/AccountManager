@@ -94,6 +94,7 @@ func main() {
 		auth.GET("/LINK", link)
 		auth.GET("/dominos/link", linkDominos)
 		auth.GET("/dominos/unlink", unlinkDominos)
+		auth.GET("/logout", logout)
 	}
 
 	// Start the server

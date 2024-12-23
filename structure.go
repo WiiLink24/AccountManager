@@ -21,6 +21,7 @@ type OIDCConfig struct {
 	RedirectURL  string   `xml:"redirectURL"`
 	Scopes       []string `xml:"scopes"`
 	Provider     string   `xml:"provider"`
+	LogoutURL    string   `xml:"logoutURL"`
 }
 
 type DiscordOAuthConfig struct {

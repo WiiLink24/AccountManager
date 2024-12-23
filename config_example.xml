@@ -29,5 +29,6 @@
         <redirectURL>http://localhost:9011/authorize</redirectURL>
         <scopes>openid profile email</scopes>
         <provider></provider>
+        <logoutURL></logoutURL>
     </oidc>
 </Config>

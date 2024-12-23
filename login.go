@@ -108,3 +108,9 @@ func FinishPanelHandler(c *gin.Context) {
 	//redirect to admin page
 	c.Redirect(http.StatusFound, "/manage")
 }
+
+func logout(c *gin.Context) {
+	setCallbackCookie(c.Writer, c.Request, "state", "")
+	setCallbackCookie(c.Writer, c.Request, "token", "")
+	c.Redirect(http.StatusFound, config.OIDCConfig.LogoutURL)
+}
