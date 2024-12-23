@@ -13,6 +13,11 @@ import (
 )
 
 func LoginPage(c *gin.Context) {
+	if _, ok := c.Get("username"); ok {
+		// Authenticated
+		c.Redirect(http.StatusFound, "/manage")
+	}
+
 	c.HTML(http.StatusOK, "login.html", nil)
 }
 
