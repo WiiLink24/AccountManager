@@ -117,5 +117,6 @@ func FinishPanelHandler(c *gin.Context) {
 func logout(c *gin.Context) {
 	setCallbackCookie(c.Writer, c.Request, "state", "")
 	setCallbackCookie(c.Writer, c.Request, "token", "")
+	setCallbackCookie(c.Writer, c.Request, "is_logged_in", "")
 	c.Redirect(http.StatusFound, config.OIDCConfig.LogoutURL)
 }

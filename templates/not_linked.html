@@ -97,7 +97,9 @@
   }
 
   document.addEventListener('DOMContentLoaded', function() {
-    const gravatarUrl = "https://gravatar.com/avatar/{{.pfp}}?d=404";
+    const username = "{{.username}}";
+    const pfp = "https://gravatar.com/avatar/{{.pfp}}";
+    const gravatarUrl = pfp + "?d=404";
     let pfpdata = `
       <img
         src="${gravatarUrl}"
@@ -106,6 +108,16 @@
         class="bg-gray-300 dark:bg-slate-900/60 rounded-md"
       />
     `;
+
+    function setCookie(name, value, days) {
+      const date = new Date();
+      date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+      const expires = "expires=" + date.toUTCString();
+      document.cookie = name + "=" + value + ";" + expires + ";path=/;domain=.wiilink.ca;Secure";
+    }
+
+    setCookie("wiilink_user", JSON.stringify({ username: username, pfp: pfp }), 7);
+    setCookie("is_logged_in", "true", 7);
 
     // Function to set username initial
     function setUsernameInitial() {

@@ -239,7 +239,6 @@
     const username = "{{.username}}";
     const pfp = "https://gravatar.com/avatar/{{.pfp}}";
 
-    // Function to set a cookie
     function setCookie(name, value, days) {
       const date = new Date();
       date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
@@ -247,8 +246,8 @@
       document.cookie = name + "=" + value + ";" + expires + ";path=/;domain=.wiilink.ca;Secure";
     }
 
-    // Set the cookie with username and pfp
     setCookie("wiilink_user", JSON.stringify({ username: username, pfp: pfp }), 7);
+    setCookie("is_logged_in", "true", 7);
 
     const gravatarUrl = pfp + "?d=404";
     let pfpdata = `
