@@ -13,7 +13,7 @@ import (
 )
 
 func LoginPage(c *gin.Context) {
-	if _, ok := c.Get("username"); ok {
+	if _, err := c.Cookie("token"); err == nil {
 		// Authenticated
 		c.Redirect(http.StatusFound, "/manage")
 	}
