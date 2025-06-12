@@ -8,8 +8,6 @@ import (
 	"time"
 
 	"github.com/gin-gonic/gin"
-	"github.com/golang-jwt/jwt/v5"
-	"golang.org/x/oauth2"
 )
 
 func LoginPage(c *gin.Context) {
@@ -73,37 +71,23 @@ func FinishPanelHandler(c *gin.Context) {
 		return
 	}
 
-	userInfo, err := authConfig.Provider.UserInfo(c, oauth2.StaticTokenSource(oauth2Token))
-	if err != nil {
-		http.Error(c.Writer, "Failed to get userinfo: "+err.Error(), http.StatusInternalServerError)
-		return
-	}
-
-	//Now that we verified the token, create a JWT token to use with the middleware
-	claims := &JWTClaims{
-		Email: userInfo.Email,
-		RegisteredClaims: jwt.RegisteredClaims{
-			ExpiresAt: jwt.NewNumericDate(time.Now().Add(time.Hour)),
-		},
-	}
-
-	err = userInfo.Claims(&claims)
-	if err != nil {
-		c.HTML(http.StatusInternalServerError, "login.html", gin.H{
-			"Error": "Failed to get claims",
+	rawIdtoken := oauth2Token.Extra("id_token").(string)
+	if rawIdtoken == "" {
+		c.HTML(http.StatusBadRequest, "error.html", gin.H{
+			"Error": "No id_token in response",
 		})
 		return
 	}
 
-	token, err := jwt.NewWithClaims(jwt.SigningMethodHS256, claims).SignedString([]byte("help me"))
+	idToken, err := verifier.Verify(c, rawIdtoken)
 	if err != nil {
-		c.HTML(http.StatusInternalServerError, "login.html", gin.H{
-			"Error": "Failed to create JWT",
+		c.HTML(http.StatusBadRequest, "error.html", gin.H{
+			"Error": "Failed to verify id_token: " + err.Error(),
 		})
 		return
 	}
 
-	c.SetCookie("token", token, 3600, "", "", false, true)
+	c.SetCookie("token", rawIdtoken, idToken.Expiry.Second(), "", "", false, true)
 
 	//redirect to admin page
 	c.Redirect(http.StatusFound, "/manage")

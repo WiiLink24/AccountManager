@@ -20,6 +20,7 @@ var (
 	dominosPool *pgxpool.Pool
 	authConfig  *AppAuthConfig
 	config      Config
+	verifier    *oidc.IDTokenVerifier
 )
 
 func checkError(err error) {
@@ -66,6 +67,7 @@ func main() {
 	defer wiiMailPool.Close()
 	defer dominosPool.Close()
 
+	verifier = provider.Verifier(&oidc.Config{ClientID: config.OIDCConfig.ClientID})
 	r := gin.Default()
 
 	// Serve static files in debug mode
@@ -85,16 +87,20 @@ func main() {
 	r.GET("/authorize", FinishPanelHandler)
 
 	auth := r.Group("/")
-	auth.Use(middleware.AuthenticationMiddleware())
+	auth.Use(middleware.AuthenticationMiddleware(verifier))
 	{
 		auth.GET("/manage", HomePage)
 		auth.GET("/notlinked", NotLinkedPage)
-		auth.GET("/link", link)
-		// Weird artifact from the QR code generator on the Wii.
-		auth.GET("/LINK", link)
 		auth.GET("/dominos/link", linkDominos)
 		auth.GET("/dominos/unlink", unlinkDominos)
 		auth.GET("/logout", logout)
+	}
+
+	// Routes for linking
+	linker := r.Group("/link")
+	linker.Use(middleware.AuthenticationPOSTMiddleware(verifier))
+	{
+		linker.POST("/wii", link)
 	}
 
 	// Start the server
