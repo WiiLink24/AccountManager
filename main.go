@@ -15,8 +15,6 @@ import (
 
 var (
 	ctx         = context.Background()
-	pool        *pgxpool.Pool
-	wiiMailPool *pgxpool.Pool
 	dominosPool *pgxpool.Pool
 	authConfig  *AppAuthConfig
 	config      Config
@@ -48,23 +46,11 @@ func main() {
 		Provider: provider,
 	}
 
-	// Connect account manager database
-	dbString := fmt.Sprintf("postgres://%s:%s@%s/%s", config.Username, config.Password, config.DatabaseAddress, config.DatabaseName)
-	pool, err = pgxpool.New(ctx, dbString)
-	checkError(err)
-
-	// Connect Wii Mail database
-	dbString = fmt.Sprintf("postgres://%s:%s@%s/%s", config.WiiMailUsername, config.WiiMailPassword, config.WiiMailDatabaseAddress, config.WiiMailDatabaseName)
-	wiiMailPool, err = pgxpool.New(ctx, dbString)
-	checkError(err)
-
 	// Connect Dominos database
-	dbString = fmt.Sprintf("postgres://%s:%s@%s/%s", config.DominosDatabaseUsername, config.DominosDatabasePassword, config.DominosDatabaseAddress, config.DominosDatabaseName)
+	dbString := fmt.Sprintf("postgres://%s:%s@%s/%s", config.DominosDatabaseUsername, config.DominosDatabasePassword, config.DominosDatabaseAddress, config.DominosDatabaseName)
 	dominosPool, err = pgxpool.New(ctx, dbString)
 	checkError(err)
 
-	defer pool.Close()
-	defer wiiMailPool.Close()
 	defer dominosPool.Close()
 
 	verifier = provider.Verifier(&oidc.Config{ClientID: config.OIDCConfig.ClientID})

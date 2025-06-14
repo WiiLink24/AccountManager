@@ -6,16 +6,7 @@
     <username>username</username>
     <password>password</password>
 
-    <wiiMailUsername>username</wiiMailUsername>
-    <wiiMailPassword>password</wiiMailPassword>
-
     <!-- Database information-->
-    <databaseAddress>127.0.0.1</databaseAddress>
-    <databaseName>wiilink_accounts</databaseName>
-
-    <wiiMailDatabaseAddress>127.0.0.1</wiiMailDatabaseAddress>
-    <wiiMailDatabaseName>wiilink_accounts</wiiMailDatabaseName>
-
     <dominosDatabaseAddress>127.0.0.1:5432</dominosDatabaseAddress>
     <dominosDatabaseName>demae</dominosDatabaseName>
 
@@ -27,7 +18,7 @@
         <clientID></clientID>
         <clientSecret></clientSecret>
         <redirectURL>http://localhost:9011/authorize</redirectURL>
-        <scopes>openid profile email goauthentik.io/api</scopes>
+        <scopes>openid profile email goauthentik.io/api wii</scopes>
         <provider></provider>
         <logoutURL></logoutURL>
     </oidc>

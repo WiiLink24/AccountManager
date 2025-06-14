@@ -45,50 +45,15 @@
   style="animation-delay: 0.1s"
 >
   <h2 class="text-3xl text-white flex flex-row items-center gap-3">
-    <span class="material-icons scale-125">verified</span>Account linked
-    successfully!
+    <span class="material-icons scale-125">verified</span>Linked Wii Numbers
   </h2>
-  <p>
-    The linking process was successful! You can now use all WiiLink Services to
-    their fullest extent!
-  </p>
+  <br>
+  <ul>
+    {{range $val := .wiiNumbers}}
+    <li>{{ $val }}</li>
+    {{end}}
+  </ul>
   <br />
-  <span class="flex flex-col sm:flex-row items-start sm:items-center gap-3">
-    <div class="flex flex-row items-center gap-3">
-    <span
-      id="wiinumber"
-      class="px-3 py-1 rounded-xl text-green-800 hover:text-white bg-green-800 transition-all"
-    ></span>
-    <button
-      id="copyButton"
-      class="mt-2 text-white hover:scale-105 active:scale-95 transition-all"
-    >
-    <span class="material-icons"> content_paste </span>
-    </button>
-  </div>
-    <script>
-      document.addEventListener('DOMContentLoaded', function() {
-        const wiiNumber = "{{.wiinumber}}";
-        const formattedWiiNumber = wiiNumber.replace(/(\d{4})(?=\d)/g, '$1 ');
-        document.getElementById('wiinumber').textContent = formattedWiiNumber;
-    
-        const copyButton = document.getElementById('copyButton');
-        copyButton.addEventListener('click', function() {
-          navigator.clipboard.writeText(formattedWiiNumber).then(function() {
-            copyButton.innerHTML = '<span class="material-icons"> check </span>';
-            setTimeout(function() {
-              copyButton.innerHTML = '<span class="material-icons"> content_paste </span>';
-            }, 3000);
-          }, function(err) {
-            console.error('Could not copy text: ', err);
-          });
-        });
-      });
-    </script>
-    <span class="opacity-60 text-white flex flex-row items-center gap-1"
-      ><span class="material-icons">info</span> Hover to reveal your Wii
-      Number</span
-    >
   </span>
 </div>
 <div class="flex flex-col gap-3 sm:flex-row">
@@ -104,19 +69,11 @@
         width="200px"
         class="rounded-t-lg dark:invert-0 invert"
       />
-      {{if .linked_dominos}}
       <p
-        class="px-3 py-1 rounded-full bg-green-500 text-white flex flex-row items-center justify-center gap-3"
+        id="dominos_colour" class="px-3 py-1 rounded-full bg-green-500 text-white flex flex-row items-center justify-center gap-3"
       >
-        <span class="material-icons"> toggle_on </span> Enabled
+        <span class="material-icons" id="dominos_toggle"> toggle_on </span> <span id="toggle_text">Enabled</span>
       </p>
-      {{else}}
-      <p
-        class="px-3 py-1 rounded-full bg-red-500/60 text-white flex flex-row items-center gap-3"
-      >
-        <span class="material-icons"> toggle_off </span> Not Enabled
-      </p>
-      {{end}}
     </span>
     <br />
     <h3 class="text-2xl font-bold">Domino's Pizza Real Ordering</h3>
@@ -126,6 +83,13 @@
       in-console!</span
     >
     <br />
+    <h4 class="text-2xl font-bold">Select your Wii Number</h4>
+    <select name="dominos_wii" style="color: black;">
+      {{range $val := .wiiNumbers}}
+      <option value="{{ $val }}">{{ $val }}</option>
+      {{end}}
+    </select>
+    <br>
     <div class="border-2 border-red-500/60 bg-red-500/30 px-6 py-3 rounded-lg">
       <b>Please note:</b> This feature is only available in the United States
       and Canada, and costs REAL money to use.
@@ -236,6 +200,18 @@
   }
 
   document.addEventListener('DOMContentLoaded', function() {
+    // Dominos stuff
+    const selectElement = document.getElementsByName("dominos_wii")[0];
+    const selectedValue = selectElement.value;
+
+    {{ range $index, $item := .dominos }}
+      if ({{$item}}[selectedValue] !== undefined) {
+        document.getElementById("dominos_toggle").textContent = {{$item}}[selectedValue] ? "toggle_on" : "toggle_off";
+        document.getElementById("dominos_colour").className = {{$item}}[selectedValue] ? "px-3 py-1 rounded-full bg-green-500 text-white flex flex-row items-center justify-center gap-3" : "px-3 py-1 rounded-full bg-red-500/60 text-white flex flex-row items-center gap-3";
+        document.getElementById("toggle_text").textContent = {{$item}}[selectedValue] ? "Enabled" : "Disabled";
+      }
+    {{ end }}
+
     const username = "{{.username}}";
     const pfp = "https://gravatar.com/avatar/{{.pfp}}";
 
