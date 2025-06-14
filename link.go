@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
+	"github.com/WiiLink24/nwc24"
 	"github.com/gin-gonic/gin"
 	"net/http"
 	"slices"
@@ -16,46 +17,41 @@ const (
 )
 
 func link(c *gin.Context) {
-	hash := c.PostForm("wii_num")
-	wwfc_cert := c.PostForm("cert")
+	wiiNumber := c.PostForm("wii_num")
+	wwfcCert := c.PostForm("cert")
 
 	// Verify cert first
-	ngId, err := verifySignature("WIILINK_ACCOUNT_LINKER", wwfc_cert)
+	ngId, err := verifySignature("WIILINK_ACCOUNT_LINKER", wwfcCert)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
 			"success": false,
-			"message": err.Error(),
+			"error":   err.Error(),
 		})
 		return
 	}
 
-	fmt.Println(ngId)
-	// Now verify Wii Number
-	var valid bool
-	err = wiiMailPool.QueryRow(ctx, IsValidHash, hash).Scan(&valid)
+	// Now that the certificate is verified, validate the Wii number.
+	intWiiNumber, err := strconv.Atoi(wiiNumber)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
 			"success": false,
-			"message": err.Error(),
+			"error":   err.Error(),
 		})
-		return
 	}
 
-	if !valid {
+	wiiNoObj := nwc24.LoadWiiNumber(uint64(intWiiNumber))
+	if !wiiNoObj.CheckWiiNumber() {
 		c.JSON(http.StatusBadRequest, gin.H{
 			"success": false,
-			"message": "Invalid Wii console. Please ensure your Wii is registered with Wii Mail.",
+			"error":   "invalid wii number",
 		})
-		return
 	}
 
-	var wiiNumber string
-	err = wiiMailPool.QueryRow(ctx, GetWiiNumber, hash).Scan(&wiiNumber)
-	if err != nil {
-		c.HTML(http.StatusBadRequest, "error.html", gin.H{
-			"Error": err.Error(),
+	if wiiNoObj.GetHollywoodID() != ngId {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"success": false,
+			"error":   "device id associated with the Wii Number does not match the Wii.",
 		})
-		return
 	}
 
 	// Add Wii number to list
@@ -63,7 +59,7 @@ func link(c *gin.Context) {
 	if !ok {
 		c.JSON(http.StatusOK, gin.H{
 			"success": false,
-			"message": "failed to get wii numbers",
+			"error":   "failed to get wii numbers",
 		})
 	}
 
@@ -76,7 +72,7 @@ func link(c *gin.Context) {
 	if !ok {
 		c.JSON(http.StatusOK, gin.H{
 			"success": false,
-			"message": "failed to get WWFC accounts",
+			"error":   "failed to get WWFC accounts",
 		})
 	}
 
@@ -88,7 +84,7 @@ func link(c *gin.Context) {
 	if !ok {
 		c.JSON(http.StatusOK, gin.H{
 			"success": false,
-			"message": "failed to get uid",
+			"error":   "failed to get uid",
 		})
 	}
 
@@ -107,7 +103,7 @@ func link(c *gin.Context) {
 	if err != nil {
 		c.JSON(http.StatusOK, gin.H{
 			"success": false,
-			"message": "failed to marshal payload",
+			"error":   "failed to marshal payload",
 		})
 	}
 
@@ -116,7 +112,7 @@ func link(c *gin.Context) {
 	if err != nil {
 		c.JSON(http.StatusOK, gin.H{
 			"success": false,
-			"message": "failed to create request",
+			"error":   "failed to create request",
 		})
 	}
 
@@ -128,14 +124,14 @@ func link(c *gin.Context) {
 	if err != nil {
 		c.JSON(http.StatusOK, gin.H{
 			"success": false,
-			"message": "failed to send request",
+			"error":   "failed to send request",
 		})
 	}
 
 	if resp.StatusCode != http.StatusOK {
 		c.JSON(http.StatusOK, gin.H{
 			"success": true,
-			"message": "failed to update user",
+			"error":   "failed to update user",
 		})
 	}
 
