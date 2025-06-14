@@ -30,8 +30,11 @@ func AuthenticationMiddleware(verifier *oidc.IDTokenVerifier) gin.HandlerFunc {
 
 		// Parse custom claims if needed.
 		var claims struct {
-			Email    string `json:"email"`
-			Username string `json:"preferred_username"`
+			Email    string            `json:"email"`
+			Username string            `json:"preferred_username"`
+			Wiis     []string          `json:"wiis"`
+			WWFC     []string          `json:"wwfc"`
+			Dominos  []map[string]bool `json:"dominos"`
 		}
 
 		if err = idToken.Claims(&claims); err != nil {
@@ -56,6 +59,9 @@ func AuthenticationMiddleware(verifier *oidc.IDTokenVerifier) gin.HandlerFunc {
 			return
 		}
 
+		c.Set("wiis", claims.Wiis)
+		c.Set("wwfc", claims.WWFC)
+		c.Set("dominos", claims.Dominos)
 		c.Next()
 	}
 }
@@ -81,13 +87,14 @@ func AuthenticationPOSTMiddleware(verifier *oidc.IDTokenVerifier) gin.HandlerFun
 
 		// Parse custom claims if needed.
 		var claims struct {
-			Email    string   `json:"email"`
-			Username string   `json:"preferred_username"`
-			Name     string   `json:"name"`
-			UserId   string   `json:"sub"`
-			Groups   []string `json:"groups"`
-			Wiis     []string `json:"wiis"`
-			WWFC     []string `json:"wwfc"`
+			Email    string            `json:"email"`
+			Username string            `json:"preferred_username"`
+			Name     string            `json:"name"`
+			UserId   string            `json:"sub"`
+			Groups   []string          `json:"groups"`
+			Wiis     []string          `json:"wiis"`
+			WWFC     []string          `json:"wwfc"`
+			Dominos  []map[string]bool `json:"dominos"`
 		}
 
 		if err = idToken.Claims(&claims); err != nil {
@@ -99,6 +106,7 @@ func AuthenticationPOSTMiddleware(verifier *oidc.IDTokenVerifier) gin.HandlerFun
 		c.Set("uid", claims.UserId)
 		c.Set("wiis", claims.Wiis)
 		c.Set("wwfc", claims.WWFC)
+		c.Set("dominos", claims.Dominos)
 		c.Next()
 	}
 }

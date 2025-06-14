@@ -80,6 +80,30 @@ func link(c *gin.Context) {
 		wwfc = append(wwfc.([]string), strconv.Itoa(int(ngId)))
 	}
 
+	// Finally for Dominos
+	dominos, ok := c.Get("dominos")
+	if !ok {
+		c.JSON(http.StatusOK, gin.H{
+			"success": false,
+			"error":   "failed to get dominos data",
+		})
+	}
+
+	if len(dominos.([]map[string]bool)) == 0 {
+		dominos = append(dominos.([]map[string]bool), map[string]bool{wiiNumber: false})
+	} else if !slices.ContainsFunc(dominos.([]map[string]bool), func(s map[string]bool) bool {
+		// Dominos is a []map[string]bool
+		for k, _ := range s {
+			if k == wiiNumber {
+				return true
+			}
+		}
+
+		return false
+	}) {
+		dominos = append(dominos.([]map[string]bool), map[string]bool{wiiNumber: false})
+	}
+
 	uid, ok := c.Get("uid")
 	if !ok {
 		c.JSON(http.StatusOK, gin.H{
@@ -94,8 +118,9 @@ func link(c *gin.Context) {
 
 	payload := map[string]any{
 		"attributes": map[string]any{
-			"wiis": wiis,
-			"wwfc": wwfc,
+			"wiis":    wiis,
+			"wwfc":    wwfc,
+			"dominos": dominos,
 		},
 	}
 
