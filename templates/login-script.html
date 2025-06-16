@@ -80,10 +80,6 @@
 
   function toggleSidebar() {
     const editMenu = document.getElementById("edit");
-    if (editMenu.style.opacity === "1") {
-      editMenu.classList.add("hidden");
-    } else {
-      editMenu.classList.remove("hidden");
-    }
+    editMenu.classList.toggle("hidden");
   }
 </script>

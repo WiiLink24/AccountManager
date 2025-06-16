@@ -17,7 +17,7 @@
 
   document.addEventListener("DOMContentLoaded", function () {
     let pfpdata = `
-    <span class="mb-3 p-1 px-2 rounded-lg bg-slate-600/30 w-full flex flex-col gap-3 overflow-hidden transition-all">
+    <span class="mb-3 p-2 px-3 rounded-lg bg-slate-600/30 w-full flex flex-col gap-3 overflow-hidden transition-all">
       <span>
         <h3 class="!m-0 text-lg text-white font-semibold">Linked Wii Numbers</h3>
         <p class="text-white opacity-60">These are the Wii Numbers linked to your account:</p>
@@ -33,11 +33,12 @@
               num
             })" src="/assets/icon/copy.svg" class="w-5 h-5 invert"></span>`
         )
-        .join("<br>")}
+        .join("")}
       </span>
     </span>
     `;
 
+    console.log("Wii Numbers:", wiiNumbers);
     document.getElementById("wii_data_sidebar").innerHTML = pfpdata;
   });
 </script>
