@@ -9,16 +9,14 @@ import (
 	"github.com/WiiLink24/AccountManager/middleware"
 	"github.com/coreos/go-oidc/v3/oidc"
 	"github.com/gin-gonic/gin"
-	"github.com/jackc/pgx/v5/pgxpool"
 	"golang.org/x/oauth2"
 )
 
 var (
-	ctx         = context.Background()
-	dominosPool *pgxpool.Pool
-	authConfig  *AppAuthConfig
-	config      Config
-	verifier    *oidc.IDTokenVerifier
+	ctx        = context.Background()
+	authConfig *AppAuthConfig
+	config     Config
+	verifier   *oidc.IDTokenVerifier
 )
 
 func checkError(err error) {
@@ -45,13 +43,6 @@ func main() {
 		},
 		Provider: provider,
 	}
-
-	// Connect Dominos database
-	dbString := fmt.Sprintf("postgres://%s:%s@%s/%s", config.DominosDatabaseUsername, config.DominosDatabasePassword, config.DominosDatabaseAddress, config.DominosDatabaseName)
-	dominosPool, err = pgxpool.New(ctx, dbString)
-	checkError(err)
-
-	defer dominosPool.Close()
 
 	verifier = provider.Verifier(&oidc.Config{ClientID: config.OIDCConfig.ClientID})
 	r := gin.Default()
