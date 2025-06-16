@@ -21,7 +21,7 @@
       <p
         id="dominos_colour" class="px-3 py-1 rounded-full bg-green-500 text-white flex flex-row items-center justify-center gap-3"
       >
-        <img src="/assets/icon/circle-dot.svg" class="w-5 h-5 invert">Enabled</span>
+        <img src="/assets/icon/circle-dot.svg" class="w-5 h-5 invert"><a id="status_text">Enabled</a></span>
       </p>
     </span>
     <br />
@@ -47,12 +47,13 @@
         {{end}}
       </select>
       <button
+              id="toggle_button"
               class="bg-green-500 text-center px-6 py-3 rounded-lg hover:scale-[101%] active:scale-[99%] cursor-pointer transition-all"
               style="text-decoration: none !important"
       >
         <b class="flex flex-row items-center justify-center gap-3"
-        ><img src="/assets/icon/1.svg" class="w-5 h-5 invert"> Enable Domino's
-          Ordering</b
+        ><img src="/assets/icon/1.svg" class="w-5 h-5 invert"><a id="toggle_text">Enable Domino's
+          Ordering</a></b
         >
       </button>
     </form>
@@ -97,9 +98,12 @@
 
     {{ range $index, $item := .dominos }}
       if ({{$item}}[selectedValue] !== undefined) {
-        document.getElementById("dominos_toggle").textContent = {{$item}}[selectedValue] ? "toggle_on" : "toggle_off";
         document.getElementById("dominos_colour").className = {{$item}}[selectedValue] ? "px-3 py-1 rounded-full bg-green-500 text-white flex flex-row items-center justify-center gap-3" : "px-3 py-1 rounded-full bg-red-500/60 text-white flex flex-row items-center gap-3";
-        document.getElementById("toggle_text").textContent = {{$item}}[selectedValue] ? "Enabled" : "Disabled";
+        document.getElementById("status_text").textContent = {{$item}}[selectedValue] ? "Enabled" : "Disabled";
+        document.getElementById("toggle_text").textContent = {{$item}}[selectedValue] ? "Disable Dominos Ordering" : "Enable Dominos Ordering";
+        if ({{$item}}[selectedValue]) {
+          document.getElementById("toggle_button").classList.replace("bg-green-500", "bg-red-500")
+        }
       }
     {{ end }}
 
