@@ -1,64 +1,13 @@
-{{template "base.tmpl"}}
+{{template "base.html"}}
 <img
   src="/assets/img/pattern.png"
   class="left-0 top-0 w-screen dissolve -translate-y-80 brightness-[1000%] opacity-40 z-0 absolute"
   alt="WiiLink Pattern Background"
 />
-<div class="pt-28">
-  <div class="w-full flex flex-row items-center justify-between gap-18 z-10 relative">
-    <div class="w-full animation-fade-in-up opacity-0" style="animation-delay: 0s">
-      <h1 id="greeting">What's up,</h1>
-      <div
-        class="w-full flex flex-row items-center justify-between gap-6"
-      >
-        <h2 class="mt-1 flex flex-row items-center gap-3 text-2xl sm:text-4xl">
-          <span id="pfp" class="w-[50px] h-[50px]">
-          <img
-            src="https://gravatar.com/avatar/{{.pfp}}"
-            height="50px"
-            width="50px"
-            class="bg-gray-300 dark:bg-slate-900/60 rounded-md"
-          />
-          </span>
-          <div id="username" class="flex flex-col items-start">
-            {{.username}}
-            <div class="text-lg opacity-30">{{.email}}</div>
-          </div>
-        </h2>
-        <div class="flex flex-col items-end gap-3">
-          <a
-            href="https://wiilink.ca#donate"
-            class="bg-green-500 hover:bg-green-600 px-4 py-1 rounded-full flex flex-row items-center gap-1 z-10 transition-all"
-            style="text-decoration: none !important"
-            ><span class="material-icons">paid</span> <span class="hidden md:block">Donate!</span></a
-          >
-          <span class="text-md text-right opacity-60 hidden md:block"
-            >Donations help keep WiiLink running!</span
-          >
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-<div
-  class="mt-8 mb-8 bg-gradient-to-tr from-green-600 to-slate-500 px-8 py-6 rounded-lg z-10 relative animation-fade-in-up opacity-0"
-  style="animation-delay: 0.1s"
->
-  <h2 class="text-3xl text-white flex flex-row items-center gap-3">
-    <span class="material-icons scale-125">verified</span>Linked Wii Numbers
-  </h2>
-  <br>
-  <ul>
-    {{range $val := .wiiNumbers}}
-    <li>{{ $val }}</li>
-    {{end}}
-  </ul>
-  <br />
-  </span>
-</div>
-<div class="flex flex-col gap-3 sm:flex-row">
+<div class="max-w-[800px] px-3 flex flex-col gap-3">
+  <h1 class="mb-6 flex flex-row items-center gap-3 text-4xl text-white font-bold"><img src="/assets/icon/11.svg" alt="Icon" class="w-10 h-10 invert mr-2" /> Food Delivery Settings</h1>
   <div
-    class="md:w-[170%] p-5 rounded-lg border-2 dark:border-white/30 dark:bg-white/10 border-slate-800/30 bg-slate-800/10 hover:-translate-y-1 z-10 flex flex-col justify-between relative transition-all animation-fade-in-up opacity-0"
+    class="!text-white p-5 rounded-xl border border-slate-600/30 bg-slate-600/10 backdrop-blur-md hover:-translate-y-1 z-10 flex flex-col justify-between relative transition-all animation-fade-in-up opacity-0"
     style="animation-delay: 0.2s"
   >
     <span
@@ -67,33 +16,32 @@
       <img
         src="/assets/img/Domino's_logo.png"
         width="200px"
-        class="rounded-t-lg dark:invert-0 invert"
+        class="rounded-t-lg"
       />
       <p
         id="dominos_colour" class="px-3 py-1 rounded-full bg-green-500 text-white flex flex-row items-center justify-center gap-3"
       >
-        <span class="material-icons" id="dominos_toggle"> toggle_on </span> <span id="toggle_text">Enabled</span>
+        <img src="/assets/icon/circle-dot.svg" class="w-5 h-5 invert">Enabled</span>
       </p>
     </span>
     <br />
     <h3 class="text-2xl font-bold">Domino's Pizza Real Ordering</h3>
-    <span class="text-lg dark:text-white text-black"
+    <span class="text-lg text-white/80"
       >Order real food on your Wii, and get it delivered right to your door! Get
       live tracking updates and the status of your delivery right
       in-console!</span
     >
     <br />
-    <h4 class="text-2xl font-bold">Select your Wii Number</h4>
-    <br>
-    <div class="border-2 border-red-500/60 bg-red-500/30 px-6 py-3 rounded-lg">
+    <div class="border border-red-500/60 bg-red-500/30 p-3 rounded-lg">
       <b>Please note:</b> This feature is only available in the United States
       and Canada, and costs REAL money to use.
     </div>
     <br />
-    <hr class="dark:border-white/30 border-slate-800/30" />
-    <br />
-    <form method="post" action="/dominos/link">
-      <select name="dominos_wii_no" style="color: black;">
+    <span class="w-full">
+    <h4 class="text-xl font-bold">Select your Wii Number</h4>
+    <p class="mt-1 mb-3 text-lg text-white/80">Enable your console to make Domino's Pizza purchases on Food Channel.</p>
+    <form method="post" action="/dominos/link" class="flex flex-row items-center gap-3">
+      <select name="dominos_wii_no" class="!m-0 px-6 py-3 rounded-lg" style="color: black;">
         {{range $val := .wiiNumbers}}
         <option value="{{ $val }}">{{ $val }}</option>
         {{end}}
@@ -103,52 +51,13 @@
               style="text-decoration: none !important"
       >
         <b class="flex flex-row items-center justify-center gap-3"
-        ><span class="material-icons">local_pizza</span>Enable Domino's
+        ><img src="/assets/icon/1.svg" class="w-5 h-5 invert"> Enable Domino's
           Ordering</b
         >
       </button>
     </form>
-  </div>
-  <div
-    class="w-full p-5 rounded-lg border-2 border-green-300/30 bg-green-500/20 hover:-translate-y-1 z-10 flex flex-col justify-between relativ transition-all animation-fade-in-up opacity-0"
-    style="animation-delay: 0.3s"
-  >
-    <img
-      src="https://sso.riiconnect24.net/media/public/application-icons/image_znJeDXh.png"
-      width="100px"
-      class="rounded-t-lg"
-    />
-    <br />
-    <h3 class="text-2xl font-bold">WiiLink Forum</h3>
-    <span class="text-lg dark:text-white text-black"
-      >With your WiiLink Account you can access the WiiLink Forum! A place where
-      you can chat with, and receive help from, WiiLink Team Members and other
-      users!</span
-    >
-    <br />
-    <br />
-    <span>
-      <hr class="dark:border-white/30 border-slate-800/30" />
-      <br />
-      <div
-      class="bg-green-500 text-center px-6 py-3 rounded-lg hover:scale-[101%] active:scale-[99%] cursor-pointer transition-all"
-      >
-        <b class="flex flex-row items-center justify-center gap-3"
-          ><span class="material-icons">chat</span><a href="https://forum.wiilink.ca/">Check it out!</a></b
-        >
-      </div>
     </span>
   </div>
-</div>
-
-<div
-  class="mt-16 w-full p-5 rounded-lg border-2 border-dashed dark:border-white/30 border-black/30 flex flex-row items-center justify-center z-10 relative animation-fade-in-up opacity-0"
-  style="animation-delay: 0.4s"
->
-  <p class="flex flex-row items-center gap-3 opacity-30">
-    <span class="material-icons dark:text-white text-black">star</span
-    ><span class="dark:text-white text-black">More coming soon...</span>
-  </p>
 </div>
 
 <span class="animation-fade-in">
@@ -158,35 +67,29 @@
   ></div>
 </span>
 
-<span id="pfp" class="hidden">
-  <img src="https://gravatar.com/avatar/{{.pfp}}" height="40px" width="40px" class="bg-gray-300 dark:bg-slate-900/60 rounded-md" />
-</span>
-
-<script>
-  window.addEventListener("scroll", function () {
-    const parallaxBg = document.getElementById("parallax-bg");
-    const scrollPosition = window.scrollY;
-    parallaxBg.style.transform = "translateY(-" + scrollPosition * 0.5 + "px)";
-    if (scrollPosition > 100) {
-      parallaxBg.style.animationPlayState = "paused";
-    } else {
-      parallaxBg.style.animationPlayState = "running";
-    }
-  });
-
-  const date = new Date();
-  const hour = date.getHours();
-  const greeting = document.getElementById("greeting");
-  if (hour >= 0 && hour < 6) {
-    greeting.innerText = "Good night,";
-  } else if (hour >= 6 && hour < 12) {
-    greeting.innerText = "Good morning,";
-  } else if (hour >= 12 && hour < 18) {
-    greeting.innerText = "Good afternoon,";
-  } else {
-    greeting.innerText = "Good evening,";
+<style>
+  .animation-fade-in-up {
+    animation: fadeInUp 0.5s ease-out forwards;
   }
 
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+    .dissolve {
+      mask: linear-gradient(to bottom, black 0%, transparent 100%);
+      -webkit-mask: linear-gradient(to bottom, black 0%, transparent 100%);
+  }
+</style>
+
+<script>
   document.addEventListener('DOMContentLoaded', function() {
     // Dominos stuff
     const selectElement = document.getElementsByName("dominos_wii_no")[0];
@@ -200,9 +103,6 @@
       }
     {{ end }}
 
-    const username = "{{.username}}";
-    const pfp = "https://gravatar.com/avatar/{{.pfp}}";
-
     function setCookie(name, value, days) {
       const date = new Date();
       date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
@@ -212,71 +112,18 @@
 
     setCookie("wiilink_user", JSON.stringify({ username: username, pfp: pfp }), 7);
     setCookie("is_logged_in", "true", 7);
-
-    const gravatarUrl = pfp + "?d=404";
-    let pfpdata = `
-      <img
-        src="${gravatarUrl}"
-        height="100%"
-        width="100%"
-        class="bg-gray-300 dark:bg-slate-900/60 rounded-md"
-      />
-    `;
-
-    // Function to set username initial
-    function setUsernameInitial() {
-      const initial = username.charAt(0).toUpperCase();
-
-      pfpdata = `
-        <div class="bg-gradient-to-tr from-blue-400 to-green-500 rounded-md h-full w-full flex items-center justify-center">
-          <span class="username-initial text-2xl font-bold text-white capitalize">${initial}</span>
-        </div>
-      `;
-
-      document.getElementById("pfp").innerHTML = pfpdata;
-    }
-
-    fetch(gravatarUrl)
-      .then(response => {
-        if (response.status === 404) {
-          setUsernameInitial();
-        }
-        document.getElementById("headerpfp").innerHTML = pfpdata;
-      })
-      .catch(error => {
-        console.error('Error fetching Gravatar:', error);
-        setUsernameInitial();
-      });
   });
+
+  // Get the stupid data I can't get from within the login-script.html template
+  const username = "{{.username}}";
+  const pfp = "https://gravatar.com/avatar/{{.pfp}}";
+  const email = "{{.email}}";
+  let wiiNumbers = "{{.wiiNumbers}}";
+  wiiNumbers = wiiNumbers.replace(/[\[\]']+/g, '').split(',').map(item => item.trim());
 </script>
 
-<p class="mt-3 mb-20 opacity-30">
-  <span class="text-black dark:text-white"
-    >WiiLink Accounts is still in development, more features will be added
-    soon!</span
-  ><br /><br /><span
-    class="material-icons mr-2 translate-y-1 text-black dark:text-white"
-    >info</span
-  ><span class="text-black dark:text-white"
-    >Once WiiLink Accounts is finished, you will be able to view all data
-    associated to your Account (CMOC contests, EVC Polls, Subscription Status,
-    Wii Room Votes, and more) from here!</span
-  >
-</p>
+{{template "wii-script.html"}}
 
-<style>
-  .animation-hue-rotate {
-    animation: hue-rotate 30s infinite;
-  }
+{{template "login-script.html"}}
 
-  @keyframes hue-rotate {
-    0% {
-      filter: hue-rotate(0deg);
-    }
-
-    100% {
-      filter: hue-rotate(360deg);
-    }
-  }
-</style>
-{{template "footer.tmpl"}}
+{{template "footer.html"}}

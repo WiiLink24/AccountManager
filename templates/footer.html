@@ -1,0 +1,44 @@
+</div>
+   </div>
+
+    <script>
+        const sidebar = document.getElementById("sidebar");
+        const mobileMenuBtn = document.getElementById("mobileMenuBtn");
+        const closeSidebarBtn = document.getElementById("closeSidebarBtn");
+        const overlay = document.getElementById("sidebarOverlay");
+
+        mobileMenuBtn.addEventListener("click", () => {
+            sidebar.classList.remove("-translate-x-full");
+            overlay.classList.remove("hidden");
+            document.body.classList.add("overflow-hidden");
+        });
+
+        function closeSidebar() {
+            sidebar.classList.add("-translate-x-full");
+            overlay.classList.add("hidden");
+            document.body.classList.remove("overflow-hidden");
+        }
+
+        closeSidebarBtn.addEventListener("click", closeSidebar);
+        overlay.addEventListener("click", closeSidebar);
+
+        window.addEventListener("resize", () => {
+            if (window.innerWidth >= 768) {
+                overlay.classList.add("hidden");
+                document.body.classList.remove("overflow-hidden");
+            }
+        });
+
+        const sidebarLinks = document.querySelectorAll("#sidebar a");
+        sidebarLinks.forEach((link) => {
+            const linkUrl = new URL(link.href);
+            const currentUrl = new URL(window.location.href);
+
+            if (linkUrl.pathname === currentUrl.pathname) {
+                link.classList.add("!bg-blue-500");
+            }
+        });
+    </script>
+</body>
+
+</html>

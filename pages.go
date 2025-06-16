@@ -45,10 +45,12 @@ func HomePage(c *gin.Context) {
 			c.HTML(http.StatusOK, "not_linked.html", gin.H{
 				"username": username,
 				"pfp":      pfp,
+				"email":    email,
 			})
 		} else {
 			c.HTML(http.StatusOK, "not_linked.html", gin.H{
 				"username": username,
+				"email":    email,
 			})
 		}
 	}

@@ -1,4 +1,4 @@
-{{template "base.tmpl"}}
+{{template "base.html"}}
 <div id="particles-js"
   class="spin top-0 left-0 w-full h-full -translate-x-[0rem] opacity-30 invert dark:invert-0 z-0 absolute"></div>
 <div class="left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-screen h-screen z-1 absolute">
@@ -8,10 +8,10 @@
   class="left-0 top-0 w-[calc(100%+16rem)] dissolve -translate-y-80 brightness-[1000%] opacity-20 invert dark:invert-0 z-0 absolute"
   alt="WiiLink Pattern Background" />
 
-<div class="sm:top-0 top-10 h-screen w-full flex items-center justify-center z-10 relative">
+<div class="w-full max-w-[1000px] !text-white flex items-center justify-center z-10 relative">
   <div class="pl-3 pr-3 sm:flex md:flex-row flex-col items-center gap-5">
     <div>
-      <h1 id="greeting">What's up,</h1>
+      <h1 id="greeting" class="mb-3 text-3xl font-bold">What's up,</h1>
       <h2 class="flex flex-row items-center gap-3 text-2xl sm:text-4xl">
         <span id="pfp" class="w-[50px] h-[50px]">
         <img
@@ -39,14 +39,10 @@
       from the Check Mii Out Channel, Everybody Votes Channel, LinkTag and your Digicard.
       You can also use our Forum <a href="https://forum.wiilink.ca">here</a> without linking a console!
       <br><br>
-      <div class="p-3 bg-black/10 dark:bg-white/10 backdrop-blur-md rounded-lg">
-        <b>
-          Need help getting setup? Follow our <a href="https://wiilink.ca/guide/accounts">setup guide</a>.</b>
-      </div><br />
       <span class="flex flex-col sm:flex-row items-start gap-3">
         <a href=""
           class="w-full sm:w-[280px] px-6 py-3 rounded-md bg-black/10 dark:bg-white/10 hover:scale-105 active:scale-95 backdrop-blur-md flex flex-row items-center gap-3 transition-all"
-          style="text-decoration: none !important;"><span class="material-icons text-black dark:text-white">sync</span>
+          style="text-decoration: none !important;"><img src="/assets/icon/refresh-cw.svg" alt="Icon" class="w-5 h-5 invert mr-2" />
           <span class="text-black dark:text-white">Reload the
             page</span></a>
         <span class="opacity-30">Refresh the site after linking your console to access all features.</span>
@@ -71,6 +67,10 @@
     </div>
   </div>
 </div>
+        <div class="mt-10 p-3 !text-white bg-black/5 dark:bg-white/5 backdrop-blur-md rounded-lg">
+        <b>
+          Need help getting setup? Follow our <u><a href="https://wiilink.ca/guide/accounts">setup guide</a></u>.</b>
+      </div>
 
 <script src="/assets/particles/particles.min.js"></script>
 <script>
@@ -81,8 +81,8 @@
   // Generate QR code of the download link
   new QRCode(document.getElementById("qrcode"), {
     text: link,
-    width: 512, // Set the desired width
-    height: 512, // Set the desired height
+    width: 512,
+    height: 512,
   });
 
   document.getElementById("download").href = link;
@@ -100,54 +100,19 @@
     greeting.innerText = "Good evening,";
   }
 
-  document.addEventListener('DOMContentLoaded', function() {
-    const username = "{{.username}}";
-    const pfp = "https://gravatar.com/avatar/{{.pfp}}";
-    const gravatarUrl = pfp + "?d=404";
-    let pfpdata = `
-      <img
-        src="${gravatarUrl}"
-        height="100%"
-        width="100%"
-        class="bg-gray-300 dark:bg-slate-900/60 rounded-md"
-      />
-    `;
-
-    function setCookie(name, value, days) {
-      const date = new Date();
-      date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
-      const expires = "expires=" + date.toUTCString();
-      document.cookie = name + "=" + value + ";" + expires + ";path=/;domain=.wiilink.ca;Secure";
-    }
-
-    setCookie("wiilink_user", JSON.stringify({ username: username, pfp: pfp }), 7);
-    setCookie("is_logged_in", "true", 7);
-
-    // Function to set username initial
-    function setUsernameInitial() {
-      const username = "{{.username}}";
-      const initial = username.charAt(0).toUpperCase();
-
-      pfpdata = `
-        <div class="bg-gradient-to-tr from-blue-400 to-green-500 rounded-md h-full w-full flex items-center justify-center">
-          <span class="username-initial text-2xl font-bold text-white capitalize">${initial}</span>
-        </div>
-      `;
-
-      document.getElementById("pfp").innerHTML = pfpdata;
-    }
-
-    fetch(gravatarUrl)
-      .then(response => {
-        if (response.status === 404) {
-          setUsernameInitial();
-        }
-        document.getElementById("headerpfp").innerHTML = pfpdata;
-      })
-      .catch(error => {
-        console.error('Error fetching Gravatar:', error);
-        setUsernameInitial();
-      });
-  });
+  // Get the stupid data I can't get from within the login-script.html template
+  const username = "{{.username}}";
+  const pfp = "https://gravatar.com/avatar/{{.pfp}}";
+  const email = "{{.email}}";
 </script>
-{{template "footer.tmpl"}}
+
+<style>
+  .dissolve {
+      mask: linear-gradient(to bottom, black 0%, transparent 100%);
+      -webkit-mask: linear-gradient(to bottom, black 0%, transparent 100%);
+  }
+</style>
+
+{{template "login-script.html"}}
+
+{{template "footer.html"}}
