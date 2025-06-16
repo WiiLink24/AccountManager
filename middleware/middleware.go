@@ -30,6 +30,7 @@ func AuthenticationMiddleware(verifier *oidc.IDTokenVerifier) gin.HandlerFunc {
 
 		// Parse custom claims if needed.
 		var claims struct {
+			UserId   string            `json:"sub"`
 			Email    string            `json:"email"`
 			Username string            `json:"preferred_username"`
 			Wiis     []string          `json:"wiis"`
@@ -59,6 +60,7 @@ func AuthenticationMiddleware(verifier *oidc.IDTokenVerifier) gin.HandlerFunc {
 			return
 		}
 
+		c.Set("uid", claims.UserId)
 		c.Set("wiis", claims.Wiis)
 		c.Set("wwfc", claims.WWFC)
 		c.Set("dominos", claims.Dominos)

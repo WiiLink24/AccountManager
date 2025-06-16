@@ -77,8 +77,7 @@ func main() {
 	{
 		auth.GET("/manage", HomePage)
 		auth.GET("/notlinked", NotLinkedPage)
-		auth.GET("/dominos/link", linkDominos)
-		auth.GET("/dominos/unlink", unlinkDominos)
+		auth.POST("/dominos/link", linkDominos)
 		auth.GET("/logout", logout)
 	}
 

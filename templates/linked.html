@@ -84,11 +84,6 @@
     >
     <br />
     <h4 class="text-2xl font-bold">Select your Wii Number</h4>
-    <select name="dominos_wii" style="color: black;">
-      {{range $val := .wiiNumbers}}
-      <option value="{{ $val }}">{{ $val }}</option>
-      {{end}}
-    </select>
     <br>
     <div class="border-2 border-red-500/60 bg-red-500/30 px-6 py-3 rounded-lg">
       <b>Please note:</b> This feature is only available in the United States
@@ -97,29 +92,22 @@
     <br />
     <hr class="dark:border-white/30 border-slate-800/30" />
     <br />
-    {{if .linked_dominos}}
-    <a
-      href="/dominos/unlink"
-      class="bg-red-500 text-center px-6 py-3 rounded-lg hover:scale-[101%] active:scale-[99%] cursor-pointer transition-all"
-      style="text-decoration: none !important"
-    >
-      <b class="flex flex-row items-center justify-center gap-3"
-        ><span class="material-icons">local_pizza</span>Disable Domino's
-        Ordering</b
+    <form method="post" action="/dominos/link">
+      <select name="dominos_wii_no" style="color: black;">
+        {{range $val := .wiiNumbers}}
+        <option value="{{ $val }}">{{ $val }}</option>
+        {{end}}
+      </select>
+      <button
+              class="bg-green-500 text-center px-6 py-3 rounded-lg hover:scale-[101%] active:scale-[99%] cursor-pointer transition-all"
+              style="text-decoration: none !important"
       >
-    </a>
-    {{else}}
-    <a
-      href="/dominos/link"
-      class="bg-green-500 text-center px-6 py-3 rounded-lg hover:scale-[101%] active:scale-[99%] cursor-pointer transition-all"
-      style="text-decoration: none !important"
-    >
-      <b class="flex flex-row items-center justify-center gap-3"
+        <b class="flex flex-row items-center justify-center gap-3"
         ><span class="material-icons">local_pizza</span>Enable Domino's
-        Ordering</b
-      >
-    </a>
-    {{end}}
+          Ordering</b
+        >
+      </button>
+    </form>
   </div>
   <div
     class="w-full p-5 rounded-lg border-2 border-green-300/30 bg-green-500/20 hover:-translate-y-1 z-10 flex flex-col justify-between relativ transition-all animation-fade-in-up opacity-0"
@@ -201,7 +189,7 @@
 
   document.addEventListener('DOMContentLoaded', function() {
     // Dominos stuff
-    const selectElement = document.getElementsByName("dominos_wii")[0];
+    const selectElement = document.getElementsByName("dominos_wii_no")[0];
     const selectedValue = selectElement.value;
 
     {{ range $index, $item := .dominos }}
