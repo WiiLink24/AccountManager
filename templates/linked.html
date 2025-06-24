@@ -123,7 +123,8 @@
   const pfp = "https://gravatar.com/avatar/{{.pfp}}";
   const email = "{{.email}}";
   let wiiNumbers = "{{.wiiNumbers}}";
-  wiiNumbers = wiiNumbers.replace(/[\[\]']+/g, '').split(',').map(item => item.trim());
+  wiiNumbers = wiiNumbers.trim().replace(/^\[|\]$/g, '').split(/\s+/);
+
 </script>
 
 {{template "wii-script.html"}}

@@ -10,7 +10,7 @@
                     <img src="/assets/icon/dollar-sign.svg" alt="Icon" class="w-5 h-5 invert mr-2" /> Donate
                 </a>
     </span>
-    <span onclick="toggleSidebar()" class="p-1 px-2 rounded-lg hover:bg-slate-600/60 w-full flex flex-row items-center justify-between gap-3 overflow-hidden transition-all">
+    <span onclick="toggleSidebar()" class="p-1 px-2 rounded-lg hover:bg-slate-600/60 w-full flex flex-row items-center justify-between gap-3 overflow-hidden transition-all cursor-pointer">
       <img
         src="${gravatarUrl}"
         class="w-10 h-10 bg-gray-300 dark:bg-slate-900/60 rounded-md"
@@ -80,10 +80,6 @@
 
   function toggleSidebar() {
     const editMenu = document.getElementById("edit");
-    if (editMenu.style.opacity === "1") {
-      editMenu.classList.add("hidden");
-    } else {
-      editMenu.classList.remove("hidden");
-    }
+    editMenu.classList.toggle("hidden");
   }
 </script>
