@@ -1,7 +1,6 @@
 package main
 
 import (
-	"bytes"
 	"encoding/json"
 	"errors"
 	"fmt"
@@ -81,16 +80,15 @@ func linkDominos(c *gin.Context) {
 	wwfc, _ := c.Get("wwfc")
 	dominos, _ := c.Get("dominos")
 	uid, _ := c.Get("uid")
-	url := fmt.Sprintf("https://sso.riiconnect24.net/api/v3/core/users/%s/", uid)
 	tokenString, _ := c.Cookie("token")
 
-	for i, m := range dominos.([]map[string]bool) {
-		for k := range m {
-			if k == wiiNoStr {
-				dominos.([]map[string]bool)[i][k] = true
-			}
-		}
+	// Toggle the linkage
+	if dominos.(map[string]bool)[wiiNoStr] {
+		dominos.(map[string]bool)[wiiNoStr] = false
+	} else {
+		dominos.(map[string]bool)[wiiNoStr] = true
 	}
+
 	payload := map[string]any{
 		"attributes": map[string]any{
 			"wiis":    wiis,
@@ -99,38 +97,12 @@ func linkDominos(c *gin.Context) {
 		},
 	}
 
-	data, err := json.Marshal(payload)
+	err = updateUserRequest(uid, tokenString, payload)
 	if err != nil {
-		c.JSON(http.StatusOK, gin.H{
-			"success": false,
-			"error":   "failed to marshal payload",
+		c.HTML(http.StatusInternalServerError, "error.html", gin.H{
+			"Error": err.Error(),
 		})
 	}
-
-	client := &http.Client{}
-	req, err := http.NewRequest("PATCH", url, bytes.NewReader(data))
-	if err != nil {
-		c.JSON(http.StatusOK, gin.H{
-			"success": false,
-			"error":   "failed to create request",
-		})
-	}
-
-	req.Header.Add("Content-Type", "application/json")
-	req.Header.Add("Accept", "application/json")
-	req.Header.Add("Authorization", fmt.Sprintf("Bearer %s", tokenString))
-
-	httpResp, err := client.Do(req)
-	if err != nil {
-		c.JSON(http.StatusOK, gin.H{
-			"success": false,
-			"error":   "failed to send request",
-		})
-	}
-
-	defer httpResp.Body.Close()
-	body, err := io.ReadAll(httpResp.Body)
-	fmt.Println(string(body))
 
 	c.Redirect(http.StatusFound, "/manage")
 }

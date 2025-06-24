@@ -11,6 +11,36 @@ import (
 	"strconv"
 )
 
+func updateUserRequest(uid any, authorization string, payload map[string]any) error {
+	url := fmt.Sprintf("https://sso.riiconnect24.net/api/v3/core/users/%s/", uid)
+
+	data, err := json.Marshal(payload)
+	if err != nil {
+		return fmt.Errorf("failed to marshal payload")
+	}
+
+	client := &http.Client{}
+	req, err := http.NewRequest("PATCH", url, bytes.NewReader(data))
+	if err != nil {
+		return fmt.Errorf("failed to create request")
+	}
+
+	req.Header.Add("Content-Type", "application/json")
+	req.Header.Add("Accept", "application/json")
+	req.Header.Add("Authorization", fmt.Sprintf("Bearer %s", authorization))
+
+	resp, err := client.Do(req)
+	if err != nil {
+		return fmt.Errorf("failed to send request")
+	}
+
+	if resp.StatusCode != http.StatusOK {
+		return fmt.Errorf("failed to update user")
+	}
+
+	return nil
+}
+
 func link(c *gin.Context) {
 	wiiNumber := c.PostForm("wii_num")
 	wwfcCert := c.PostForm("cert")
@@ -84,19 +114,12 @@ func link(c *gin.Context) {
 		})
 	}
 
-	if len(dominos.([]map[string]bool)) == 0 {
-		dominos = append(dominos.([]map[string]bool), map[string]bool{wiiNumber: false})
-	} else if !slices.ContainsFunc(dominos.([]map[string]bool), func(s map[string]bool) bool {
-		// Dominos is a []map[string]bool
-		for k, _ := range s {
-			if k == wiiNumber {
-				return true
-			}
-		}
-
-		return false
-	}) {
-		dominos = append(dominos.([]map[string]bool), map[string]bool{wiiNumber: false})
+	dMap := dominos.(map[string]bool)
+	if len(dMap) == 0 {
+		dMap = map[string]bool{wiiNumber: false}
+	} else if _, ok := dMap[wiiNumber]; !ok {
+		// Dictionary is not empty, and the current Wii Number is not present.
+		dMap[wiiNumber] = false
 	}
 
 	uid, ok := c.Get("uid")
@@ -107,51 +130,21 @@ func link(c *gin.Context) {
 		})
 	}
 
-	url := fmt.Sprintf("https://sso.riiconnect24.net/api/v3/core/users/%s/", uid)
-
 	tokenString := c.GetHeader("Authorization")
 
 	payload := map[string]any{
 		"attributes": map[string]any{
 			"wiis":    wiis,
 			"wwfc":    wwfc,
-			"dominos": dominos,
+			"dominos": dMap,
 		},
 	}
 
-	data, err := json.Marshal(payload)
+	err = updateUserRequest(uid, tokenString, payload)
 	if err != nil {
 		c.JSON(http.StatusOK, gin.H{
 			"success": false,
-			"error":   "failed to marshal payload",
-		})
-	}
-
-	client := &http.Client{}
-	req, err := http.NewRequest("PATCH", url, bytes.NewReader(data))
-	if err != nil {
-		c.JSON(http.StatusOK, gin.H{
-			"success": false,
-			"error":   "failed to create request",
-		})
-	}
-
-	req.Header.Add("Content-Type", "application/json")
-	req.Header.Add("Accept", "application/json")
-	req.Header.Add("Authorization", fmt.Sprintf("Bearer %s", tokenString))
-
-	resp, err := client.Do(req)
-	if err != nil {
-		c.JSON(http.StatusOK, gin.H{
-			"success": false,
-			"error":   "failed to send request",
-		})
-	}
-
-	if resp.StatusCode != http.StatusOK {
-		c.JSON(http.StatusOK, gin.H{
-			"success": true,
-			"error":   "failed to update user",
+			"error":   err.Error(),
 		})
 	}
 

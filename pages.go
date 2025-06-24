@@ -29,14 +29,14 @@ func HomePage(c *gin.Context) {
 				"email":      email,
 				"pfp":        pfp,
 				"wiiNumbers": wiis.([]string),
-				"dominos":    dominos.([]map[string]bool),
+				"dominos":    dominos.(map[string]bool),
 			})
 		} else {
 			c.HTML(http.StatusOK, "linked.html", gin.H{
 				"username":   username,
 				"email":      email,
 				"wiiNumbers": wiis.([]string),
-				"dominos":    dominos.([]map[string]bool),
+				"dominos":    dominos.(map[string]bool),
 			})
 		}
 	} else {

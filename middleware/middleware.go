@@ -29,12 +29,12 @@ func AuthenticationMiddleware(verifier *oidc.IDTokenVerifier) gin.HandlerFunc {
 
 		// Parse custom claims if needed.
 		var claims struct {
-			UserId   string            `json:"sub"`
-			Email    string            `json:"email"`
-			Username string            `json:"preferred_username"`
-			Wiis     []string          `json:"wiis"`
-			WWFC     []string          `json:"wwfc"`
-			Dominos  []map[string]bool `json:"dominos"`
+			UserId   string          `json:"sub"`
+			Email    string          `json:"email"`
+			Username string          `json:"preferred_username"`
+			Wiis     []string        `json:"wiis"`
+			WWFC     []string        `json:"wwfc"`
+			Dominos  map[string]bool `json:"dominos"`
 		}
 
 		if err = idToken.Claims(&claims); err != nil {
@@ -88,14 +88,14 @@ func AuthenticationPOSTMiddleware(verifier *oidc.IDTokenVerifier) gin.HandlerFun
 
 		// Parse custom claims if needed.
 		var claims struct {
-			Email    string            `json:"email"`
-			Username string            `json:"preferred_username"`
-			Name     string            `json:"name"`
-			UserId   string            `json:"sub"`
-			Groups   []string          `json:"groups"`
-			Wiis     []string          `json:"wiis"`
-			WWFC     []string          `json:"wwfc"`
-			Dominos  []map[string]bool `json:"dominos"`
+			Email    string          `json:"email"`
+			Username string          `json:"preferred_username"`
+			Name     string          `json:"name"`
+			UserId   string          `json:"sub"`
+			Groups   []string        `json:"groups"`
+			Wiis     []string        `json:"wiis"`
+			WWFC     []string        `json:"wwfc"`
+			Dominos  map[string]bool `json:"dominos"`
 		}
 
 		if err = idToken.Claims(&claims); err != nil {

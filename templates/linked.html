@@ -91,21 +91,29 @@
 </style>
 
 <script>
+  function toggleDominosUI(selectedValue) {
+    if ({{.dominos}}[selectedValue] !== undefined) {
+      document.getElementById("dominos_colour").className = {{.dominos}}[selectedValue] ? "px-3 py-1 rounded-full bg-green-500 text-white flex flex-row items-center justify-center gap-3" : "px-3 py-1 rounded-full bg-red-500/60 text-white flex flex-row items-center gap-3";
+      document.getElementById("status_text").textContent = {{.dominos}}[selectedValue] ? "Enabled" : "Disabled";
+      document.getElementById("toggle_text").textContent = {{.dominos}}[selectedValue] ? "Disable Dominos Ordering" : "Enable Dominos Ordering";
+      if ({{.dominos}}[selectedValue]) {
+        document.getElementById("toggle_button").classList.replace("bg-green-500", "bg-red-500")
+      } else {
+        document.getElementById("toggle_button").classList.replace("bg-red-500", "bg-green-500")
+      }
+    }
+  }
+
+  const selectElement = document.getElementsByName("dominos_wii_no")[0];
+  selectElement.addEventListener("change", function () {
+    toggleDominosUI(this.value);
+  });
+
   document.addEventListener('DOMContentLoaded', function() {
     // Dominos stuff
     const selectElement = document.getElementsByName("dominos_wii_no")[0];
     const selectedValue = selectElement.value;
-
-    {{ range $index, $item := .dominos }}
-      if ({{$item}}[selectedValue] !== undefined) {
-        document.getElementById("dominos_colour").className = {{$item}}[selectedValue] ? "px-3 py-1 rounded-full bg-green-500 text-white flex flex-row items-center justify-center gap-3" : "px-3 py-1 rounded-full bg-red-500/60 text-white flex flex-row items-center gap-3";
-        document.getElementById("status_text").textContent = {{$item}}[selectedValue] ? "Enabled" : "Disabled";
-        document.getElementById("toggle_text").textContent = {{$item}}[selectedValue] ? "Disable Dominos Ordering" : "Enable Dominos Ordering";
-        if ({{$item}}[selectedValue]) {
-          document.getElementById("toggle_button").classList.replace("bg-green-500", "bg-red-500")
-        }
-      }
-    {{ end }}
+    toggleDominosUI(selectedValue);
 
     function setCookie(name, value, days) {
       const date = new Date();
