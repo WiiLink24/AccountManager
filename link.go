@@ -11,11 +11,6 @@ import (
 	"strconv"
 )
 
-const (
-	IsValidHash  = `SELECT EXISTS(SELECT 1 FROM accounts WHERE password = $1)`
-	GetWiiNumber = `SELECT mlid FROM accounts WHERE password = $1`
-)
-
 func link(c *gin.Context) {
 	wiiNumber := c.PostForm("wii_num")
 	wwfcCert := c.PostForm("cert")
