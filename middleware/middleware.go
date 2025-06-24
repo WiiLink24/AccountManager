@@ -13,7 +13,6 @@ func AuthenticationMiddleware(verifier *oidc.IDTokenVerifier) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		tokenString, err := c.Cookie("token")
 		if err != nil {
-			// We can't redirect off an Unauthorized status code.
 			c.Redirect(http.StatusFound, "/login")
 			c.Abort()
 			return

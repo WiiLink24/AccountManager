@@ -71,23 +71,15 @@ func FinishPanelHandler(c *gin.Context) {
 		return
 	}
 
-	rawIdtoken := oauth2Token.Extra("id_token").(string)
-	if rawIdtoken == "" {
-		c.HTML(http.StatusBadRequest, "error.html", gin.H{
-			"Error": "No id_token in response",
-		})
-		return
-	}
-
-	idToken, err := verifier.Verify(c, rawIdtoken)
+	accessToken, err := verifier.Verify(c, oauth2Token.AccessToken)
 	if err != nil {
 		c.HTML(http.StatusBadRequest, "error.html", gin.H{
-			"Error": "Failed to verify id_token: " + err.Error(),
+			"Error": "Failed to verify access_token: " + err.Error(),
 		})
 		return
 	}
 
-	c.SetCookie("token", rawIdtoken, idToken.Expiry.Second(), "", "", false, true)
+	c.SetCookie("token", oauth2Token.AccessToken, accessToken.Expiry.Second(), "", "", false, true)
 
 	//redirect to admin page
 	c.Redirect(http.StatusFound, "/manage")
