@@ -71,7 +71,7 @@ func FinishPanelHandler(c *gin.Context) {
 		return
 	}
 
-	accessToken, err := verifier.Verify(c, oauth2Token.AccessToken)
+	_, err = verifier.Verify(c, oauth2Token.AccessToken)
 	if err != nil {
 		c.HTML(http.StatusBadRequest, "error.html", gin.H{
 			"Error": "Failed to verify access_token: " + err.Error(),
@@ -79,7 +79,8 @@ func FinishPanelHandler(c *gin.Context) {
 		return
 	}
 
-	c.SetCookie("token", oauth2Token.AccessToken, accessToken.Expiry.Second(), "", "", false, true)
+	c.SetCookie("token", oauth2Token.AccessToken, oauth2Token.Expiry.Second(), "", "", false, true)
+	c.SetCookie("refresh_token", oauth2Token.RefreshToken, oauth2Token.Expiry.Second(), "", "", false, true)
 
 	//redirect to admin page
 	c.Redirect(http.StatusFound, "/manage")

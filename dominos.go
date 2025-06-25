@@ -9,8 +9,51 @@ import (
 	"io"
 	"net"
 	"net/http"
+	"net/url"
 	"strconv"
+	"strings"
 )
+
+type refreshResult struct {
+	AccessToken  string `json:"access_token"`
+	RefreshToken string `json:"refresh_token"`
+	ExpiresIn    int    `json:"expires_in"`
+}
+
+func getNewToken(refreshToken string) (*refreshResult, error) {
+	formData := url.Values{}
+	formData.Set("grant_type", "refresh_token")
+	formData.Set("refresh_token", refreshToken)
+	formData.Set("client_id", config.OIDCConfig.ClientID)
+	formData.Set("client_secret", config.OIDCConfig.ClientSecret)
+
+	client := &http.Client{}
+	req, err := http.NewRequest("POST", "https://sso.riiconnect24.net/application/o/token/", strings.NewReader(formData.Encode()))
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Set("Content-Type", "application/x-www-form-urlencoded")
+
+	resp, err := client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+
+	defer resp.Body.Close()
+	body, err := io.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+
+	var result refreshResult
+	err = json.Unmarshal(body, &result)
+	if err != nil {
+		return nil, err
+	}
+
+	return &result, nil
+}
 
 func linkDominos(c *gin.Context) {
 	wiiNoStr := c.PostForm("dominos_wii_no")
@@ -73,6 +116,7 @@ func linkDominos(c *gin.Context) {
 		c.HTML(http.StatusInternalServerError, "error.html", gin.H{
 			"Error": result["error"].(string),
 		})
+		return
 	}
 
 	// Finally we toggle linked in authentik API.
@@ -102,7 +146,21 @@ func linkDominos(c *gin.Context) {
 		c.HTML(http.StatusInternalServerError, "error.html", gin.H{
 			"Error": err.Error(),
 		})
+		return
 	}
+
+	// Refresh the token so our new changes are reflected on the page
+	refreshToken, _ := c.Cookie("refresh_token")
+	newToken, err := getNewToken(refreshToken)
+	if err != nil {
+		c.HTML(http.StatusInternalServerError, "error.html", gin.H{
+			"Error": err.Error(),
+		})
+		return
+	}
+
+	c.SetCookie("token", newToken.AccessToken, newToken.ExpiresIn, "", "", false, true)
+	c.SetCookie("refresh_token", newToken.RefreshToken, newToken.ExpiresIn, "", "", false, true)
 
 	c.Redirect(http.StatusFound, "/manage")
 }

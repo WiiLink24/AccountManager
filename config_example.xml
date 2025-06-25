@@ -7,7 +7,7 @@
         <clientID></clientID>
         <clientSecret></clientSecret>
         <redirectURL>http://localhost:9011/authorize</redirectURL>
-        <scopes>openid profile email goauthentik.io/api wii</scopes>
+        <scopes>openid profile email goauthentik.io/api wii offline_access</scopes>
         <provider></provider>
         <logoutURL></logoutURL>
     </oidc>
