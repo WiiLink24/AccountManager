@@ -15,6 +15,7 @@ RUN go mod download
 COPY *.go ./
 COPY middleware middleware
 COPY assets assets
+COPY templates templates
 
 # Build to name "app".
 RUN go build -o app .
