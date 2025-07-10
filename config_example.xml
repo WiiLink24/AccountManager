@@ -10,5 +10,6 @@
         <scopes>openid profile email goauthentik.io/api wii offline_access</scopes>
         <provider></provider>
         <logoutURL></logoutURL>
+        <serviceAccountToken></serviceAccountToken>
     </oidc>
 </Config>

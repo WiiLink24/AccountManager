@@ -124,7 +124,6 @@ func linkDominos(c *gin.Context) {
 	wwfc, _ := c.Get("wwfc")
 	dominos, _ := c.Get("dominos")
 	uid, _ := c.Get("uid")
-	tokenString, _ := c.Cookie("token")
 
 	// Toggle the linkage
 	if dominos.(map[string]bool)[wiiNoStr] {
@@ -141,7 +140,7 @@ func linkDominos(c *gin.Context) {
 		},
 	}
 
-	err = updateUserRequest(uid, tokenString, payload)
+	err = updateUserRequest(uid, payload)
 	if err != nil {
 		c.HTML(http.StatusInternalServerError, "error.html", gin.H{
 			"Error": err.Error(),

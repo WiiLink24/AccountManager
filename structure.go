@@ -7,13 +7,14 @@ import (
 )
 
 type OIDCConfig struct {
-	XMLName      xml.Name `xml:"oidc"`
-	ClientID     string   `xml:"clientID"`
-	ClientSecret string   `xml:"clientSecret"`
-	RedirectURL  string   `xml:"redirectURL"`
-	Scopes       []string `xml:"scopes"`
-	Provider     string   `xml:"provider"`
-	LogoutURL    string   `xml:"logoutURL"`
+	XMLName             xml.Name `xml:"oidc"`
+	ClientID            string   `xml:"clientID"`
+	ClientSecret        string   `xml:"clientSecret"`
+	RedirectURL         string   `xml:"redirectURL"`
+	Scopes              []string `xml:"scopes"`
+	Provider            string   `xml:"provider"`
+	LogoutURL           string   `xml:"logoutURL"`
+	ServiceAccountToken string   `xml:"serviceAccountToken"`
 }
 
 type Config struct {

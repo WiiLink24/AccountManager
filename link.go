@@ -11,7 +11,7 @@ import (
 	"strconv"
 )
 
-func updateUserRequest(uid any, authorization string, payload map[string]any) error {
+func updateUserRequest(uid any, payload map[string]any) error {
 	url := fmt.Sprintf("https://sso.riiconnect24.net/api/v3/core/users/%s/", uid)
 
 	data, err := json.Marshal(payload)
@@ -27,7 +27,7 @@ func updateUserRequest(uid any, authorization string, payload map[string]any) er
 
 	req.Header.Add("Content-Type", "application/json")
 	req.Header.Add("Accept", "application/json")
-	req.Header.Add("Authorization", fmt.Sprintf("Bearer %s", authorization))
+	req.Header.Add("Authorization", fmt.Sprintf("Bearer %s", config.OIDCConfig.ServiceAccountToken))
 
 	resp, err := client.Do(req)
 	if err != nil {
@@ -130,8 +130,6 @@ func link(c *gin.Context) {
 		})
 	}
 
-	tokenString := c.GetHeader("Authorization")
-
 	payload := map[string]any{
 		"attributes": map[string]any{
 			"wiis":    wiis,
@@ -140,7 +138,7 @@ func link(c *gin.Context) {
 		},
 	}
 
-	err = updateUserRequest(uid, tokenString, payload)
+	err = updateUserRequest(uid, payload)
 	if err != nil {
 		c.JSON(http.StatusOK, gin.H{
 			"success": false,
