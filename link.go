@@ -41,6 +41,10 @@ func updateUserRequest(uid any, payload map[string]any) error {
 	return nil
 }
 
+func linkRedirect(c *gin.Context) {
+	c.Redirect(http.StatusFound, "https://sso.riiconnect24.net/device")
+}
+
 func link(c *gin.Context) {
 	wiiNumber := c.PostForm("wii_num")
 	wwfcCert := c.PostForm("cert")

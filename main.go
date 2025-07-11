@@ -74,6 +74,7 @@ func main() {
 
 	// Routes for linking
 	linker := r.Group("/link")
+	linker.GET("/", linkRedirect)
 	linker.Use(middleware.AuthenticationPOSTMiddleware(verifier))
 	{
 		linker.POST("/wii", link)
