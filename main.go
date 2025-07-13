@@ -70,6 +70,7 @@ func main() {
 		auth.GET("/notlinked", NotLinkedPage)
 		auth.POST("/dominos/link", linkDominos)
 		auth.GET("/logout", logout)
+		auth.GET("/refresh", refresh)
 	}
 
 	// Routes for linking

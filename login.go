@@ -91,3 +91,19 @@ func logout(c *gin.Context) {
 	setCallbackCookie(c.Writer, c.Request, "token", "")
 	c.Redirect(http.StatusFound, config.OIDCConfig.LogoutURL)
 }
+
+func refresh(c *gin.Context) {
+	refreshToken, _ := c.Cookie("refresh_token")
+	newToken, err := getNewToken(refreshToken)
+	if err != nil {
+		c.HTML(http.StatusInternalServerError, "error.html", gin.H{
+			"Error": err.Error(),
+		})
+		return
+	}
+
+	c.SetCookie("token", newToken.AccessToken, newToken.ExpiresIn, "", "", false, true)
+	c.SetCookie("refresh_token", newToken.RefreshToken, newToken.ExpiresIn, "", "", false, true)
+
+	c.Redirect(http.StatusFound, "/manage")
+}
