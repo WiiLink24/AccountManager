@@ -73,12 +73,13 @@ func main() {
 		auth.GET("/refresh", refresh)
 	}
 
-	// Routes for linking
-	linker := r.Group("/link")
-	linker.GET("/", linkRedirect)
-	linker.Use(middleware.AuthenticationPOSTMiddleware(verifier))
+	// Routes for API
+	api := r.Group("/link")
+	api.GET("/", linkRedirect)
+	api.Use(middleware.AuthenticationPOSTMiddleware(verifier))
 	{
-		linker.POST("/wii", link)
+		api.POST("/link", link)
+		api.GET("/user/:uid", getUser)
 	}
 
 	// Start the server
