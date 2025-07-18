@@ -79,7 +79,7 @@ func main() {
 	api.Use(middleware.AuthenticationPOSTMiddleware(verifier))
 	{
 		api.POST("/link", link)
-		api.GET("/user/:uid", getUser)
+		api.GET("/user", getUser)
 	}
 
 	// Start the server

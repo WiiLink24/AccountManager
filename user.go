@@ -45,7 +45,7 @@ func getUserRequest(uid any) (map[string]any, error) {
 }
 
 func getUser(c *gin.Context) {
-	uid := c.Param("uid")
+	uid, _ := c.Get("uid")
 
 	attrs, err := getUserRequest(uid)
 	if err != nil {
