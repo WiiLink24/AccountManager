@@ -78,7 +78,7 @@ func main() {
 	api.GET("/", linkRedirect)
 	api.Use(middleware.AuthenticationPOSTMiddleware(verifier))
 	{
-		api.POST("/link", link)
+		api.POST("/wii", link)
 		api.GET("/user", getUser)
 	}
 
