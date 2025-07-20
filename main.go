@@ -82,6 +82,9 @@ func main() {
 		api.GET("/user", getUser)
 	}
 
+	// Start the socket
+	go justEatSocketListen()
+
 	// Start the server
 	fmt.Printf("Starting HTTP connection (%s)...\nNot using the usual port for HTTP?\nBe sure to use a proxy, otherwise the Wii can't connect!\n", config.Address)
 	log.Fatalln(r.Run(config.Address))

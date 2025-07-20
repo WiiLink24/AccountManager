@@ -123,6 +123,7 @@ func linkDominos(c *gin.Context) {
 	wiis, _ := c.Get("wiis")
 	wwfc, _ := c.Get("wwfc")
 	dominos, _ := c.Get("dominos")
+	justEat, _ := c.Get("just_eat")
 	uid, _ := c.Get("uid")
 
 	// Toggle the linkage
@@ -134,9 +135,10 @@ func linkDominos(c *gin.Context) {
 
 	payload := map[string]any{
 		"attributes": map[string]any{
-			"wiis":    wiis,
-			"wwfc":    wwfc,
-			"dominos": dominos,
+			"wiis":     wiis,
+			"wwfc":     wwfc,
+			"dominos":  dominos,
+			"just_eat": justEat,
 		},
 	}
 

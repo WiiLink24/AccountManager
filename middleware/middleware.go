@@ -9,6 +9,34 @@ import (
 	"net/http"
 )
 
+type Claims struct {
+	Email    string          `json:"email"`
+	Username string          `json:"preferred_username"`
+	Name     string          `json:"name"`
+	UserId   string          `json:"sub"`
+	Groups   []string        `json:"groups"`
+	Wiis     []string        `json:"wiis"`
+	WWFC     []string        `json:"wwfc"`
+	Dominos  map[string]bool `json:"dominos"`
+	JustEat  map[string]bool `json:"just_eat"`
+}
+
+func GetClaims(verifier *oidc.IDTokenVerifier, tokenString string) (*Claims, int) {
+	// Verify the OpenID Connect idToken.
+	ctx := context.Background()
+	idToken, err := verifier.Verify(ctx, tokenString)
+	if err != nil {
+		return nil, http.StatusFound
+	}
+
+	var claims Claims
+	if err = idToken.Claims(&claims); err != nil {
+		return nil, http.StatusTemporaryRedirect
+	}
+
+	return &claims, http.StatusOK
+}
+
 func AuthenticationMiddleware(verifier *oidc.IDTokenVerifier) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		tokenString, err := c.Cookie("token")
@@ -18,27 +46,9 @@ func AuthenticationMiddleware(verifier *oidc.IDTokenVerifier) gin.HandlerFunc {
 			return
 		}
 
-		// Verify the OpenID Connect idToken.
-		ctx := context.Background()
-		idToken, err := verifier.Verify(ctx, tokenString)
-		if err != nil {
-			c.Redirect(http.StatusFound, "/login")
-			c.Abort()
-			return
-		}
-
-		// Parse custom claims if needed.
-		var claims struct {
-			UserId   string          `json:"sub"`
-			Email    string          `json:"email"`
-			Username string          `json:"preferred_username"`
-			Wiis     []string        `json:"wiis"`
-			WWFC     []string        `json:"wwfc"`
-			Dominos  map[string]bool `json:"dominos"`
-		}
-
-		if err = idToken.Claims(&claims); err != nil {
-			c.Redirect(http.StatusTemporaryRedirect, "/login")
+		claims, status := GetClaims(verifier, tokenString)
+		if status != http.StatusOK {
+			c.Redirect(status, "/login")
 			c.Abort()
 			return
 		}
@@ -63,6 +73,7 @@ func AuthenticationMiddleware(verifier *oidc.IDTokenVerifier) gin.HandlerFunc {
 		c.Set("wiis", claims.Wiis)
 		c.Set("wwfc", claims.WWFC)
 		c.Set("dominos", claims.Dominos)
+		c.Set("just_eat", claims.JustEat)
 		c.Next()
 	}
 }
@@ -77,29 +88,9 @@ func AuthenticationPOSTMiddleware(verifier *oidc.IDTokenVerifier) gin.HandlerFun
 			return
 		}
 
-		// Verify the OpenID Connect idToken.
-		ctx := context.Background()
-		idToken, err := verifier.Verify(ctx, tokenString)
-		if err != nil {
-			c.Status(http.StatusUnauthorized)
-			c.Abort()
-			return
-		}
-
-		// Parse custom claims if needed.
-		var claims struct {
-			Email    string          `json:"email"`
-			Username string          `json:"preferred_username"`
-			Name     string          `json:"name"`
-			UserId   string          `json:"sub"`
-			Groups   []string        `json:"groups"`
-			Wiis     []string        `json:"wiis"`
-			WWFC     []string        `json:"wwfc"`
-			Dominos  map[string]bool `json:"dominos"`
-		}
-
-		if err = idToken.Claims(&claims); err != nil {
-			c.Status(http.StatusInternalServerError)
+		claims, status := GetClaims(verifier, tokenString)
+		if status != http.StatusOK {
+			c.Redirect(status, "/login")
 			c.Abort()
 			return
 		}
@@ -108,6 +99,7 @@ func AuthenticationPOSTMiddleware(verifier *oidc.IDTokenVerifier) gin.HandlerFun
 		c.Set("wiis", claims.Wiis)
 		c.Set("wwfc", claims.WWFC)
 		c.Set("dominos", claims.Dominos)
+		c.Set("just_eat", claims.JustEat)
 		c.Next()
 	}
 }

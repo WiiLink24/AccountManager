@@ -109,7 +109,7 @@ func link(c *gin.Context) {
 		wwfc = append(wwfc.([]string), strconv.Itoa(int(ngId)))
 	}
 
-	// Finally for Dominos
+	// For Dominos
 	dominos, ok := c.Get("dominos")
 	if !ok {
 		c.JSON(http.StatusOK, gin.H{
@@ -126,6 +126,23 @@ func link(c *gin.Context) {
 		dMap[wiiNumber] = false
 	}
 
+	// Same thing for Just Eat
+	justEat, ok := c.Get("just_eat")
+	if !ok {
+		c.JSON(http.StatusOK, gin.H{
+			"success": false,
+			"error":   "failed to get Just Eat data",
+		})
+	}
+
+	eatMap := justEat.(map[string]bool)
+	if len(eatMap) == 0 {
+		eatMap = map[string]bool{wiiNumber: false}
+	} else if _, ok := eatMap[wiiNumber]; !ok {
+		// Dictionary is not empty, and the current Wii Number is not present.
+		eatMap[wiiNumber] = false
+	}
+
 	uid, ok := c.Get("uid")
 	if !ok {
 		c.JSON(http.StatusOK, gin.H{
@@ -136,9 +153,10 @@ func link(c *gin.Context) {
 
 	payload := map[string]any{
 		"attributes": map[string]any{
-			"wiis":    wiis,
-			"wwfc":    wwfc,
-			"dominos": dMap,
+			"wiis":     wiis,
+			"wwfc":     wwfc,
+			"dominos":  dMap,
+			"just_eat": eatMap,
 		},
 	}
 
