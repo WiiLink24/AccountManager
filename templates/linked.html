@@ -1,36 +1,26 @@
 {{template "base.html"}}
-<img
-  src="/assets/img/pattern.png"
+<img src="/assets/img/pattern.png"
   class="left-0 top-0 w-screen dissolve -translate-y-80 brightness-[1000%] opacity-40 z-0 absolute"
-  alt="WiiLink Pattern Background"
-/>
+  alt="WiiLink Pattern Background" />
 <div class="max-w-[800px] px-3 flex flex-col gap-3">
-  <h1 class="mb-6 flex flex-row items-center gap-3 text-4xl text-white font-bold"><img src="/assets/icon/11.svg" alt="Icon" class="w-10 h-10 invert mr-2" /> Food Delivery Settings</h1>
+  <h1 class="mb-6 flex flex-row items-center gap-3 text-4xl text-white font-bold"><img src="/assets/icon/11.svg"
+      alt="Icon" class="w-10 h-10 invert mr-2" /> Food Delivery Settings</h1>
   <div
-    class="!text-white p-5 rounded-xl border border-slate-600/30 bg-slate-600/10 backdrop-blur-md hover:-translate-y-1 z-10 flex flex-col justify-between relative transition-all animation-fade-in-up opacity-0"
-    style="animation-delay: 0.2s"
-  >
-    <span
-      class="flex flex-col lg:flex-row lg:items-center justify-between gap-6"
-    >
-      <img
-        src="/assets/img/Domino's_logo.png"
-        width="200px"
-        class="rounded-t-lg"
-      />
-      <p
-        id="dominos_colour" class="px-3 py-1 rounded-full bg-green-500 text-white flex flex-row items-center justify-center gap-3"
-      >
-        <img src="/assets/icon/circle-dot.svg" class="w-5 h-5 invert"><a id="status_text">Enabled</a></span>
-      </p>
+    class="!text-white p-5 rounded-xl border border-slate-600/30 bg-slate-600/10 backdrop-blur-md hover:-translate-y-1 z-10 flex flex-col justify-between gap-3 relative transition-all animation-fade-in-up opacity-0"
+    style="animation-delay: 0.2s">
+    <span class="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
+      <img src="/assets/img/Domino's_logo.png" width="200px" class="rounded-t-lg" />
+      <p id="dominos_colour"
+        class="px-3 py-1 rounded-full bg-green-500 text-white flex flex-row items-center justify-center gap-3">
+        <img src="/assets/icon/circle-dot.svg" class="w-5 h-5 invert"><a id="status_text">Enabled</a>
+    </span>
+    </p>
     </span>
     <br />
     <h3 class="text-2xl font-bold">Domino's Pizza Real Ordering</h3>
-    <span class="text-lg text-white/80"
-      >Order real food on your Wii, and get it delivered right to your door! Get
+    <span class="text-lg text-white/80">Order real food on your Wii, and get it delivered right to your door! Get
       live tracking updates and the status of your delivery right
-      in-console!</span
-    >
+      in-console!</span>
     <br />
     <div class="border border-red-500/60 bg-red-500/30 p-3 rounded-lg">
       <b>Please note:</b> This feature is only available in the United States
@@ -38,34 +28,31 @@
     </div>
     <br />
     <span class="w-full">
-    <h4 class="text-xl font-bold">Select your Wii Number</h4>
-    <p class="mt-1 mb-3 text-lg text-white/80">Enable your console to make Domino's Pizza purchases on Food Channel.</p>
-    <form method="post" action="/dominos/link" class="flex flex-row items-center gap-3">
-      <select name="dominos_wii_no" class="!m-0 px-6 py-3 rounded-lg" style="color: black;">
-        {{range $val := .wiiNumbers}}
-        <option value="{{ $val }}">{{ $val }}</option>
-        {{end}}
-      </select>
-      <button
-              id="toggle_button"
-              class="bg-green-500 text-center px-6 py-3 rounded-lg hover:scale-[101%] active:scale-[99%] cursor-pointer transition-all"
-              style="text-decoration: none !important"
-      >
-        <b class="flex flex-row items-center justify-center gap-3"
-        ><img src="/assets/icon/1.svg" class="w-5 h-5 invert"><a id="toggle_text">Enable Domino's
-          Ordering</a></b
-        >
-      </button>
-    </form>
+      <h4 class="text-xl font-bold">Select your Wii Number</h4>
+      <p class="mt-1 mb-3 text-lg text-white/80">Enable your console to make Domino's Pizza purchases on Food Channel.
+      </p>
+      <form method="post" action="/dominos/link" class="flex flex-row items-center gap-3">
+        <select name="dominos_wii_no" class="!m-0 px-6 py-3 rounded-lg" style="color: black;">
+          {{range $val := .wiiNumbers}}
+          <option value="{{ $val }}">{{ $val }}</option>
+          {{end}}
+        </select>
+        <button id="toggle_button"
+          class="bg-green-500 text-center px-6 py-3 rounded-lg hover:scale-[101%] active:scale-[99%] cursor-pointer transition-all"
+          style="text-decoration: none !important">
+          <b class="flex flex-row items-center justify-center gap-3"><img src="/assets/icon/1.svg"
+              class="w-5 h-5 invert"><a id="toggle_text">Enable Domino's
+              Ordering</a></b>
+        </button>
+      </form>
     </span>
   </div>
 </div>
 
 <span class="animation-fade-in">
-  <div
-    id="parallax-bg"
-    class="fixed inset-0 bg-gradient-to-b from-blue-900 to-transparent h-1/2 opacity-60 bottom-0 z-0 animation-hue-rotate"
-  ></div>
+  <div id="parallax-bg"
+    class="fixed inset-0 bg-gradient-to-b from-blue-900 to-transparent h-1/2 opacity-60 bottom-0 z-0 animation-hue-rotate">
+  </div>
 </span>
 
 <style>
@@ -78,29 +65,32 @@
       opacity: 0;
       transform: translateY(20px);
     }
+
     to {
       opacity: 1;
       transform: translateY(0);
     }
   }
 
-    .dissolve {
-      mask: linear-gradient(to bottom, black 0%, transparent 100%);
-      -webkit-mask: linear-gradient(to bottom, black 0%, transparent 100%);
+  .dissolve {
+    mask: linear-gradient(to bottom, black 0%, transparent 100%);
+    -webkit-mask: linear-gradient(to bottom, black 0%, transparent 100%);
   }
 </style>
 
 <script>
   function toggleDominosUI(selectedValue) {
-    if ({{.dominos}}[selectedValue] !== undefined) {
-      document.getElementById("dominos_colour").className = {{.dominos}}[selectedValue] ? "px-3 py-1 rounded-full bg-green-500 text-white flex flex-row items-center justify-center gap-3" : "px-3 py-1 rounded-full bg-red-500/60 text-white flex flex-row items-center gap-3";
-      document.getElementById("status_text").textContent = {{.dominos}}[selectedValue] ? "Enabled" : "Disabled";
-      document.getElementById("toggle_text").textContent = {{.dominos}}[selectedValue] ? "Disable Dominos Ordering" : "Enable Dominos Ordering";
-      if ({{.dominos}}[selectedValue]) {
-        document.getElementById("toggle_button").classList.replace("bg-green-500", "bg-red-500")
-      } else {
-        document.getElementById("toggle_button").classList.replace("bg-red-500", "bg-green-500")
-      }
+    if ({{.dominos }
+  } [selectedValue] !== undefined) {
+    document.getElementById("dominos_colour").className = {{.dominos }
+  } [selectedValue] ? "px-3 py-1 rounded-full bg-green-500 text-white flex flex-row items-center justify-center gap-3" : "px-3 py-1 rounded-full bg-red-500/60 text-white flex flex-row items-center gap-3";
+  document.getElementById("status_text").textContent = {{.dominos }}[selectedValue] ? "Enabled" : "Disabled";
+  document.getElementById("toggle_text").textContent = {{.dominos }}[selectedValue] ? "Disable Dominos Ordering" : "Enable Dominos Ordering";
+  if ({{.dominos }}[selectedValue]) {
+    document.getElementById("toggle_button").classList.replace("bg-green-500", "bg-red-500")
+  } else {
+    document.getElementById("toggle_button").classList.replace("bg-red-500", "bg-green-500")
+  }
     }
   }
 
@@ -109,7 +99,7 @@
     toggleDominosUI(this.value);
   });
 
-  document.addEventListener('DOMContentLoaded', function() {
+  document.addEventListener('DOMContentLoaded', function () {
     // Dominos stuff
     const selectElement = document.getElementsByName("dominos_wii_no")[0];
     const selectedValue = selectElement.value;
