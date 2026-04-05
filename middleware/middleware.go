@@ -4,21 +4,28 @@ import (
 	"context"
 	"crypto/sha256"
 	"fmt"
+	"net/http"
+
 	"github.com/coreos/go-oidc/v3/oidc"
 	"github.com/gin-gonic/gin"
-	"net/http"
 )
 
 type Claims struct {
-	Email    string          `json:"email"`
-	Username string          `json:"preferred_username"`
-	Name     string          `json:"name"`
-	UserId   string          `json:"sub"`
-	Groups   []string        `json:"groups"`
-	Wiis     []string        `json:"wiis"`
-	WWFC     []string        `json:"wwfc"`
-	Dominos  map[string]bool `json:"dominos"`
-	JustEat  map[string]bool `json:"just_eat"`
+	Email         string   `json:"email"`
+	Username      string   `json:"preferred_username"`
+	Name          string   `json:"name"`
+	UserId        string   `json:"sub"`
+	Groups        []string `json:"groups"`
+	Wiis          []Wii    `json:"wiis"`
+	PublicProfile bool     `json:"public_profile"`
+}
+
+type Wii struct {
+	WiiNumber     string `json:"wii_number"`
+	HollywoodID   string `json:"hollywood_id"`
+	DominosLinked bool   `json:"dominos_linked"`
+	JustEatLinked bool   `json:"just_eat_linked"`
+	SerialNumber  string `json:"serial_number"`
 }
 
 func GetClaims(verifier *oidc.IDTokenVerifier, tokenString string) (*Claims, int) {
@@ -71,9 +78,7 @@ func AuthenticationMiddleware(verifier *oidc.IDTokenVerifier) gin.HandlerFunc {
 
 		c.Set("uid", claims.UserId)
 		c.Set("wiis", claims.Wiis)
-		c.Set("wwfc", claims.WWFC)
-		c.Set("dominos", claims.Dominos)
-		c.Set("just_eat", claims.JustEat)
+		c.Set("public_profile", claims.PublicProfile)
 		c.Next()
 	}
 }
@@ -97,9 +102,7 @@ func AuthenticationPOSTMiddleware(verifier *oidc.IDTokenVerifier) gin.HandlerFun
 
 		c.Set("uid", claims.UserId)
 		c.Set("wiis", claims.Wiis)
-		c.Set("wwfc", claims.WWFC)
-		c.Set("dominos", claims.Dominos)
-		c.Set("just_eat", claims.JustEat)
+		c.Set("public_profile", claims.PublicProfile)
 		c.Next()
 	}
 }

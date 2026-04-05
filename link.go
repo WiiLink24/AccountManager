@@ -4,11 +4,13 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
-	"github.com/WiiLink24/nwc24"
-	"github.com/gin-gonic/gin"
 	"net/http"
 	"slices"
 	"strconv"
+
+	"github.com/WiiLink24/AccountManager/middleware"
+	"github.com/WiiLink24/nwc24"
+	"github.com/gin-gonic/gin"
 )
 
 func updateUserRequest(uid any, payload map[string]any) error {
@@ -48,6 +50,7 @@ func linkRedirect(c *gin.Context) {
 func link(c *gin.Context) {
 	wiiNumber := c.PostForm("wii_num")
 	wwfcCert := c.PostForm("cert")
+	serialNumber := c.PostForm("serno")
 
 	// Verify cert first
 	ngId, err := verifySignature("WIILINK_ACCOUNT_LINKER", wwfcCert)
@@ -66,6 +69,7 @@ func link(c *gin.Context) {
 			"success": false,
 			"error":   err.Error(),
 		})
+		return
 	}
 
 	wiiNoObj := nwc24.LoadWiiNumber(uint64(intWiiNumber))
@@ -74,6 +78,7 @@ func link(c *gin.Context) {
 			"success": false,
 			"error":   "invalid wii number",
 		})
+		return
 	}
 
 	if wiiNoObj.GetHollywoodID() != ngId {
@@ -81,66 +86,37 @@ func link(c *gin.Context) {
 			"success": false,
 			"error":   "device id associated with the Wii Number does not match the Wii.",
 		})
+		return
 	}
 
-	// Add Wii number to list
-	wiis, ok := c.Get("wiis")
+	_wiis, ok := c.Get("wiis")
 	if !ok {
 		c.JSON(http.StatusOK, gin.H{
 			"success": false,
-			"error":   "failed to get wii numbers",
+			"error":   "failed to get wiis",
 		})
+		return
 	}
 
-	if !slices.Contains(wiis.([]string), wiiNumber) {
-		wiis = append(wiis.([]string), wiiNumber)
-	}
+	wiis := _wiis.([]middleware.Wii)
+	wiiIdx := slices.IndexFunc(wiis, func(w middleware.Wii) bool {
+		return w.WiiNumber == wiiNumber
+	})
 
-	// Same for wwfc
-	wwfc, ok := c.Get("wwfc")
-	if !ok {
-		c.JSON(http.StatusOK, gin.H{
-			"success": false,
-			"error":   "failed to get WWFC accounts",
-		})
-	}
+	if wiiIdx != -1 {
+		// Wii is already linked, update object, presumably with serial number.
+		wiis[wiiIdx].SerialNumber = serialNumber
+	} else {
+		// Add new object
+		wii := middleware.Wii{
+			WiiNumber:     wiiNumber,
+			HollywoodID:   strconv.Itoa(int(ngId)),
+			DominosLinked: false,
+			JustEatLinked: false,
+			SerialNumber:  serialNumber,
+		}
 
-	if !slices.Contains(wwfc.([]string), strconv.Itoa(int(ngId))) {
-		wwfc = append(wwfc.([]string), strconv.Itoa(int(ngId)))
-	}
-
-	// For Dominos
-	dominos, ok := c.Get("dominos")
-	if !ok {
-		c.JSON(http.StatusOK, gin.H{
-			"success": false,
-			"error":   "failed to get dominos data",
-		})
-	}
-
-	dMap := dominos.(map[string]bool)
-	if len(dMap) == 0 {
-		dMap = map[string]bool{wiiNumber: false}
-	} else if _, ok := dMap[wiiNumber]; !ok {
-		// Dictionary is not empty, and the current Wii Number is not present.
-		dMap[wiiNumber] = false
-	}
-
-	// Same thing for Just Eat
-	justEat, ok := c.Get("just_eat")
-	if !ok {
-		c.JSON(http.StatusOK, gin.H{
-			"success": false,
-			"error":   "failed to get Just Eat data",
-		})
-	}
-
-	eatMap := justEat.(map[string]bool)
-	if len(eatMap) == 0 {
-		eatMap = map[string]bool{wiiNumber: false}
-	} else if _, ok := eatMap[wiiNumber]; !ok {
-		// Dictionary is not empty, and the current Wii Number is not present.
-		eatMap[wiiNumber] = false
+		wiis = append(wiis, wii)
 	}
 
 	uid, ok := c.Get("uid")
@@ -151,12 +127,18 @@ func link(c *gin.Context) {
 		})
 	}
 
+	publicProfile, ok := c.Get("public_profile")
+	if !ok {
+		c.JSON(http.StatusOK, gin.H{
+			"success": false,
+			"error":   "failed to get public_profile",
+		})
+	}
+
 	payload := map[string]any{
 		"attributes": map[string]any{
-			"wiis":     wiis,
-			"wwfc":     wwfc,
-			"dominos":  dMap,
-			"just_eat": eatMap,
+			"public_profile": publicProfile,
+			"wiis":           wiis,
 		},
 	}
 
