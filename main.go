@@ -82,6 +82,13 @@ func main() {
 		api.GET("/user", getUser)
 	}
 
+	// Routes for public profile API
+	profileAPI := r.Group("/api")
+	profileAPI.Use(middleware.AuthenticationPOSTMiddleware(verifier))
+	{
+		profileAPI.POST("/public-profile", updatePublicProfile)
+	}
+
 	// Start the socket
 	go justEatSocketListen()
 

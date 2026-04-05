@@ -3,9 +3,10 @@ package main
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/gin-gonic/gin"
 	"io"
 	"net/http"
+
+	"github.com/gin-gonic/gin"
 )
 
 func getUserRequest(uid any) (map[string]any, error) {
@@ -59,5 +60,39 @@ func getUser(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{
 		"success":    true,
 		"attributes": attrs,
+	})
+}
+
+func updatePublicProfile(c *gin.Context) {
+	uid, _ := c.Get("uid")
+	var req struct {
+		PublicProfile bool `json:"public_profile"`
+	}
+
+	if err := c.BindJSON(&req); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"success": false,
+			"error":   "invalid request body",
+		})
+		return
+	}
+
+	payload := map[string]any{
+		"attributes": map[string]any{
+			"public_profile": req.PublicProfile,
+		},
+	}
+
+	err := updateUserRequest(uid, payload)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"success": false,
+			"error":   err.Error(),
+		})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{
+		"success": true,
 	})
 }
