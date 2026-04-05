@@ -1,42 +1,41 @@
 package main
 
 import (
-	"github.com/gin-gonic/gin"
 	"log"
 	"net/http"
-)
 
-const (
-	IsUserLinked     = `SELECT EXISTS(SELECT 1 FROM users WHERE email = $1)`
-	GetWiiNumberUser = `SELECT wii_number FROM users WHERE email = $1`
-	GetLinkedDominos = `SELECT dominos_linked FROM users WHERE email = $1`
+	"github.com/WiiLink24/AccountManager/middleware"
+	"github.com/gin-gonic/gin"
 )
 
 func HomePage(c *gin.Context) {
 	username, _ := c.Get("username")
 	email, _ := c.Get("email")
 	wiis, _ := c.Get("wiis")
-	dominos, _ := c.Get("dominos")
 
-	exists := len(wiis.([]string)) != 0
+	exists := len(wiis.([]middleware.Wii)) != 0
+	dominos := map[string]bool{}
+	for _, wii := range wiis.([]middleware.Wii) {
+		dominos[wii.WiiNumber] = wii.DominosLinked
+	}
 
 	if exists {
 		log.Printf("User with username %s is linked!!!", username)
 
 		if pfp, ok := c.Get("picture"); ok {
 			c.HTML(http.StatusOK, "linked.html", gin.H{
-				"username":   username,
-				"email":      email,
-				"pfp":        pfp,
-				"wiiNumbers": wiis.([]string),
-				"dominos":    dominos.(map[string]bool),
+				"username": username,
+				"email":    email,
+				"pfp":      pfp,
+				"dominos":  dominos,
+				"wiis":     wiis.([]middleware.Wii),
 			})
 		} else {
 			c.HTML(http.StatusOK, "linked.html", gin.H{
-				"username":   username,
-				"email":      email,
-				"wiiNumbers": wiis.([]string),
-				"dominos":    dominos.(map[string]bool),
+				"username": username,
+				"email":    email,
+				"dominos":  dominos,
+				"wiis":     wiis.([]middleware.Wii),
 			})
 		}
 	} else {

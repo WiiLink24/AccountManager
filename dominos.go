@@ -4,14 +4,16 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"github.com/WiiLink24/nwc24"
-	"github.com/gin-gonic/gin"
 	"io"
 	"net"
 	"net/http"
 	"net/url"
 	"strconv"
 	"strings"
+
+	"github.com/WiiLink24/AccountManager/middleware"
+	"github.com/WiiLink24/nwc24"
+	"github.com/gin-gonic/gin"
 )
 
 type refreshResult struct {
@@ -121,24 +123,20 @@ func linkDominos(c *gin.Context) {
 
 	// Finally we toggle linked in authentik API.
 	wiis, _ := c.Get("wiis")
-	wwfc, _ := c.Get("wwfc")
-	dominos, _ := c.Get("dominos")
-	justEat, _ := c.Get("just_eat")
 	uid, _ := c.Get("uid")
 
-	// Toggle the linkage
-	if dominos.(map[string]bool)[wiiNoStr] {
-		dominos.(map[string]bool)[wiiNoStr] = false
-	} else {
-		dominos.(map[string]bool)[wiiNoStr] = true
+	for i, wii := range wiis.([]middleware.Wii) {
+		if wii.WiiNumber != wiiNoStr {
+			continue
+		}
+
+		// Toggle
+		wiis.([]middleware.Wii)[i].DominosLinked = !wii.DominosLinked
 	}
 
 	payload := map[string]any{
 		"attributes": map[string]any{
-			"wiis":     wiis,
-			"wwfc":     wwfc,
-			"dominos":  dominos,
-			"just_eat": justEat,
+			"wiis": wiis,
 		},
 	}
 

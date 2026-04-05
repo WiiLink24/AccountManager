@@ -3,8 +3,6 @@ package main
 import (
 	"encoding/json"
 	"errors"
-	"github.com/WiiLink24/AccountManager/middleware"
-	"github.com/logrusorgru/aurora/v4"
 	"log"
 	"net"
 	"net/http"
@@ -12,6 +10,9 @@ import (
 	"os/signal"
 	"strings"
 	"syscall"
+
+	"github.com/WiiLink24/AccountManager/middleware"
+	"github.com/logrusorgru/aurora/v4"
 )
 
 const SocketSuccess = `{"success": true}`
@@ -88,20 +89,18 @@ func justEatSocketListen() {
 				return
 			}
 
-			// Toggle the linkage
-			if claims.JustEat[justEatPayload.WiiNumber] {
-				claims.JustEat[justEatPayload.WiiNumber] = false
-			} else {
-				claims.JustEat[justEatPayload.WiiNumber] = true
+			for i, wii := range claims.Wiis {
+				if wii.WiiNumber != justEatPayload.WiiNumber {
+					continue
+				}
+
+				// Toggle
+				claims.Wiis[i].JustEatLinked = !wii.JustEatLinked
 			}
 
-			// Now send off to authentik.
 			newPayload := map[string]any{
 				"attributes": map[string]any{
-					"wiis":     claims.Wiis,
-					"wwfc":     claims.WWFC,
-					"dominos":  claims.Dominos,
-					"just_eat": claims.JustEat,
+					"wiis": claims.Wiis,
 				},
 			}
 
