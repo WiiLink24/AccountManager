@@ -50,6 +50,7 @@ func linkRedirect(c *gin.Context) {
 func link(c *gin.Context) {
 	wiiNumber := c.PostForm("wii_num")
 	wwfcCert := c.PostForm("cert")
+	serialNumber := c.PostForm("serno")
 
 	// Verify cert first
 	ngId, err := verifySignature("WIILINK_ACCOUNT_LINKER", wwfcCert)
@@ -98,24 +99,25 @@ func link(c *gin.Context) {
 	}
 
 	wiis := _wiis.([]middleware.Wii)
-	if slices.ContainsFunc(wiis, func(w middleware.Wii) bool {
+	wiiIdx := slices.IndexFunc(wiis, func(w middleware.Wii) bool {
 		return w.WiiNumber == wiiNumber
-	}) {
-		c.JSON(http.StatusBadRequest, gin.H{
-			"success": false,
-			"error":   "wii already linked",
-		})
-	}
+	})
 
-	// Now add the object
-	wii := middleware.Wii{
-		WiiNumber:     wiiNumber,
-		HollywoodID:   strconv.Itoa(int(ngId)),
-		DominosLinked: false,
-		JustEatLinked: false,
-	}
+	if wiiIdx != -1 {
+		// Wii is already linked, update object, presumably with serial number.
+		wiis[wiiIdx].SerialNumber = serialNumber
+	} else {
+		// Add new object
+		wii := middleware.Wii{
+			WiiNumber:     wiiNumber,
+			HollywoodID:   strconv.Itoa(int(ngId)),
+			DominosLinked: false,
+			JustEatLinked: false,
+			SerialNumber:  serialNumber,
+		}
 
-	wiis = append(wiis, wii)
+		wiis = append(wiis, wii)
+	}
 
 	uid, ok := c.Get("uid")
 	if !ok {
@@ -125,9 +127,18 @@ func link(c *gin.Context) {
 		})
 	}
 
+	publicProfile, ok := c.Get("public_profile")
+	if !ok {
+		c.JSON(http.StatusOK, gin.H{
+			"success": false,
+			"error":   "failed to get public_profile",
+		})
+	}
+
 	payload := map[string]any{
 		"attributes": map[string]any{
-			"wiis": wiis,
+			"public_profile": publicProfile,
+			"wiis":           wiis,
 		},
 	}
 

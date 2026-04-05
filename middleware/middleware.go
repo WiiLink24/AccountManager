@@ -25,6 +25,7 @@ type Wii struct {
 	HollywoodID   string `json:"hollywood_id"`
 	DominosLinked bool   `json:"dominos_linked"`
 	JustEatLinked bool   `json:"just_eat_linked"`
+	SerialNumber  string `json:"serial_number"`
 }
 
 func GetClaims(verifier *oidc.IDTokenVerifier, tokenString string) (*Claims, int) {
@@ -77,6 +78,7 @@ func AuthenticationMiddleware(verifier *oidc.IDTokenVerifier) gin.HandlerFunc {
 
 		c.Set("uid", claims.UserId)
 		c.Set("wiis", claims.Wiis)
+		c.Set("public_profile", claims.PublicProfile)
 		c.Next()
 	}
 }
@@ -100,6 +102,7 @@ func AuthenticationPOSTMiddleware(verifier *oidc.IDTokenVerifier) gin.HandlerFun
 
 		c.Set("uid", claims.UserId)
 		c.Set("wiis", claims.Wiis)
+		c.Set("public_profile", claims.PublicProfile)
 		c.Next()
 	}
 }
