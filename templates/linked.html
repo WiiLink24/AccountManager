@@ -34,7 +34,7 @@
       <form method="post" action="/dominos/link" class="flex flex-row items-center gap-3">
         <select name="dominos_wii_no" class="!m-0 px-6 py-3 rounded-lg" style="color: black;">
           {{range $val := .wiis}}
-          <option value="{{ $val }}">{{ $val.WiiNumber }}</option>
+          <option value="{{ $val.WiiNumber }}">{{ $val.WiiNumber }}</option>
           {{end}}
         </select>
         <button id="toggle_button"
