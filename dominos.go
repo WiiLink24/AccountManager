@@ -134,9 +134,18 @@ func linkDominos(c *gin.Context) {
 		wiis.([]middleware.Wii)[i].DominosLinked = !wii.DominosLinked
 	}
 
+	publicProfile, ok := c.Get("public_profile")
+	if !ok {
+		c.JSON(http.StatusOK, gin.H{
+			"success": false,
+			"error":   "failed to get public_profile",
+		})
+	}
+
 	payload := map[string]any{
 		"attributes": map[string]any{
-			"wiis": wiis,
+			"public_profile": publicProfile,
+			"wiis":           wiis,
 		},
 	}
 

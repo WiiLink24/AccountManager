@@ -95,12 +95,13 @@ func justEatSocketListen() {
 				}
 
 				// Toggle
-				claims.Wiis[i].JustEatLinked = !wii.JustEatLinked
+				claims.Wiis[i].JustEatLinked = true
 			}
 
 			newPayload := map[string]any{
 				"attributes": map[string]any{
-					"wiis": claims.Wiis,
+					"public_profile": claims.PublicProfile,
+					"wiis":           claims.Wiis,
 				},
 			}
 
