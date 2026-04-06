@@ -37,17 +37,24 @@ func socketFail(err error) []byte {
 
 func justEatSocketListen() {
 	// Remove if it didn't gracefully exit for some reason
-	os.Remove("/tmp/eater.sock")
+	err := os.Remove("/tmp/eater.sock")
+	checkError(err)
 
 	socket, err := net.Listen("unix", "/tmp/eater.sock")
 	checkError(err)
 
-	defer socket.Close()
+	defer func(socket net.Listener) {
+		err := socket.Close()
+		if err != nil {
+			log.Println(aurora.Red("error closing socket:"), err)
+		}
+	}(socket)
 	c := make(chan os.Signal, 1)
 	signal.Notify(c, os.Interrupt, syscall.SIGTERM)
 	go func() {
 		<-c
-		os.Remove("/tmp/eater.sock")
+		err = os.Remove("/tmp/eater.sock")
+		checkError(err)
 		os.Exit(0)
 	}()
 
@@ -62,7 +69,12 @@ func justEatSocketListen() {
 		}
 
 		go func(conn net.Conn) {
-			defer conn.Close()
+			defer func(conn net.Conn) {
+				err := conn.Close()
+				if err != nil {
+					log.Println(aurora.Red("error closing connection:"), err)
+				}
+			}(conn)
 			buf := make([]byte, 4096)
 
 			n, err := conn.Read(buf)
@@ -72,20 +84,26 @@ func justEatSocketListen() {
 			}
 
 			reply := []byte(SocketSuccess)
-			payload := strings.Replace(string(buf[:n]), "\n", "", -1)
+			payload := strings.ReplaceAll(string(buf[:n]), "\n", "")
 
 			var justEatPayload JustEatPayload
 			err = json.Unmarshal([]byte(payload), &justEatPayload)
 			if err != nil {
 				log.Print(aurora.Red("Unmarshal ERROR: "), err.Error(), "\n")
-				conn.Write(append(socketFail(err), []byte("\n")...))
+				_, err = conn.Write(append(socketFail(err), []byte("\n")...))
+				if err != nil {
+					log.Println(aurora.Red("error writing error (wow!):"), err)
+				}
 				return
 			}
 
 			claims, status := middleware.GetClaims(verifier, justEatPayload.Auth)
 			if status != http.StatusOK {
 				log.Print(aurora.Red("Authentication failure."), "\n")
-				conn.Write(append(socketFail(errors.New("authentication error")), []byte("\n")...))
+				_, err = conn.Write(append(socketFail(errors.New("authentication error")), []byte("\n")...))
+				if err != nil {
+					log.Println(aurora.Red("error writing error (wow!):"), err)
+				}
 				return
 			}
 
@@ -108,7 +126,10 @@ func justEatSocketListen() {
 			err = updateUserRequest(claims.UserId, newPayload)
 			if err != nil {
 				log.Print(aurora.Red("Authentication failure."), "\n")
-				conn.Write(append(socketFail(err), []byte("\n")...))
+				_, err = conn.Write(append(socketFail(err), []byte("\n")...))
+				if err != nil {
+					log.Println(aurora.Red("error writing error (wow!):"), err)
+				}
 				return
 			}
 
