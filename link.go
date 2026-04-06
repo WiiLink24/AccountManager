@@ -110,7 +110,7 @@ func link(c *gin.Context) {
 		// Add new object
 		wii := middleware.Wii{
 			WiiNumber:     wiiNumber,
-			HollywoodID:   strconv.Itoa(int(ngId)),
+			HollywoodID:   int(ngId),
 			DominosLinked: false,
 			JustEatLinked: false,
 			SerialNumber:  serialNumber,
