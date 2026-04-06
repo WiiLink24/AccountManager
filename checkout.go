@@ -46,5 +46,5 @@ func toggleProfile(c *gin.Context) {
 	c.SetCookie("token", newToken.AccessToken, newToken.ExpiresIn, "", "", false, true)
 	c.SetCookie("refresh_token", newToken.RefreshToken, newToken.ExpiresIn, "", "", false, true)
 
-	c.Redirect(http.StatusFound, "/manage")
+	c.Redirect(http.StatusFound, "/privacy")
 }
