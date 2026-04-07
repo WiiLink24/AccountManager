@@ -3,8 +3,12 @@ package main
 import (
 	"encoding/json"
 	"fmt"
+
 	"github.com/gin-gonic/gin"
+	"github.com/logrusorgru/aurora/v4"
+
 	"io"
+	"log"
 	"net/http"
 )
 
@@ -29,7 +33,12 @@ func getUserRequest(uid any) (map[string]any, error) {
 		return nil, fmt.Errorf("failed to get user")
 	}
 
-	defer resp.Body.Close()
+	defer func(Body io.ReadCloser) {
+		err := Body.Close()
+		if err != nil {
+			log.Println(aurora.Red("error closing body:"), err)
+		}
+	}(resp.Body)
 	body, err := io.ReadAll(resp.Body)
 	if err != nil {
 		return nil, fmt.Errorf("failed to read response")

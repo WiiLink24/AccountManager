@@ -5,6 +5,7 @@ import (
 	"errors"
 	"fmt"
 	"io"
+	"log"
 	"net"
 	"net/http"
 	"net/url"
@@ -14,6 +15,7 @@ import (
 	"github.com/WiiLink24/AccountManager/middleware"
 	"github.com/WiiLink24/nwc24"
 	"github.com/gin-gonic/gin"
+	"github.com/logrusorgru/aurora/v4"
 )
 
 type refreshResult struct {
@@ -42,7 +44,12 @@ func getNewToken(refreshToken string) (*refreshResult, error) {
 		return nil, err
 	}
 
-	defer resp.Body.Close()
+	defer func(Body io.ReadCloser) {
+		err := Body.Close()
+		if err != nil {
+			log.Println(aurora.Red("error closing body:"), err)
+		}
+	}(resp.Body)
 	body, err := io.ReadAll(resp.Body)
 	if err != nil {
 		return nil, err
@@ -86,7 +93,12 @@ func linkDominos(c *gin.Context) {
 		return
 	}
 
-	defer conn.Close()
+	defer func(conn net.Conn) {
+		err := conn.Close()
+		if err != nil {
+			log.Println(aurora.Red("error closing connection:"), err)
+		}
+	}(conn)
 	_, err = conn.Write([]byte(strconv.Itoa(int(wiiNo.GetHollywoodID()))))
 	if err != nil {
 		c.HTML(http.StatusInternalServerError, "error.html", gin.H{
