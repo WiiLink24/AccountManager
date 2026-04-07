@@ -1,0 +1,76 @@
+{{template "base.html"}}
+<img src="/assets/img/pattern.png"
+    class="left-0 top-0 w-screen dissolve -translate-y-80 brightness-[1000%] opacity-40 z-0 absolute"
+    alt="WiiLink Pattern Background" />
+<div class="max-w-[800px] px-3 flex flex-col gap-3">
+    <h1 class="mb-6 flex flex-row items-center gap-3 text-4xl text-white font-bold"><img src="/assets/icon/shield.svg"
+            alt="Icon" class="w-10 h-10 invert mr-2" /> Profile Privacy Settings</h1>
+    <div class="!text-white p-5 rounded-xl border border-slate-600/30 bg-slate-600/10 backdrop-blur-md hover:-translate-y-1 z-10 flex flex-col justify-between gap-3 relative transition-all animation-fade-in-up opacity-0"
+        style="animation-delay: 0.2s">
+        <span class="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
+            <div class="flex flex-col gap-2">
+                <div class="mb-6 flex flex-row items-center justify-between gap-6">
+                    <h3 class="text-2xl font-bold">Public Checkout Profile</h3>
+                    <span id="public_profile_colour"
+                        class="px-3 py-1 rounded-full {{if .public_profile}}bg-green-500{{else}}bg-red-500{{end}} text-white flex flex-row items-center justify-center gap-3">
+                        <img src="/assets/icon/circle-dot.svg" class="w-5 h-5 invert"><span
+                            id="public_profile_text">{{if
+                            .public_profile}}Enabled{{else}}Disabled{{end}}</span>
+                    </span>
+                </div>
+                <span class="text-lg text-white/80">By enabling this option, you allow other users to view information
+                    regarding your Wii console. <br><br>This includes, but isn't limited to, your <b>username</b>, <b>friend code</b>,
+                    <b>recommendations</b>, <b>playtime statistics</b> and <b>CMOC/EVC content</b>.</span>
+            </div>
+        </span>
+        <br />
+        <form method="post" action="/checkout/toggle" class="flex flex-row items-center gap-3">
+            <button type="submit"
+                class="{{if .public_profile}}bg-red-500 hover:bg-red-600{{else}}bg-green-500 hover:bg-green-600{{end}} text-center px-6 py-3 rounded-lg hover:scale-[101%] active:scale-[99%] cursor-pointer transition-all"
+                style="text-decoration: none !important">
+                <b class="flex flex-row items-center justify-center gap-3"><img src="/assets/icon/user.svg"
+                        class="w-5 h-5 invert"><span id="toggle_text">{{if .public_profile}}Disable
+                        Public Profile{{else}}Enable
+                        Public Profile{{end}}</span></b>
+            </button>
+        </form>
+    </div>
+</div>
+
+<style>
+    .animation-fade-in-up {
+        animation-name: fade-in-up;
+        animation-duration: 0.5s;
+        animation-fill-mode: forwards;
+    }
+
+    @keyframes fade-in-up {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .dissolve {
+        mask: linear-gradient(to bottom, black 0%, transparent 100%);
+        -webkit-mask: linear-gradient(to bottom, black 0%, transparent 100%);
+    }
+</style>
+
+<script>
+    // Get the stupid data I can't get from within the login-script.html template
+    const username = "{{.username}}";
+    const pfp = "https://gravatar.com/avatar/{{.pfp}}";
+    const email = "{{.email}}";
+</script>
+
+{{template "wii-script.html"}}
+
+{{template "login-script.html"}}
+
+{{template "footer.html"}}

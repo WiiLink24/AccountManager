@@ -38,7 +38,9 @@ func socketFail(err error) []byte {
 func justEatSocketListen() {
 	// Remove if it didn't gracefully exit for some reason
 	err := os.Remove("/tmp/eater.sock")
-	checkError(err)
+	if !os.IsNotExist(err) {
+		checkError(err)
+	}
 
 	socket, err := net.Listen("unix", "/tmp/eater.sock")
 	checkError(err)

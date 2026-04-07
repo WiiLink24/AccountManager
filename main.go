@@ -67,8 +67,10 @@ func main() {
 	auth.Use(middleware.AuthenticationMiddleware(verifier))
 	{
 		auth.GET("/manage", HomePage)
+		auth.GET("/privacy", PrivacyPage)
 		auth.GET("/notlinked", NotLinkedPage)
 		auth.POST("/dominos/link", linkDominos)
+		auth.POST("/checkout/toggle", toggleProfile)
 		auth.GET("/logout", logout)
 		auth.GET("/refresh", refresh)
 	}
