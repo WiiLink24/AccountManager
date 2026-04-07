@@ -61,5 +61,16 @@
         -webkit-mask: linear-gradient(to bottom, black 0%, transparent 100%);
     }
 </style>
+
+<script>
+    // Get the stupid data I can't get from within the login-script.html template
+    const username = "{{.username}}";
+    const pfp = "https://gravatar.com/avatar/{{.pfp}}";
+    const email = "{{.email}}";
+</script>
+
 {{template "wii-script.html"}}
+
+{{template "login-script.html"}}
+
 {{template "footer.html"}}
