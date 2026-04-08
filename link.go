@@ -127,17 +127,9 @@ func link(c *gin.Context) {
 		})
 	}
 
-	publicProfile, ok := c.Get("public_profile")
-	if !ok {
-		c.JSON(http.StatusOK, gin.H{
-			"success": false,
-			"error":   "failed to get public_profile",
-		})
-	}
-
 	payload := map[string]any{
 		"attributes": map[string]any{
-			"public_profile": publicProfile,
+			"public_profile": false,
 			"wiis":           wiis,
 		},
 	}
