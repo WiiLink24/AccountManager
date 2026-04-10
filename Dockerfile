@@ -11,15 +11,18 @@ COPY go.mod .
 COPY go.sum .
 RUN go mod download
 
-# Copy necessary parts of the Mail-Go source into builder's source
-COPY *.go ./
-COPY middleware middleware
-COPY assets assets
-COPY templates templates
+# Copy all source
+COPY . .
 
 # Build to name "app".
 RUN go build -o app .
 
-EXPOSE 8080
-# Wait until there's an actual MySQL connection we can use to start.
+FROM alpine:latest
+
+WORKDIR /AccountManager
+
+COPY --from=builder /AccountManager/app .
+COPY templates ./templates
+COPY assets ./assets
+
 CMD ["./app"]
