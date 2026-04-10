@@ -17,7 +17,7 @@ type Claims struct {
 	UserId        string   `json:"sub"`
 	Groups        []string `json:"groups"`
 	Wiis          []Wii    `json:"wiis"`
-	PublicProfile *bool    `json:"public_profile"`
+	PublicProfile bool     `json:"public_profile"`
 }
 
 type Wii struct {
@@ -78,16 +78,7 @@ func AuthenticationMiddleware(verifier *oidc.IDTokenVerifier) gin.HandlerFunc {
 
 		c.Set("uid", claims.UserId)
 		c.Set("wiis", claims.Wiis)
-
-		// Before a Wii is linked, there will be no custom claims.
-		// While "wiis" will default to a nil slice, "PublicProfile" can't
-		// and will be a nil pointer that we have to set to a default value.
-		if claims.PublicProfile != nil {
-			c.Set("public_profile", claims.PublicProfile)
-		} else {
-			c.Set("public_profile", false)
-		}
-
+		c.Set("public_profile", claims.PublicProfile)
 		c.Next()
 	}
 }
@@ -111,13 +102,7 @@ func AuthenticationPOSTMiddleware(verifier *oidc.IDTokenVerifier) gin.HandlerFun
 
 		c.Set("uid", claims.UserId)
 		c.Set("wiis", claims.Wiis)
-
-		if claims.PublicProfile != nil {
-			c.Set("public_profile", claims.PublicProfile)
-		} else {
-			c.Set("public_profile", false)
-		}
-
+		c.Set("public_profile", claims.PublicProfile)
 		c.Next()
 	}
 }
