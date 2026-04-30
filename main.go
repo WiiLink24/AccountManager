@@ -62,6 +62,7 @@ func main() {
 	r.GET("/login", LoginPage)
 	r.GET("/start", StartPanelHandler)
 	r.GET("/authorize", FinishPanelHandler)
+	r.GET("/health", HealthCheck)
 
 	auth := r.Group("/")
 	auth.Use(middleware.AuthenticationMiddleware(verifier))
@@ -90,4 +91,10 @@ func main() {
 	// Start the server
 	fmt.Printf("Starting HTTP connection (%s)...\nNot using the usual port for HTTP?\nBe sure to use a proxy, otherwise the Wii can't connect!\n", config.Address)
 	log.Fatalln(r.Run(config.Address))
+}
+
+func HealthCheck(c *gin.Context) {
+	c.JSON(http.StatusOK, gin.H{
+		"status": "healthy",
+	})
 }
