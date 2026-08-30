@@ -50,7 +50,29 @@ func getUserRequest(uid any) (map[string]any, error) {
 		return nil, fmt.Errorf("failed to unmarshal user")
 	}
 
-	return result["attributes"].(map[string]any), nil
+	attributes, ok := result["attributes"].(map[string]any)
+	if !ok {
+		// User has no attributes set yet.
+		return map[string]any{}, nil
+	}
+
+	return attributes, nil
+}
+
+// Merge current attributes stored in an authentik user so we don't lose any data
+func updateUserAttributes(uid any, updates map[string]any) error {
+	attrs, err := getUserRequest(uid)
+	if err != nil {
+		return err
+	}
+
+	for key, value := range updates {
+		attrs[key] = value
+	}
+
+	return updateUserRequest(uid, map[string]any{
+		"attributes": attrs,
+	})
 }
 
 func getUser(c *gin.Context) {
