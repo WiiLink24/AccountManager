@@ -8,7 +8,6 @@ import (
 
 func toggleProfile(c *gin.Context) {
 	// Toggle public profile in authentik API.
-	wiis, _ := c.Get("wiis")
 	uid, _ := c.Get("uid")
 	publicProfile, ok := c.Get("public_profile")
 	if !ok {
@@ -21,7 +20,6 @@ func toggleProfile(c *gin.Context) {
 
 	err := updateUserAttributes(uid, map[string]any{
 		"public_profile": !publicProfile.(bool),
-		"wiis":           wiis,
 	})
 	if err != nil {
 		c.HTML(http.StatusInternalServerError, "error.html", gin.H{

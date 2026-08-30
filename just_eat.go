@@ -119,7 +119,6 @@ func justEatSocketListen() {
 			}
 
 			err = updateUserAttributes(claims.UserId, map[string]any{
-				"public_profile": claims.PublicProfile,
 				"wiis":           claims.Wiis,
 			})
 			if err != nil {

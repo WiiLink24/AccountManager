@@ -128,7 +128,6 @@ func link(c *gin.Context) {
 		return
 	}
 
-	publicProfile, ok := c.Get("public_profile")
 	if !ok {
 		c.JSON(http.StatusOK, gin.H{
 			"success": false,
@@ -138,7 +137,6 @@ func link(c *gin.Context) {
 	}
 
 	err = updateUserAttributes(uid, map[string]any{
-		"public_profile": publicProfile,
 		"wiis":           wiis,
 	})
 	if err != nil {
