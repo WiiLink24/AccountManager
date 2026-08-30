@@ -125,6 +125,7 @@ func link(c *gin.Context) {
 			"success": false,
 			"error":   "failed to get uid",
 		})
+		return
 	}
 
 	publicProfile, ok := c.Get("public_profile")
@@ -133,16 +134,13 @@ func link(c *gin.Context) {
 			"success": false,
 			"error":   "failed to get public_profile",
 		})
+		return
 	}
 
-	payload := map[string]any{
-		"attributes": map[string]any{
-			"public_profile": publicProfile,
-			"wiis":           wiis,
-		},
-	}
-
-	err = updateUserRequest(uid, payload)
+	err = updateUserAttributes(uid, map[string]any{
+		"public_profile": publicProfile,
+		"wiis":           wiis,
+	})
 	if err != nil {
 		c.JSON(http.StatusOK, gin.H{
 			"success": false,

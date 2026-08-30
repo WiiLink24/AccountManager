@@ -118,14 +118,10 @@ func justEatSocketListen() {
 				claims.Wiis[i].JustEatLinked = true
 			}
 
-			newPayload := map[string]any{
-				"attributes": map[string]any{
-					"public_profile": claims.PublicProfile,
-					"wiis":           claims.Wiis,
-				},
-			}
-
-			err = updateUserRequest(claims.UserId, newPayload)
+			err = updateUserAttributes(claims.UserId, map[string]any{
+				"public_profile": claims.PublicProfile,
+				"wiis":           claims.Wiis,
+			})
 			if err != nil {
 				log.Print(aurora.Red("Authentication failure."), "\n")
 				_, err = conn.Write(append(socketFail(err), []byte("\n")...))

@@ -16,16 +16,13 @@ func toggleProfile(c *gin.Context) {
 			"success": false,
 			"error":   "failed to get public_profile",
 		})
+		return
 	}
 
-	payload := map[string]any{
-		"attributes": map[string]any{
-			"public_profile": !publicProfile.(bool),
-			"wiis":           wiis,
-		},
-	}
-
-	err := updateUserRequest(uid, payload)
+	err := updateUserAttributes(uid, map[string]any{
+		"public_profile": !publicProfile.(bool),
+		"wiis":           wiis,
+	})
 	if err != nil {
 		c.HTML(http.StatusInternalServerError, "error.html", gin.H{
 			"Error": err.Error(),
