@@ -17,9 +17,17 @@ type OIDCConfig struct {
 	ServiceAccountToken string   `xml:"serviceAccountToken"`
 }
 
+type NotificationsConfig struct {
+	XMLName xml.Name `xml:"notifications"`
+	SharedSecret string `xml:"sharedSecret"`
+	CheckoutURL  string `xml:"checkoutURL"`
+}
+
 type Config struct {
-	Address    string     `xml:"address"`
-	OIDCConfig OIDCConfig `xml:"oidc"`
+	Address       string              `xml:"address"`
+	Database      string              `xml:"database"`
+	OIDCConfig    OIDCConfig          `xml:"oidc"`
+	Notifications NotificationsConfig `xml:"notifications"`
 }
 
 type AppAuthConfig struct {

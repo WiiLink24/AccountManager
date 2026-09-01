@@ -1,0 +1,203 @@
+{{template "base.html"}}
+<img src="/assets/img/pattern.png"
+    class="left-0 top-0 w-screen dissolve -translate-y-80 brightness-[1000%] opacity-40 z-0 absolute"
+    alt="WiiLink Pattern Background" />
+<div class="max-w-[800px] px-3 flex flex-col gap-3">
+    <h1 class="mb-6 flex flex-row items-center gap-3 text-4xl text-white font-bold"><img src="/assets/icon/bell.svg"
+            alt="Icon" class="w-10 h-10 invert mr-2" /> Notification Settings</h1>
+
+    <div class="!text-white p-5 rounded-xl border border-slate-600/30 bg-slate-600/10 backdrop-blur-md hover:-translate-y-1 z-10 flex flex-col justify-between gap-3 relative transition-all animation-fade-in-up opacity-0"
+        style="animation-delay: 0.2s">
+        <span class="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
+            <div class="flex flex-col gap-2">
+                <div class="mb-6 flex flex-row items-center justify-between gap-6">
+                    <h3 class="text-2xl font-bold">Push Notifications</h3>
+                    <span id="push_colour"
+                        class="px-3 py-1 rounded-full {{if .notifications}}bg-green-500{{else}}bg-red-500{{end}} text-white flex flex-row items-center justify-center gap-3">
+                        <img src="/assets/icon/circle-dot.svg" class="w-5 h-5 invert"><span
+                            id="push_text">{{if
+                            .notifications}}Enabled{{else}}Disabled{{end}}</span>
+                    </span>
+                </div>
+                <span class="text-lg text-white/80">Master switch for push notifications on this device, delivered
+                    through <b>Checkout</b>. You'll be briefly redirected to Checkout to grant permission. <br><br>On
+                    iOS, notifications only work after adding that site to your <b>Home Screen</b>.</span>
+            </div>
+        </span>
+        <br />
+        <div class="flex flex-row flex-wrap items-center gap-3">
+            <button id="pushToggle" onclick="togglePushNotifications()"
+                class="bg-slate-600 hover:bg-slate-500 text-center px-6 py-3 rounded-lg hover:scale-[101%] active:scale-[99%] cursor-pointer transition-all"
+                style="text-decoration: none !important">
+                <b class="flex flex-row items-center justify-center gap-3"><img src="/assets/icon/bell.svg"
+                        class="w-5 h-5 invert"><span id="push_toggle_text">Enable
+                        Notifications</span></b>
+            </button>
+            <button id="pushTest" onclick="sendTestNotification()"
+                class="bg-slate-600 hover:bg-slate-500 text-center px-6 py-3 rounded-lg hover:scale-[101%] active:scale-[99%] cursor-pointer transition-all disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
+                style="text-decoration: none !important">
+                <b class="flex flex-row items-center justify-center gap-3"><img src="/assets/icon/send-horizontal.svg"
+                        class="w-5 h-5 invert"><span id="push_test_text">Send Test
+                        Notification</span></b>
+            </button>
+        </div>
+    </div>
+
+    <div class="!text-white p-5 rounded-xl border border-slate-600/30 bg-slate-600/10 backdrop-blur-md z-10 flex flex-col justify-between gap-3 relative transition-all animation-fade-in-up opacity-0"
+        style="animation-delay: 0.3s">
+        <h3 class="text-2xl font-bold">Notification Categories</h3>
+        <span class="text-lg text-white/80">Fine tune which kinds of notifications you want to receive. Categories are
+            on by default.</span>
+        <div class="flex flex-col divide-y divide-slate-600/30">
+            {{range .categories}}
+            <span class="flex flex-row items-center justify-between gap-6 py-3">
+                <span class="text-lg">{{.Label}}</span>
+                <button data-category="{{.Key}}" data-enabled="{{.Enabled}}" onclick="toggleCategory(this)"
+                    class="px-4 py-1.5 rounded-full text-white font-medium cursor-pointer transition-all hover:scale-[103%] active:scale-[97%] {{if .Enabled}}bg-green-500 hover:bg-green-600{{else}}bg-red-500 hover:bg-red-600{{end}}">
+                    {{if .Enabled}}On{{else}}Off{{end}}
+                </button>
+            </span>
+            {{end}}
+        </div>
+    </div>
+</div>
+
+<style>
+    .animation-fade-in-up {
+        animation-name: fade-in-up;
+        animation-duration: 0.5s;
+        animation-fill-mode: forwards;
+    }
+
+    @keyframes fade-in-up {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .dissolve {
+        mask: linear-gradient(to bottom, black 0%, transparent 100%);
+        -webkit-mask: linear-gradient(to bottom, black 0%, transparent 100%);
+    }
+</style>
+
+<script>
+    // Get the stupid data I can't get from within the login-script.html template
+    const username = "{{.username}}";
+    const pfp = "https://gravatar.com/avatar/{{.pfp}}";
+    const email = "{{.email}}";
+</script>
+
+<script>
+    // Push subscriptions must be created on the origin that receives the
+    // notification, so enabling/disabling redirects through Checkout's pages.
+    // The return URL is absolute (this origin) so Checkout sends the user
+    // back here even when both apps live on different hosts.
+    const checkoutUrl = "{{ .checkout_url }}";
+    const returnUrl = encodeURIComponent(window.location.origin + "/notifications");
+    const enableNotificationsUrl = checkoutUrl + "/notifications/enable?return=" + returnUrl;
+    const disableNotificationsUrl = checkoutUrl + "/notifications/disable?return=" + returnUrl;
+    let pushEnabled = Boolean({{ .notifications }});
+
+    function setPushState(enabled) {
+        const badge = document.getElementById("push_colour");
+        const text = document.getElementById("push_text");
+        const button = document.getElementById("push_toggle_text");
+        if (!badge || !text || !button) return;
+        badge.classList.toggle("bg-green-500", enabled);
+        badge.classList.toggle("bg-red-500", !enabled);
+        text.textContent = enabled ? "Enabled" : "Disabled";
+        button.textContent = enabled ? "Disable Notifications" : "Enable Notifications";
+    }
+
+    async function refreshPushState() {
+        try {
+            const response = await fetch("/notifications/status");
+            const data = await response.json();
+            if (data.success) {
+                pushEnabled = data.enabled;
+                setPushState(pushEnabled);
+            }
+        } catch (err) {
+            console.error("Failed to fetch notification status:", err);
+        }
+    }
+
+    function togglePushNotifications() {
+        window.location.href = pushEnabled ? disableNotificationsUrl : enableNotificationsUrl;
+    }
+
+    async function sendTestNotification() {
+        const button = document.getElementById("pushTest");
+        const label = document.getElementById("push_test_text");
+        if (!button || button.disabled) return;
+
+        button.disabled = true;
+        const original = label ? label.textContent : "Send Test Notification";
+        if (label) label.textContent = "Sending…";
+
+        try {
+            const response = await fetch("/notifications/test", { method: "POST" });
+            const data = await response.json();
+            if (response.ok && data.sent > 0) {
+                if (label) label.textContent = "Sent!";
+            } else if (response.ok) {
+                if (label) label.textContent = "No devices subscribed";
+            } else {
+                if (label) label.textContent = "Failed";
+                console.error("Test notification failed:", data.error);
+            }
+        } catch (err) {
+            if (label) label.textContent = "Failed";
+            console.error("Test notification failed:", err);
+        }
+
+        setTimeout(() => {
+            if (label) label.textContent = original;
+            button.disabled = false;
+        }, 2500);
+    }
+
+    async function toggleCategory(element) {
+        if (element.disabled) return;
+        const enabled = element.dataset.enabled === "true";
+        const original = element.textContent;
+
+        element.disabled = true;
+        element.textContent = "…";
+        try {
+            const response = await fetch("/notifications/preferences", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ category: element.dataset.category, enabled: !enabled }),
+            });
+            const data = await response.json();
+            if (!response.ok || !data.success) throw new Error(data.error || "Request failed");
+
+            element.dataset.enabled = (!enabled).toString();
+            element.classList.toggle("bg-green-500", !enabled);
+            element.classList.toggle("hover:bg-green-600", !enabled);
+            element.classList.toggle("bg-red-500", enabled);
+            element.classList.toggle("hover:bg-red-600", enabled);
+            element.textContent = !enabled ? "On" : "Off";
+        } catch (err) {
+            console.error("Failed to update preference:", err);
+            element.textContent = original;
+        }
+        element.disabled = false;
+    }
+
+    refreshPushState();
+</script>
+
+{{template "wii-script.html"}}
+
+{{template "login-script.html"}}
+
+{{template "footer.html"}}
