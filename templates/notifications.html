@@ -19,22 +19,30 @@
                             .notifications}}Enabled{{else}}Disabled{{end}}</span>
                     </span>
                 </div>
-                <span class="text-lg text-white/80">Master switch for push notifications on this device, delivered
-                    through <b>Checkout</b>. You'll be briefly redirected to Checkout to grant permission. <br><br>On
-                    iOS, notifications only work after adding that site to your <b>Home Screen</b>.</span>
+                <span class="text-lg text-white/80">Push notifications are delivered through <b>Checkout</b> on each
+                    device, so enable or disable them per device below. You'll be briefly redirected to Checkout to
+                    grant or revoke permission. <br><br>On iOS, notifications only work after adding that site to your
+                    <b>Home Screen</b>.</span>
             </div>
         </span>
         <br />
-        <div class="flex flex-row flex-wrap items-center gap-3">
-            <button id="pushToggle" onclick="togglePushNotifications()"
-                class="bg-slate-600 hover:bg-slate-500 text-center px-6 py-3 rounded-lg hover:scale-[101%] active:scale-[99%] cursor-pointer transition-all"
+        <div class="flex flex-row flex-wrap lg:flex-nowrap items-center gap-3">
+            <button id="pushEnable" onclick="enablePushNotifications()"
+                class="w-full lg:w-1/3 bg-green-600 hover:bg-green-500 text-center px-6 py-3 rounded-lg hover:scale-[101%] active:scale-[99%] cursor-pointer transition-all"
                 style="text-decoration: none !important">
                 <b class="flex flex-row items-center justify-center gap-3"><img src="/assets/icon/bell.svg"
-                        class="w-5 h-5 invert"><span id="push_toggle_text">Enable
-                        Notifications</span></b>
+                        class="w-5 h-5 invert"><span>Enable on This
+                        Device</span></b>
+            </button>
+            <button id="pushDisable" onclick="disablePushNotifications()"
+                class="w-full lg:w-1/3 bg-slate-600 hover:bg-slate-500 text-center px-6 py-3 rounded-lg hover:scale-[101%] active:scale-[99%] cursor-pointer transition-all"
+                style="text-decoration: none !important">
+                <b class="flex flex-row items-center justify-center gap-3"><img src="/assets/icon/bell-off.svg"
+                        class="w-5 h-5 invert"><span>Disable on This
+                        Device</span></b>
             </button>
             <button id="pushTest" onclick="sendTestNotification()"
-                class="bg-slate-600 hover:bg-slate-500 text-center px-6 py-3 rounded-lg hover:scale-[101%] active:scale-[99%] cursor-pointer transition-all disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
+                class="w-full lg:w-1/3 bg-slate-600 hover:bg-slate-500 text-center px-6 py-3 rounded-lg hover:scale-[101%] active:scale-[99%] cursor-pointer transition-all disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
                 style="text-decoration: none !important">
                 <b class="flex flex-row items-center justify-center gap-3"><img src="/assets/icon/send-horizontal.svg"
                         class="w-5 h-5 invert"><span id="push_test_text">Send Test
@@ -106,14 +114,13 @@
     let pushEnabled = Boolean({{ .notifications }});
 
     function setPushState(enabled) {
+        // Overall status badge: on when at least one device is subscribed.
         const badge = document.getElementById("push_colour");
         const text = document.getElementById("push_text");
-        const button = document.getElementById("push_toggle_text");
-        if (!badge || !text || !button) return;
+        if (!badge || !text) return;
         badge.classList.toggle("bg-green-500", enabled);
         badge.classList.toggle("bg-red-500", !enabled);
         text.textContent = enabled ? "Enabled" : "Disabled";
-        button.textContent = enabled ? "Disable Notifications" : "Enable Notifications";
     }
 
     async function refreshPushState() {
@@ -129,8 +136,14 @@
         }
     }
 
-    function togglePushNotifications() {
-        window.location.href = pushEnabled ? disableNotificationsUrl : enableNotificationsUrl;
+    // Both actions always stay available so each device can be switched
+    // on or off independently.
+    function enablePushNotifications() {
+        window.location.href = enableNotificationsUrl;
+    }
+
+    function disablePushNotifications() {
+        window.location.href = disableNotificationsUrl;
     }
 
     async function sendTestNotification() {
