@@ -2,8 +2,6 @@
     <!-- The address which HTTP will bind to -->
     <address>127.0.0.1:9011</address>
 
-    <database>postgres://username:password@localhost/checkout</database>
-
     <!-- OIDC credentials/data -->
     <oidc>
         <clientID></clientID>
@@ -16,6 +14,7 @@
     </oidc>
 
     <notifications>
+        <database>postgres://username:password@localhost/checkout</database>
         <sharedSecret></sharedSecret>
         <checkoutURL>http://localhost:8080</checkoutURL>
     </notifications>

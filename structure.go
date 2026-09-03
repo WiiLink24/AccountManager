@@ -19,13 +19,13 @@ type OIDCConfig struct {
 
 type NotificationsConfig struct {
 	XMLName xml.Name `xml:"notifications"`
+	Database	string `xml:"database"`
 	SharedSecret string `xml:"sharedSecret"`
 	CheckoutURL  string `xml:"checkoutURL"`
 }
 
 type Config struct {
 	Address       string              `xml:"address"`
-	Database      string              `xml:"database"`
 	OIDCConfig    OIDCConfig          `xml:"oidc"`
 	Notifications NotificationsConfig `xml:"notifications"`
 }
