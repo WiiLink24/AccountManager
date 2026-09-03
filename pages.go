@@ -69,12 +69,21 @@ func PrivacyPage(c *gin.Context) {
 	public_profile, _ := c.Get("public_profile")
 	wiis, _ := c.Get("wiis")
 
+	notifications := false
+	var subscriptionCount int
+	err := dbPool.QueryRow(ctx,
+		"SELECT COUNT(*) FROM push_subscriptions WHERE username = $1", username).Scan(&subscriptionCount)
+	if err == nil && subscriptionCount != 0 {
+		notifications = true
+	}
+
 	if pfp, ok := c.Get("picture"); ok {
 		c.HTML(http.StatusOK, "privacy-settings.html", gin.H{
 			"username":       username,
 			"email":          email,
 			"public_profile": public_profile,
 			"wiis":           wiis.([]middleware.Wii),
+			"notifications":  notifications,
 			"pfp":            pfp,
 		})
 	} else {
@@ -83,6 +92,7 @@ func PrivacyPage(c *gin.Context) {
 			"email":          email,
 			"public_profile": public_profile,
 			"wiis":           wiis.([]middleware.Wii),
+			"notifications":  notifications,
 		})
 	}
 }

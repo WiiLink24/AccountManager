@@ -27,6 +27,7 @@ func checkError(err error) {
 
 func main() {
 	config = GetConfig()
+	initDatabase()
 
 	provider, err := oidc.NewProvider(ctx, config.OIDCConfig.Provider)
 	if err != nil {
@@ -69,9 +70,13 @@ func main() {
 	{
 		auth.GET("/manage", HomePage)
 		auth.GET("/privacy", PrivacyPage)
+		auth.GET("/notifications", NotificationsPage)
+		auth.POST("/notifications/preferences", updateNotificationPreference)
 		auth.GET("/notlinked", NotLinkedPage)
 		auth.POST("/dominos/link", linkDominos)
 		auth.POST("/checkout/toggle", toggleProfile)
+		auth.GET("/notifications/status", notificationStatus)
+		auth.POST("/notifications/test", sendTestNotification)
 		auth.GET("/logout", logout)
 		auth.GET("/refresh", refresh)
 	}
