@@ -13,10 +13,11 @@ import (
 )
 
 var (
-	ctx        = context.Background()
-	authConfig *AppAuthConfig
-	config     Config
-	verifier   *oidc.IDTokenVerifier
+	ctx            = context.Background()
+	authConfig     *AppAuthConfig
+	config         Config
+	verifier       *oidc.IDTokenVerifier
+	deviceVerifier *oidc.IDTokenVerifier
 )
 
 func checkError(err error) {
@@ -45,6 +46,7 @@ func main() {
 	}
 
 	verifier = provider.Verifier(&oidc.Config{ClientID: config.OIDCConfig.ClientID})
+	deviceVerifier = provider.Verifier(&oidc.Config{ClientID: config.OIDCConfig.DeviceClientID})
 	r := gin.Default()
 
 	// Serve static files in debug mode
@@ -79,7 +81,7 @@ func main() {
 	// Routes for API
 	api := r.Group("/link")
 	api.GET("/", linkRedirect)
-	api.Use(middleware.AuthenticationPOSTMiddleware(verifier))
+	api.Use(middleware.AuthenticationPOSTMiddleware(deviceVerifier))
 	{
 		api.POST("/wii", link)
 		api.GET("/user", getUser)

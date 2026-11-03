@@ -2,6 +2,7 @@ package main
 
 import (
 	"encoding/xml"
+
 	"github.com/coreos/go-oidc/v3/oidc"
 	"golang.org/x/oauth2"
 )
@@ -10,6 +11,7 @@ type OIDCConfig struct {
 	XMLName             xml.Name `xml:"oidc"`
 	ClientID            string   `xml:"clientID"`
 	ClientSecret        string   `xml:"clientSecret"`
+	DeviceClientID      string   `xml:"deviceClientID"`
 	RedirectURL         string   `xml:"redirectURL"`
 	Scopes              []string `xml:"scopes"`
 	Provider            string   `xml:"provider"`
