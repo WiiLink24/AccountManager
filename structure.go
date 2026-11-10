@@ -15,6 +15,7 @@ type OIDCConfig struct {
 	RedirectURL         string   `xml:"redirectURL"`
 	Scopes              []string `xml:"scopes"`
 	Provider            string   `xml:"provider"`
+	DeviceProvider      string   `xml:"deviceProvider"`
 	LogoutURL           string   `xml:"logoutURL"`
 	ServiceAccountToken string   `xml:"serviceAccountToken"`
 }

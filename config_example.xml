@@ -10,6 +10,7 @@
         <redirectURL>http://localhost:9011/authorize</redirectURL>
         <scopes>openid profile email goauthentik.io/api wii achievements offline_access</scopes>
         <provider></provider>
+        <deviceProvider></deviceProvider>
         <logoutURL></logoutURL>
         <serviceAccountToken></serviceAccountToken>
     </oidc>
