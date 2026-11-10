@@ -34,6 +34,11 @@ func main() {
 		log.Fatalf("Failed to create OIDC provider: %v", err)
 	}
 
+	deviceProvider, err := oidc.NewProvider(ctx, config.OIDCConfig.DeviceProvider)
+	if err != nil {
+		log.Fatalf("Failed to create OIDC provider: %v", err)
+	}
+
 	authConfig = &AppAuthConfig{
 		OAuth2Config: &oauth2.Config{
 			ClientID:     config.OIDCConfig.ClientID,
@@ -46,7 +51,7 @@ func main() {
 	}
 
 	verifier = provider.Verifier(&oidc.Config{ClientID: config.OIDCConfig.ClientID})
-	deviceVerifier = provider.Verifier(&oidc.Config{ClientID: config.OIDCConfig.DeviceClientID})
+	deviceVerifier = deviceProvider.Verifier(&oidc.Config{ClientID: config.OIDCConfig.DeviceClientID})
 	r := gin.Default()
 
 	// Serve static files in debug mode
