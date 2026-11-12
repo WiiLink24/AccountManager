@@ -99,7 +99,7 @@ func justEatSocketListen() {
 				return
 			}
 
-			claims, status := middleware.GetClaims(verifier, justEatPayload.Auth)
+			claims, status := middleware.GetClaims(deviceVerifier, justEatPayload.Auth)
 			if status != http.StatusOK {
 				log.Print(aurora.Red("Authentication failure."), "\n")
 				_, err = conn.Write(append(socketFail(errors.New("authentication error")), []byte("\n")...))
@@ -119,7 +119,7 @@ func justEatSocketListen() {
 			}
 
 			err = updateUserAttributes(claims.UserId, map[string]any{
-				"wiis":           claims.Wiis,
+				"wiis": claims.Wiis,
 			})
 			if err != nil {
 				log.Print(aurora.Red("Authentication failure."), "\n")
