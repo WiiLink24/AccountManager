@@ -100,12 +100,13 @@ func link(c *gin.Context) {
 
 	wiis := _wiis.([]middleware.Wii)
 	wiiIdx := slices.IndexFunc(wiis, func(w middleware.Wii) bool {
-		return w.WiiNumber == wiiNumber
+		return w.HollywoodID == int(ngId)
 	})
 
 	if wiiIdx != -1 {
-		// Wii is already linked, update object, presumably with serial number.
+		// Wii is already linked, update object.
 		wiis[wiiIdx].SerialNumber = serialNumber
+		wiis[wiiIdx].WiiNumber = wiiNumber
 	} else {
 		// Add new object
 		wii := middleware.Wii{
@@ -129,7 +130,7 @@ func link(c *gin.Context) {
 	}
 
 	err = updateUserAttributes(uid, map[string]any{
-		"wiis":           wiis,
+		"wiis": wiis,
 	})
 	if err != nil {
 		c.JSON(http.StatusOK, gin.H{
